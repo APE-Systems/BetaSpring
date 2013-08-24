@@ -38,15 +38,53 @@ var labels = {
     "proAgR": "Pro Agility R (sec)",
     "proAgLa": "Pro Agility L (avg)",
     "proAgRa": "Pro Agility R (avg)",
+    "cl": "Clean (lbs)",
+    "cl1rm": "Clean 1RM (lbs)",
+    "cl2rm": "Clean 2RM (lbs)",
+    "cl3rm": "Clean 3RM (lbs)",
+    "cldf1rm": "Clean Deadlift 1RM (lbs)",
+    "cldf2rm": "Clean Deadlift 2RM (lbs)",
+    "cldf3rm": "Clean Deadlift 3RM (lbs)",
     "pcl": "Power Clean (lbs)",
+    "pcl1rm": "Power Clean 1RM (lbs)",
+    "pcl2rm": "Power Clean 2RM (lbs)",
+    "pcl3rm": "Power Clean 3RM (lbs)",
+    "hgpcl": "Hang Power Clean (lbs)",
+    "hgpcl1rm": "Hang Power Clean 1RM (lbs)",
+    "hgpcl2rm": "Hang Power Clean 2RM (lbs)",
+    "hgpcl3rm": "Hang Power Clean 3RM (lbs)",
     "hgcl": "Hang Clean (lbs)",
+    "hgsn": "Hang Snatch (lbs)",
+    "hgsn1rm": "Hang Snatch 1RM (lbs)",
+    "hgsn2rm": "Hang Snatch 2RM (lbs)",
+    "hgsn3rm": "Hang Snatch 3RM (lbs)",
+    "sn": "Snatch (lbs)",
+    "sn1rm": "Snatch 1RM (lbs)",
+    "sn2rm": "Snatch 1RM (lbs)",
+    "sn3rm": "Snatch 1RM (lbs)",
+    "hgpsn": "Hang Power Snatch (lbs)",
+    "hgpsn1rm": "Hang Power Snatch 1RM (lbs)",
+    "hgpsn2rm": "Hang Power Snatch 2RM (lbs)",
+    "hgpsn3rm": "Hang Power Snatch 3RM (lbs)",
     "hgclsh": "Hang Clean Shrug (lbs)",
     "squ": "Squat (lbs)",
     "bsq": "Back Squat (lbs)",
+    "bsq1rm": "Back Squat 1RM (lbs)",
+    "bsq2rm": "Back Squat 2RM (lbs)",
+    "bsq3rm": "Back Squat 3RM (lbs)",
     "fsq": "Front Squat (lbs)",
     "dsq": "Deep Sq (reps)",
     "bp": "Bench Press (lbs)",
-    "ir": "Inv. Row (rep)",
+    "pjk1rm": "Push Jerk 1RM (lbs)",
+    "pjk2rm": "Push Jerk 2RM (lbs)",
+    "pjk3rm": "Push Jerk 3RM (lbs)",
+    "spjk1rm": "Split Jerk 1RM (lbs)",
+    "spjk2rm": "Split Jerk 2RM (lbs)",
+    "spjk3rm": "Split Jerk 3RM (lbs)",
+    "sngdf1rm": "Snatch Grip Deadlift 1RM (lbs)",
+    "sngdf2rm": "Snatch Grip Deadlift 2RM (lbs)",
+    "sngdf3rm": "Snatch Grip Deadlift 3RM (lbs)",
+    "ir": "Inv. Row (reps)",
     "pu": "Pull Ups (reps)",
     "chup": "Chin Ups (reps)",
     "hstp": "Hurdle Step (reps)",
@@ -59,7 +97,6 @@ var labels = {
     "wgrel": "Wingate Relative (watts/lbs)"
     };
 
-//TODO: how to maintain state?
 module.exports.logout = function(req, res, next) {
   // process user logout
   console.info('\n\r---------------------');
@@ -67,12 +104,15 @@ module.exports.logout = function(req, res, next) {
   console.info('---------------------');
 
   // remove session
-  endSession(req.session._id, function() {
+  endSession(req.session, function(loginTime) {
+    var logoutTime = new Date();
     res.clearCookie('.APEAUTH');
-    console.log('cookie cleared');
+    console.info('  cookie cleared');
+    console.info('  logout dateTime:', logoutTime);
+    console.info('  time spent:', (logoutTime - loginTime)/1000, 'secs');
     res.redirect('/login');
   });
-}; // end logout
+};// end logout
 
 // dashboard
 module.exports.dashboard = function(req, res) {
@@ -80,19 +120,19 @@ module.exports.dashboard = function(req, res) {
   console.info('render dashboard');
   console.info('---------------------');
   res.render('dashboard', {
-    username: req.fullname || 'coach',
-    school: req.school,
-    teams: req.teams
+    username: req.user.fullname,
+    school: req.user.school,
+    teams: req.user.teams
   });
-};
+};// end dashboard
 
 module.exports.rosters = function(req, res) {
   console.info('\n\r---------------------');
   console.info('render roster');
   console.info('---------------------');
 
-  var school = req.school;
-  var teams = req.teams.sort(alphaSort);
+  var school = req.user.school;
+  var teams = req.user.teams.sort(alphaSort);
 
   getAllAthletes(teams[0], function(athletes) {
     // console.log("athlete[0]", athletes[0]);
@@ -107,16 +147,16 @@ module.exports.rosters = function(req, res) {
       });
     });
   });
-};
+};// end rosters
 
 module.exports.training = function(req, res) {
   console.info('\n\r---------------------');
   console.info('render training');
   console.info('---------------------');
 
-  var user = req.username;
-  var school = req.school;
-  var teams = req.teams.sort(alphaSort);
+  var user = req.user.username;
+  var school = req.user.school;
+  var teams = req.user.teams.sort(alphaSort);
   var groups = ['All'];
   var Models = req.models;
   var objLabels = {};
@@ -172,7 +212,7 @@ module.exports.training = function(req, res) {
       });
     });
   });
-};
+};// end training
 
 /*
  * ---------------------------------------------------------------------------------
@@ -208,16 +248,16 @@ function getAllAthletes(team, cb) {
 }
 
 // End session
-function endSession(sessionId, cb) {
-  Session.remove({_id: sessionId}, function(err, sess) {
+function endSession(session, cb) {
+  var loginTime = session.date;
+  Session.remove({_id: session._id}, function(err, sess) {
     if (err) {
       console.error('\n----ERROR----');
       console.error('session remove(sessionId):\n' + err);
       console.error('-------------');
       return res.redirect('/internal_error/process.endSession/' + err.code +'/');
     }
-    console.log('  session removed:');
-    cb();
+    cb(loginTime);
   });
 }
 

@@ -18,12 +18,12 @@ var AthleteSchema = module.exports = new Schema({
     fullname: {
       type: String
     },
-    teams: {
-      type: [String],
-      required: true
-    },
     school: {
       type: String,
+      required: true
+    },
+    teams: {
+      type: [String],
       required: true
     },
     metrics: {

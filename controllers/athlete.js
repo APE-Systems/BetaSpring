@@ -5,60 +5,69 @@ var Athlete = require('../models').Athletes
   , moment = require('moment');
 
 var labels = {
-      'bioHT': 'Body Height (in)',
-      'bioBW': 'Body Weight (lbs)',
-      'bioBF': 'Body Fat (%)',
-      'bioBFsf': 'Body Fat-SF (%)',
-      'reach': 'Reach (in)',
-      'appToHt': 'Approach Touch Height (in)',
-      'appVJ': 'Approach Vertical Jump (in)',
-      'stVJ': 'Standing Vertical Jump (in)',
-      'stVJToHt': 'Standing Vertical Jump Touch (in)',
-      'pwVJ': 'Vertical Jump (in)',
-      'pwLJ': 'Long Jump (in)',
-      'pwFJht': 'Four Jump (ht)',
-      'pwFJgct': 'Four Jump (gct)',
-      'brdJ': 'Broad Jump',
-      'SquJump40': '40% Squat Jump (pp)',
-      'SquJump20': '20k Squat Jump (watts)',
-      'medBall': 'Medicine Ball (ft)',
-      'tenyds': '10 YDS (sec)',
-      'twnyds': '20 YDS (sec)',
-      'thtyds': '30 YD Sprint (avg)',
-      'frtyds': '40 YD Sprint (sec)',
-      'thrhdyds': '300 YD Shuttle (sec)',
-      'fvmbk': 'Five Mile Bike (time)',
-      'hm1h': 'Home-1st (sec-hand)',
-      'hm1e': 'Home-1st (sec-elec)',
-      'hm2': 'Home-2nd (sec)',
-      'hh': 'H-H (sec-hand)',
-      'hmr1': '1/2 Mile (rep 1)',
-      'hmr2': '1/2 Mile (rep 2)',
-      'hmavg': '1/2 Miles (avg)',
-      'proAgL': 'Pro Agility L (sec)',
-      'proAgR': 'Pro Agility R (sec)',
-      'proAgLa': 'Pro Agility L (avg)',
-      'proAgRa': 'Pro Agility R (avg)',
-      'pcl': 'Power Clean (lbs)',
-      'hgcl': 'Hang Clean (lbs)',
-      'hgclsh': 'Hang Clean Shrug (lbs)',
-      'squ': 'Squat (lbs)',
-      'bsq': 'Back Squat (lbs)',
-      'fsq': 'Front Squat (lbs)',
-      'dsq': 'Deep Sq (reps)',
-      'bp': 'Bench Press (lbs)',
-      'ir': 'Inv. Row (rep)',
-      'pu': 'Pull Ups (reps)',
-      'chup': 'Chin Ups (reps)',
-      'hstp': 'Hurdle Step (reps)',
-      'illg': 'IL Lunge (reps)',
-      'shmob': 'SH Mob',
-      'aslr': 'ASLR (reps)',
-      'stbpu': 'Stability PU (reps)',
-      'rtstb': 'Rot Stability (reps)',
-      'wgpk': 'Wingate Peak (watts)',
-      'wgrel': 'Wingate Relative (watts/lbs)'
-      };
+    "bioHT": "Body Height (in)",
+    "bioBW": "Body Weight (lbs)",
+    "bioBF": "Body Fat (%)",
+    "bioBFsf": "Body Fat-SF (%)",
+    "reach": "Reach (in)",
+    "appToHt": "Approach Touch Height (in)",
+    "appVJ": "Approach Vertical Jump (in)",
+    "stVJ": "Standing Vertical Jump (in)",
+    "stVJToHt": "Standing Vertical Jump Touch (in)",
+    "pwVJ": "Vertical Jump (in)",
+    "pwLJ": "Long Jump (in)",
+    "pwFJht": "Four Jump (ht)",
+    "pwFJgct": "Four Jump (gct)",
+    "brdJ": "Broad Jump",
+    "SquJump40": "40% Squat Jump (pp)",
+    "SquJump20": "20k Squat Jump (watts)",
+    "medBall": "Medicine Ball (ft)",
+    "tenyds": "10 YDS (sec)",
+    "twnyds": "20 YDS (sec)",
+    "thtyds": "30 YD Sprint (avg)",
+    "frtyds": "40 YD Sprint (sec)",
+    "thrhdyds": "300 YD Shuttle (sec)",
+    "fvmbk": "Five Mile Bike (time)",
+    "hm1h": "Home-1st (sec-hand)",
+    "hm1e": "Home-1st (sec-elec)",
+    "hm2": "Home-2nd (sec)",
+    "hh": "H-H (sec-hand)",
+    "hmr1": "1/2 Mile (rep 1)",
+    "hmr2": "1/2 Mile (rep 2)",
+    "hmavg": "1/2 Miles (avg)",
+    "proAgL": "Pro Agility L (sec)",
+    "proAgR": "Pro Agility R (sec)",
+    "proAgLa": "Pro Agility L (avg)",
+    "proAgRa": "Pro Agility R (avg)",
+    "cl": "Clean (lbs)",
+    "cldf": "Clean Deadlift (lbs)",
+    "pcl": "Power Clean (lbs)",
+    "hgpcl": "Hang Power Clean (lbs)",
+    "hgcl": "Hang Clean (lbs)",
+    "hgsn": "Hang Snatch (lbs)",
+    "sn": "Snatch (lbs)",
+    "hgpsn": "Hang Power Snatch (lbs)",
+    "hgclsh": "Hang Clean Shrug (lbs)",
+    "squ": "Squat (lbs)",
+    "bsq": "Back Squat (lbs)",
+    "fsq": "Front Squat (lbs)",
+    "dsq": "Deep Sq (reps)",
+    "bp": "Bench Press (lbs)",
+    "pjk": "Push Jerk (lbs)",
+    "spjk": "Split Jerk (lbs)",
+    "sngdf": "Snatch Grip Deadlift (lbs)",
+    "ir": "Inv. Row (reps)",
+    "pu": "Pull Ups (reps)",
+    "chup": "Chin Ups (reps)",
+    "hstp": "Hurdle Step (reps)",
+    "illg": "IL Lunge (reps)",
+    "shmob": "SH Mob",
+    "aslr": "ASLR (reps)",
+    "stbpu": "Stability PU (reps)",
+    "rtstb": "Rot Stability (reps)",
+    "wgpk": "Wingate Peak (watts)",
+    "wgrel": "Wingate Relative (watts/lbs)"
+    };
 
 module.exports.get = function(req, res) {
   console.info('\n\r---------------------');
@@ -66,7 +75,7 @@ module.exports.get = function(req, res) {
   console.info('---------------------');
   var Models = req.models;
   var AID = req.params.id;
-  var school = req.school.replace(/ /g, '');
+  var school = req.user.school.replace(/ /g, '');
   getAthleteById(res, AID, function(athlete) {
     filter.Metrics(req, res, AID, function(metrics) {
       // console.log('get metrics', metrics);
@@ -98,7 +107,7 @@ module.exports.profile = function(req, res) {
   console.info('---------------------');
 
   var METRICS = [];
-  var school = req.school;
+  var school = req.user.school;
   var Models = req.models;
   var AID = req.params.id;
 
@@ -141,7 +150,7 @@ module.exports.profile = function(req, res) {
                     console.log('render profile');
                     res.render('profile', {
                       athletes: [athlete],
-                      school: req.school.replace(/ /g, ''),
+                      school: school,
                       Metrics: METRICS,
                       labels: labels
                     });

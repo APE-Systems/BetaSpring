@@ -51,7 +51,6 @@ module.exports.models = function(school) {
       models.Speed = lv.model('speedmetrics', require('./schemas/LV/speed'));
       models.Strength = lv.model('strengthmetrics', require('./schemas/LV/strength'));
       models.RecordTime = lv.model('recordTimes', require('./schemas/LV/recordTime'));
-      console.info("Models: University of Louisville");
       break;
 
     case "UniversityofIowa":
@@ -61,7 +60,6 @@ module.exports.models = function(school) {
       models.Speed = iw.model('speedmetrics', require('./schemas/IW/speed'));
       models.Strength = iw.model('strengthmetrics', require('./schemas/IW/strength'));
       models.RecordTime = iw.model('recordTimes', require('./schemas/IW/recordTime'));
-      console.info("Models: University of Iowa");
       break;
 
     case "UniversityofSouthernCalifornia":
@@ -72,7 +70,6 @@ module.exports.models = function(school) {
       models.Strength = usc.model('strengthmetrics', require('./schemas/USC/strength'));
       models.Fms = usc.model('fmsmetrics', require('./schemas/USC/fms'));
       models.RecordTime = usc.model('recordTimes', require('./schemas/USC/recordTime'));
-      console.info("Models: University of Southern California");
       break;
 
     case "TexasTechUniversity":
@@ -82,7 +79,6 @@ module.exports.models = function(school) {
       models.Speed = tt.model('speedmetrics', require('./schemas/TT/speed'));
       models.Strength = tt.model('strengthmetrics', require('./schemas/TT/strength'));
       models.RecordTime = tt.model('recordTimes', require('./schemas/TT/recordTime'));
-      console.info("Models: Texas Tech University");
       break;
 
     case "UniversityofVermont":
@@ -91,12 +87,11 @@ module.exports.models = function(school) {
       models.Power = uvm.model('powermetrics', require('./schemas/UVM/power'));
       models.Strength = uvm.model('strengthmetrics', require('./schemas/UVM/strength'));
       models.RecordTime = uvm.model('recordTimes', require('./schemas/UVM/recordTime'));
-      console.info("Models: University of Vermont");
       break;
 
     default:
-      console.log('global models not catching');
-      break
+      console.log('models index.js: global models not catching');
+      break;
   }
   return models;
 };

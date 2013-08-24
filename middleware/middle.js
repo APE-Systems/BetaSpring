@@ -1,7 +1,8 @@
 var Session = require('../models').Sessions
   , Coach = require('../models').Coaches
   , Athlete = require('../models').Athletes
-  , secure = require('../security').secureMe;
+  , secure = require('../security').secureMe
+  , user, school;
 
 // authenticate
 module.exports.authenticate = function(req, res, next) {
@@ -9,28 +10,29 @@ module.exports.authenticate = function(req, res, next) {
   console.info('authentication');
   console.info('--------------');
 
-  var username = req.body.username
-    , password = req.body.password
-    , salt;
+  // identify user and check password
+  findUser(res, req.body.username, passwordCheck);
 
-  findUser(req, res, username, function(user) {
-    // grab salt and authenticate
-    salt = user.password.split(',')[1];
+  function passwordCheck (user) {
+    var salt = user.password.split(',')[1];
+    var password = req.body.password;
 
-    // authenticate username + password
-    if (!secure.authenticate(user.password, password, salt)) {
-      console.log("  authentication: fail\n");
-      console.log("    password: fail\n");
-      return res.render('login', {
-        username: username
-      });
-    }
-    else {
-      console.log("  authentication: success");
-      console.log("  authentication name:", user.fullname + "\n");
-      return next();
-    }
-  });
+    secure.authenticate(user.password, password, salt, function(err, valid) {
+      if (valid) {
+        console.log("  authentication: success");
+        console.log("  authentication name:", user.fullname + "\n");
+        // set school to global
+        school = user.school.replace(/\s/g, '');
+        return next();
+      } else {
+        console.log("  authentication: fail");
+        console.log("    password: fail\n");
+        return res.render('login', {
+          username: user.username
+        });
+      }
+    });
+  }
 }; // end authenticate
 
 // check cookie
@@ -71,11 +73,15 @@ module.exports.checkSession = function(req, res, next) {
 
     if (sess) {
       console.info('  session: success');
-      req.session._id = sess._id;
-      findUser(req, res, sess.username, function(user) {
-        console.log('User Session:', user.fullname);
-        req.username = sess.username;
-        req.fullname =  user.fullname.split(' ')[0] || 'coach';
+      req.session = sess;
+      findUser(res, sess.username, function(user) {
+        console.log('  User Session:', user.fullname);
+        req.user = {
+          username: user.username,
+          fullname: user.fullname.split(' ')[0] || 'coach',
+          teams: user.teams,
+          school: user.school.replace(/\s/g, '')
+        };
         return next();
     });
       
@@ -91,56 +97,84 @@ module.exports.checkSession = function(req, res, next) {
 
 // redirect
 module.exports.redirect = function(req, res) {
-  var school = req.school;
+  school = req.user.school.replace(/\s/g, '');
   console.log('/'+school+'/dashboard');
   return res.redirect('/'+school+'/dashboard');
 };
 
 // set session
 module.exports.setSession = function(req, res) {
-  // ONLY if user is authenticated
   console.info('--------------');
-  console.info('session');
+  console.info('User Authenticated -> setSession');
   console.info('--------------');
 
-  // create session
-  var session = new Session({
-        username: req.body.username,
-        date: new Date()
-      });
-  // session cookie
-  session.cookie = secure.makeSecureVal(session._id.toString());
+  // check if a session already exists
+  setSession(user, userDashboard);
 
-  // check if a session exists
-  Session.findOne({username: req.body.username}, function(err, sess) {
-    if (err) {
-      console.error('\n----ERROR----');
-      console.error('session query(username):\n' + err);
-      console.error('-------------');
-      return res.redirect('/internal_error/user.setSession/' + err.code +'/');
+  function userDashboard() {
+    console.log('going to userDashboard');
+    req.fullname = user.fullname;
+    req.school = user.school.replace(/\s/g, '');
+    req.teams = user.teams;
+    console.info('\nlogin dateTime: ' + new Date());
+    console.info('redirect:   /'+school+'/dashboard');
+    return res.redirect('/'+school+'/dashboard');
     }
 
-    // if session DOES NOT exist, create, save and render
-    if (!sess) {
-      console.info('  set session');
-      console.info('  session_id:', session._id);
+  function setSession(user, callback) {
+    // check if session already exists
+    evalSession(user.username, function(session) {
+      if (session) {
+        console.info('  session exists');
+        removeSession(session, createSession);
+      } else {
+        console.info('  session nonexistant');
+        console.info('  creating new session');
+        createSession(user);
+      }
+    });
 
-      // save session
-      saveSession(res, session, function() {
-        findUser(req, res, session.username, function(user) {
-          var school = req.school;
-          console.info('  redirect: dashboard\n');
-          res.cookie('.APEAUTH', session.cookie, {signed: true, path: '/', httpOnly: true});
-          console.log('/'+school+'/dashboard');
-          return res.redirect('/'+school+'/dashboard');
-        });
+    function evalSession(username, callback) {
+      console.info('evalute session');
+      Session.findOne({username: username}, function(err, session) {
+        if (err) {
+          console.error('\n----ERROR----');
+          console.error('session query(username):\n' + err);
+          console.error('-------------');
+          return res.redirect('/internal_error/user.setSession/' + err.code +'/');
+        }
+        return callback(session);
       });
     }
 
-    // if session DOES exists, then clear and reset
-    else {
-      console.log('  session exists');
-      Session.findOneAndRemove({username: sess.username}, function(err, sess) {
+    function createSession(user) {
+      // create session
+      var newSession = new Session({
+        username: user.username
+      });
+      // takes the newSession and ouputs hashed cookie to be saved
+      secure.makeSecureVal(newSession, saveSession);
+    }
+
+    function saveSession(newSession, cookie) {
+      newSession.cookie = cookie;
+      newSession.save(function(err) {
+        if (err) {
+          console.error('\n----ERROR----');
+          console.error('session save(session):\n' + err);
+          console.error('-------------');
+          return res.redirect('/internal_error/user.saveSession/' + err.code +'/');
+        }
+        console.info('  session saved');
+        console.info('  set session cookie');
+        res.cookie('.APEAUTH', newSession.cookie, {signed: true, path: '/', httpOnly: true});
+        return userDashboard();
+      });
+    }
+
+    function removeSession(session, callback) {
+      console.info('  removing session');
+      Session.findOneAndRemove({username: session.username}, function(err, sess) {
         if (err) {
           console.error('\n----ERROR----');
           console.error('session findOneAndRemove(username):\n' + err);
@@ -148,16 +182,11 @@ module.exports.setSession = function(req, res) {
           return res.redirect('/internal_error/user.setSession/' + err.code +'/');
         }
         console.log('  session removed');
-        saveSession(res, session, function() {
-          findUser(req, res, session.username, function(user) {
-            console.info('  redirect: dashboard\n');
-            res.cookie('.APEAUTH', session.cookie, {signed: true, path: '/', httpOnly: true});
-            return res.redirect('/'+req.school+'/dashboard');
-          });
-        });
+        return callback(session);
       });
     }
-  });
+
+  }
 };
 
 // validate
@@ -165,14 +194,12 @@ module.exports.validate = function(req, res, next) {
   console.info('\n--------------');
   console.info('validate login');
   console.info('--------------');
-  var username = req.body.username || '';
-  var password = req.body.password || '';
 
   // validation check
-  req.assert('username', 'Username is required').notNull();
-  req.assert('username', 'Username must be an email').isEmail();
-  req.assert('password', 'Password is required').notNull();
-  req.assert('password', 'Password must be at least 8 characters').len(8);
+  req.assert('req.body.username', 'Username is required').notNull();
+  req.assert('req.body.username', 'Username must be an email').isEmail();
+  req.assert('req.body.password', 'Password is required').notNull();
+  req.assert('req.body.password', 'Password must be at least 8 characters').len(8);
 
   var errors = req.validationErrors();
   if (errors) {
@@ -185,11 +212,12 @@ module.exports.validate = function(req, res, next) {
     // render errors
     console.log('  validate login: fail\n');
     return res.render('login', {
-      username: username || ''
+      username: req.body.username || ''
     });
   }
   else {
-    console.log('  validate login: success\n');
+    console.info('  validate login: success');
+    console.info('  dateTime: ' + new Date() + '\n');
     return next();
   }
 }; // end validate
@@ -205,8 +233,8 @@ module.exports.validate = function(req, res, next) {
 /*
  * Find the type of user: Coach or Athlete
  */
-function findUser(req, res, username, cb) {
-  console.info('  + identify user');
+function findUser(res, username, callback) {
+  console.info('+  identify user');  
   Coach.findOne({username: username}, function(err, coach) {
     if (err) {
       console.error('\n----ERROR----');
@@ -224,30 +252,8 @@ function findUser(req, res, username, cb) {
       });
     }
     else {
-      req.fullname = coach.fullname;
-      req.school = coach.school.replace(/\s/g, '');
-      req.teams = coach.teams;
-      console.info('      coach:', req.fullname);
-      console.info('      school:', req.school);
-      console.info('      teams:', req.teams + '\n');
-      cb(coach);
+      user = coach;
+      return callback(coach);
     }
-  });
-}
-
-/*
- * Save the Session
- */
-function saveSession(res, session, cb) {
-  // console.log('saving session\n', session);
-  session.save(function(err) {
-    if (err) {
-      console.error('\n----ERROR----');
-      console.error('session save(session):\n' + err);
-      console.error('-------------');
-      return res.redirect('/internal_error/user.saveSession/' + err.code +'/');
-    }
-    console.info('  session saved');
-    cb();
   });
 }

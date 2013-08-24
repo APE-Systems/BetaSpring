@@ -475,6 +475,71 @@ table tbody tr.active:hover td {color: white;}
     color:black;
 }
 
+/*Profile Page DUO*/
+.profile .info h4 {
+  margin-top: 0; }
+.profile .info p {
+  margin-bottom: 0; }
+.profile .profile-metrics .metric-name {
+  font-size: 1.25em;
+  text-transform: uppercase;
+  margin-bottom: 0; }
+.profile .profile-metrics .metric {
+  font-size: 3.5em; }
+.profile .section-container.tabs section {
+  margin: 0 auto; }
+  .profile .section-container.tabs section .title a {
+    padding-left: 1em;
+    padding-right: 1em; }
+  .profile .section-container.tabs section .title {
+    border: 0;
+    font-size: 1.375em;
+    background-color: #f5f5f5;
+    text-transform: uppercase; }
+    .profile .section-container.tabs section .title:hover {
+      background: rgba(156, 0, 18, 0.4); }
+  .profile .section-container.tabs section.active .title {
+    background-color: #9c0012;
+    border: 0; }
+    .profile .section-container.tabs section.active .title a {
+      color: #fff; }
+  .profile .section-container.tabs section .content {
+    border: 0;
+    height: 445px;
+    overflow-y: scroll;
+    background-color: #fff; }
+    .profile .section-container.tabs section .content .metrics .measure {
+      margin-top: -1.6em; }
+    .profile .section-container.tabs section .content .metrics hr {
+      margin: 0; }
+    .profile .section-container.tabs section .content .metrics .row {
+      margin-top: 1em;
+      margin-left: 1em;
+      margin-right: 1em; }
+    .profile .section-container.tabs section .content .metrics:last-child {
+      margin-bottom: 1em; }
+    .profile .section-container.tabs section .content .metrics img {
+      height: 85px; }
+    .profile .section-container.tabs section .content .metrics p {
+      margin-bottom: 0; }
+    .profile .section-container.tabs section .content .metrics .metric {
+      font-size: 4em; }
+    .profile .section-container.tabs section .content .graph {
+      cursor: pointer; }
+      .profile .section-container.tabs section .content .graph .graph-icon {
+        background: url(../_imgs/graph.png) no-repeat center;
+        height: 65px;
+        width: 100px;
+        display: block;
+        margin: 0 auto;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        opacity: 0.6; }
+      .profile .section-container.tabs section .content .graph:hover .graph-icon {
+        opacity: 1; }
+
 /*Training Page*/
 .training .athletes {
   height: 28em;

@@ -1,0 +1,112 @@
+include includes/head
+body.profile
+  include includes/nav
+  include includes/athleteNameDate
+  | nav
+  .row
+    .small-3.large-2.columns
+      img.aPhoto(id= athletes[0]._id , src='/_imgs/#{school}/#{athletes[0].fullname.split(' ')[1]}' + '_' + '#{athletes[0].fullname.split(' ')[0]}.jpeg')
+      a.vProfile(href="/#{school}/rosters/", role='button') View Team
+    .info.small-9.large-3.columns
+      h3
+        | Whitney Arion
+      p Year: Sophomore
+      p Height: ###"
+      p Group: In-Field
+      p POS: Shortstop (SS)
+    .small-12.large-7.columns
+      .profile-metrics.row.text-center
+        .small-3.large-3.columns
+          p.metric-name Sleep
+          .metric 8
+        .small-3.large-3.columns
+          p.metric-name Fatigue
+          .metric 2
+        .small-3.large-3.columns
+          p.metric-name Soreness
+          .metric 2
+        .small-3.large-3.columns
+          p.metric-name Attitude
+          .metric 6
+  .row
+    .small-12.columns
+      .section-container.tabs(data-section='tabs')
+        section
+          p.title(data-section-title='data-section-title')
+            a(href='PanelBiometric') Biometrics
+          .content(data-section-content='data-section-content')
+            .metrics
+              .row.collapse
+                .small-12.columns
+                  h5 Body Fat %
+                  p.measure.text-right Last Measured On: MM/DD/YY
+                .small-12.columns
+                  hr
+              .row.collapse.text-center
+                .small-3.columns
+                  .metric 11.4%
+                  p Latest Record
+                .small-3.columns
+                  .metric 17%
+                  p Latest Team Avg.
+                .small-3.columns
+                  .metric -2%
+                  p Delta Since Last
+                .small-3.columns.graph
+                  .graph-icon
+                  p View Graph
+              .row.collapse
+                .small-12.columns
+                  p Bodyweight (lbs)
+                  p.measure.text-right Last Measured On: MM/DD/YY
+                .small-12.columns
+                  hr
+              .row.collapse.text-center
+                .small-3.columns
+                  .metric 124
+                  p Latest Record
+                .small-3.columns
+                  .metric 148
+                  p Latest Team Avg.
+                .small-3.columns
+                  .metric -1
+                  p Delta Since Last
+                .small-3.columns.graph
+                  .graph-icon
+                  p View Graph
+              .row.collapse
+                .small-12.columns
+                  p Lean Mass (lbs)
+                  p.measure.text-right Last Measured On: MM/DD/YY
+                .small-12.columns
+                  hr
+              .row.collapse.text-center
+                .small-3.columns
+                  .metric 110
+                  p Latest Record
+                .small-3.columns
+                  .metric 122.6
+                  p Latest Team Avg.
+                .small-3.columns
+                  .metric +2
+                  p Delta Since Last
+                .small-3.columns.graph
+                  .graph-icon
+                  p View Graph
+        section
+          p.title(data-section-title='data-section-title')
+            a(href='PanelStrength') Strength
+          .content(data-section-content='data-section-content')
+            p Strength Metrics
+        section
+          p.title(data-section-title='data-section-title')
+            a(href='PanelSpeed') Speed
+          .content(data-section-content='data-section-content')
+            p Speed Metrics
+        section
+          p.title(data-section-title='data-section-title')
+            a(href='PanelPower') Power
+          .content(data-section-content='data-section-content')
+            p Power Metrics
+  include includes/footer
+  include includes/chart

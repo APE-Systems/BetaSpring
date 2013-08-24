@@ -1,4 +1,5 @@
 include includes/head
+include includes/datePicker
 body.training
   include includes/nav
   .row
@@ -26,6 +27,10 @@ body.training
         select#metric
           each val, key in metricLabels
             option(value='#{key}')= val
+    .small-6.large-3.columns
+      form.custom(id='dateTime', action='')
+        label Date
+        input#datepicker(type='text')
     .small-12.columns
       hr
   .row.athleteInfo
@@ -82,3 +87,13 @@ body.training
       //- console.log('img', img);
       $('.aPhoto').attr('src', img);
     }
+    $(function() {
+      var today = new Date();
+      today = today.getMonth() + 1 + '/' + today.getDate() + '/' + today.getFullYear();
+      $('#datepicker').val(today);
+      $( "#datepicker" ).datepicker({
+        onSelect: function(dateText, inst) {
+          alert(dateText);
+        }
+        });
+    });
