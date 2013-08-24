@@ -1,0 +1,136 @@
+include includes/head
+body.rosters
+  include includes/nav
+  include includes/teamList
+  select#group
+    option(value='') All
+  select#category
+    option(value='bio') Bio
+    option(value='strength') Strength
+    option(value='power') Power
+    option(value='speed') Speed
+    option(value='fms') FMS
+  select#metric
+  for athlete in athletes
+    div.athlete(class="#{athlete._id}", data-id="#{athlete._id}")
+      p.name= athlete.fullname.split(' ')[0] + ', ' + athlete.fullname.split(' ')[1]
+      p.last-metric Last Metric:&nbsp;
+        span
+      div.edit
+        input.metric
+        button.submit Confirm
+      div.complete(style='display: none;')
+        button.new Add New
+        button.back Go Back
+  <!-- TODO: Remove duplicate jQuery reference -->
+  script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.0/jquery.min.js')
+  script(type='text/javascript')
+    $(document).ready(function() {
+      // Dropdowns
+      var teams = $('#teams');
+      var categories = $('#category');
+      var metrics = $('#metric');
+
+      // Metrics dropdown
+      populateMetrics(categories.val());
+      categories.change(function() {
+        populateMetrics(categories.val());
+      });
+
+      function populateMetrics(category) {
+        $.ajax({
+          url: '/categories/' + category + '/metrics',
+          type: 'GET',
+          dataType: 'json',
+          success: function(data) {
+            metrics.empty();
+            var options = '';
+            $.each(data.metrics, function(key, value) {
+              options += '<option value="' + key + '">' + value + '</option>';
+            });
+            metrics.append(options);
+            populateLastMetric(metrics.val());
+          }
+        });
+      }
+
+      // Last metrics
+      metrics.change(function() {
+        populateLastMetric(metrics.val());
+      });
+
+      function populateLastMetric(metric) {
+        $.ajax({
+          url: '/teams/' + teams.val() + '/metrics/latest',
+          type: 'GET',
+          dataType: 'json',
+          data: {
+            category: categories.val(),
+            metric: metric
+          },
+          success: function(data) {
+            $.each(data.metrics, function(key, value) {
+              $('.' + key).find('.last-metric span').html(value);
+            });
+          }
+        });
+      }
+
+      // Add new metric value
+      $('.submit').click(function() {
+        var self = $(this);
+        var container = self.closest('.athlete');
+        var id = container.data('id');
+        var value = container.find('.metric').val();
+        container.find('.metric').val('');
+        $.ajax({
+          url: '/athletes/' + id + '/metrics',
+          type: 'POST',
+          dataType: 'json',
+          data: {
+            category: categories.val(),
+            metric: metrics.val(),
+            value: value
+          },
+          success: function() {
+            container.find('.edit').hide(function() {
+              // TODO: Update athlete chart
+              container.find('.last-metric span').html(value);
+              container.find('.complete').show();
+            });
+          }
+        });
+      });
+
+      // Remove last added metric value
+      $('.back').click(function() {
+        var self = $(this);
+        var container = self.closest('.athlete');
+        var id = container.data('id');
+        $.ajax({
+          url: '/athletes/' + id + '/metrics/latest',
+          type: 'DELETE',
+          dataType: 'json',
+          data: {
+            category: categories.val(),
+            metric: metrics.val()
+          },
+          success: function(data) {
+            $('.' + id).find('.last-metric span').html(data.value);
+            container.find('.complete').hide(function() {
+              container.find('.edit').show();
+            });
+          }
+        });
+      });
+
+      // Reset athlete container
+      $('.new').click(function() {
+        var self = $(this);
+        var container = self.closest('.athlete');
+        container.find('.complete').hide(function() {
+          container.find('.edit').show();
+        });
+      });
+    });
+  include includes/footer

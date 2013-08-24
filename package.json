@@ -1,0 +1,30 @@
+{
+  "name": "ApeSystem",
+  "version": "0.0.1",
+  "private": true,
+  "author": {
+    "name": "bahtou",
+    "email": "bahtou@nym.hush.com"
+    },
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "3.1.0",
+    "jade": "0.29.0",
+    "mongoose": "3.6.9",
+    "moment": "2.0.0",
+    "express-validator": "0.3.2"
+  },
+  "repository" : {
+    "type": "git",
+    "url": "https://github.com/bahtou/apeSystem"
+  },
+  "engines": {
+    "node": "0.10.0"
+  },
+  "bugs": {
+    "mail": "bahtou@nym.hush.com",
+    "url": "https://github.com/bahtou/apeSystem/issues"
+    }
+}

@@ -1,0 +1,10 @@
+script
+  $('.teams').selectable({
+    stop: function() {
+      var result = $('.stream').empty();
+      $('.ui-selected', this).each(function() {
+        var index = $('.teams li').index(this);
+        result.append('<li>#' + (index + 1) + '</li>');
+      });
+    }
+  });

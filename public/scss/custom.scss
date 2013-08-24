@@ -1,0 +1,188 @@
+.top-bar-section {
+	ul li {
+		& > a {
+		  &:hover {
+		  	background: darken($topbar-dropdown-bg, 3%);
+		  	color: #fff;
+		  }
+		}
+
+		&.active a {
+			background: $topbar-bg;
+			color: #fff;
+		}
+	}
+}
+
+.dashboard .dashboard, .rosters .rosters, .training .training, .reporting .reporting, .admin .admin {
+	& > a {
+		color: #fff;
+	}
+}
+
+.login {
+	margin-top: 6em;
+
+	.login-form {
+		background-color: #F2F2F2;
+		text-align: center;
+		padding: 2em 0 .5em 0;
+		font-size: 28px;
+
+		label {
+			display: none;
+		}
+
+		button {
+			width: 100%;
+
+		}
+	}
+}
+
+.dash-select {
+	background-color: #F2F2F2;
+	padding: 1em;
+
+	.dash-list {
+		list-style-type: none;
+		margin: 0;
+		padding: 1px 0;
+		background-color: #fff;
+		min-height: 25em;
+		max-height: 25em;
+		overflow-y: scroll; 
+
+		li {
+			margin: 3px;
+			padding: 0.4em;
+			font-size: emCalc(23px);
+		}
+
+		.ui-selecting {
+	    background: #ccc;
+	  }
+
+	  .ui-selected {
+      background: #999;
+    }
+	}
+}
+
+.rosters {
+	.roster-name {
+		h4 { margin-top: 0; }
+	}
+
+	.roster-metrics {
+		.metric {
+			font-size: 4em;
+		}
+	}
+
+	.section-container {
+
+		.content {
+
+			.metrics {
+				
+				.row {
+					background-color: #fff;
+					margin-top: 1em;
+					margin-left: 1em;
+					margin-right: 1em;
+				}
+
+				&:last-child {
+					margin-bottom: 1em;
+				}
+
+				.odd {
+					background-color: #999;
+				}
+
+				img {
+					height: 85px;
+				}
+
+				p {
+					margin-bottom: 0;
+				}
+
+				.metric {
+					font-size: 4em;
+				}
+			}
+		}
+
+		section .title a {
+			padding-left: 1em;
+			padding-right: 1em;
+		}
+
+		&.tabs section {
+
+			.title {
+				border: 0;
+				border-right: 1px solid #fff;
+				font-size: emCalc(22px);
+				text-transform: uppercase;
+			}
+
+			&.active .title {
+				border: 1px solid #CCC;
+				border-bottom: 0;
+			}
+		}
+	}
+}
+
+
+table {
+	width: 100%;
+	tbody {
+		tr {
+			&:hover {
+				background: transparentize($primary-color, 0.6);
+			}
+		}
+	}
+}
+
+@media #{$small} {
+	.roster-name {
+		.date { text-align: right; }
+	}
+	.roster-metrics {
+		.metric {
+			font-size: 7em;
+		}
+	}
+}
+
+.training {
+	.athletes {
+		height: 28em;
+		overflow-y: scroll;
+	}
+	
+	.athlete {
+		margin-top: .5em;
+
+		.name, .last-metric {
+			padding-top: 1.2em;
+		}
+
+		.input, .buttons {
+			padding-top: .8em;
+		}
+
+		&:nth-of-type(even) {
+			background: #F9F9F9;
+		}
+
+		&:hover {
+			background: transparentize($primary-color, 0.6);
+		}
+	}
+}

@@ -1,0 +1,84 @@
+include includes/head
+body.training
+  include includes/nav
+  .row
+    .small-6.large-3.columns
+      form.custom(id="teams", action='')
+        label Teams
+        select#team
+          each team in teams
+            option= team
+    .small-6.large-3.columns
+      form.custom(id="groups", action='')
+        label Groups
+        select#group
+          each group in groups
+            option= group
+    .small-6.large-3.columns
+      form.custom(id="categorys", action='')
+        label Category
+        select#category
+          each model in models
+            option= model
+    .small-6.large-3.columns
+      form.custom(id='metrics', action='')
+        label Metric
+        select#metric
+          each val, key in metricLabels
+            option(value='#{key}')= val
+    .small-12.columns
+      hr
+  .row.athleteInfo
+    .small-2.columns
+      img.aPhoto(src='/_imgs/#{school}/#{athletes[0].fullname.split(' ')[1]}' + '_' + '#{athletes[0].fullname.split(' ')[0]}.jpeg')
+    .small-10.columns.graph
+      canvas(height='150', width='800')
+  .row.athleteHeader
+    .small-12.columns
+      span.hName.athHeader
+        | Name
+      span.hLastMetric.athHeader
+        | Last Metric
+      span.hUserInputs.athHeader
+        | Measured
+      span.hToMeasure.athHeader
+        | Metric Input
+  .row.athletes
+    .small-12.columns
+      for athlete in athletes
+        .row.athlete(class="#{athlete._id}", data-id="#{athlete._id}")
+          .small-2.columns.athlete-name
+            span.name= athlete.fullname.split(' ')[1] + ', ' + athlete.fullname.split(' ')[0]
+          .small-10.columns
+            .row
+              .small-2.columns.last-metric
+                span.metric(id='')= lastValues[athlete._id.toString()]
+              .small-6.columns.input
+                input.measure(type='text', placeholder='Enter new data')
+              .small-4.columns.buttons
+                .edit
+                  button.submit.small.success.button Confirm
+                .complete.hide
+                  button.remove.small.alert.button Remove Last
+                  button.new.small.success.button Add New
+
+  include includes/footer
+  script(src='/_js/JStraining.js')
+  script
+    $('.athlete:first').addClass('active');
+    $('.athlete').click(getImg);
+
+    function getImg() {
+      var $this = $(this);
+      var school = $('li.rosters a').attr('href').split('/')[1];
+      var name = $this.find('span.name').text().replace(/[ ,]+/g, '_');
+      //- console.log('school', school);
+      //- console.log('name', name);
+
+      $('.athlete.active').removeClass('active');
+      $this.addClass('active');
+
+      var img = '/_imgs/' + school + '/' + name + '.jpeg'
+      //- console.log('img', img);
+      $('.aPhoto').attr('src', img);
+    }
