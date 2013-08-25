@@ -1,5 +1,5 @@
-#Ape System
+#Ape Systems Development Branch
 
-> Athletic Performance Enhancement  
->  
-> That's how we do it!
+> Development and staging are done on this branch.
+> Features also merge onto this branch.
+> Development branch then merges to Master branch for production.
