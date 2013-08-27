@@ -469,4 +469,4 @@ var teamsPage = {
             }
           ]
         }
-      }cls
+      }
