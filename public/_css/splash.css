@@ -1,0 +1,41 @@
+.box {
+  
+  min-width:175px;
+  min-height: 175px;
+  margin: 10px;
+  border-style:solid;
+  border-width:1px;
+  border-color: Gray;
+  background-color: #69000c;
+}
+
+.centered {
+	text-align: center;
+}
+
+.gray {
+  background-color: #cccccc;
+}
+
+#add-team {
+  font-size: 150px;
+}
+
+.centered-div {
+  position:fixed;
+  z-index: 100;  
+  top:50%;  
+  left:50%;  
+  margin:-100px 0 0 -100px;  
+  width:200px;  
+  height:200px;  
+}
+
+
+#myModal {
+	background-color: #efefef;
+}
+
+.upimage {
+	max-width: 150px;
+}

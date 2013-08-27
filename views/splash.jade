@@ -1,0 +1,52 @@
+include includes/head
+link(rel='stylesheet', href='../_css/splash.css')
+body
+  include includes/splash-nav
+
+  .row
+    .small-6.large-centered.columns.centered
+      h3 Teams: All / Men / Women 
+      a.button(href='#', data-reveal-id='myModal') Create Team
+    h5 Men's Teams
+    hr
+  .row
+    .small-6.columns
+      url.small-block-grid-4
+        li.box Basketball
+        li.box Football
+
+    .small-6.columns
+      url.small-block-grid-4
+        li.box Volleyball
+        li.box Softball
+  include includes/footer
+  #myModal.reveal-modal.large
+    h4 Create Team
+    .row
+      .small-3.columns
+        img(src='http://placehold.it/150x200')
+        a.small.button.expand.upimage(href='#' ) Upload Image
+      .small-9.columns
+        form
+          a.button.dropdown.expand(href='#', data-dropdown='drop1') Sport
+          ul#drop1.f-dropdown
+            li
+              a(href='#') Football
+            li
+              a(href='#') Track and Field
+            li
+              a(href='#') Basketball
+          label(for='customDropdown1') Sex
+            select#customDropdown1.medium
+                option(disabled='DISABLED') Select
+                option Male
+                option Female
+            
+
+
+
+
+
+
+      .small-12.columns
+        a.large.button.expand(href='#') Create Team

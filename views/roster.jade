@@ -1,0 +1,36 @@
+include includes/head
+link(rel='stylesheet', href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css')
+body
+  include includes/splash-nav
+  include includes/footer
+
+    .row
+      .small-6.large-centered.columns
+        a#simple-menu(href='#sidr') Toggle menu
+
+       
+
+
+
+        #sidr
+          ul
+            li
+              a(href='#') Teams
+            li.active
+              a(href='#') Roster
+            li
+              a(href='#') Training
+            li
+              a(href='#') Reporting
+            li
+              a(href='#') Admin
+
+
+
+  script
+    $(document).ready(function() {
+      $('#simple-menu').sidr();
+      });
+
+  script(src='../_js/vendor/sidr/jquery.sidr.min.js')
+

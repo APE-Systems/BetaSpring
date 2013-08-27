@@ -1,0 +1,24 @@
+.contain-to-grid
+  nav.top-bar
+    ul.title-area
+      li.companyName
+        h1
+          a(href='/')
+      li.toggle-topbar.menu-icon
+        a(href='#')
+          span Menu
+    section.top-bar-section
+      ul.left
+        li.dashboard
+          a(href='/#{school}/dashboard') Dashboard
+        li.rosters
+          a(href='/#{school}/rosters') Rosters
+        li.training
+          a(href='/#{school}/training') Training
+        li(data-tooltip,class="comingSoon has-tip tip-bottom",title="Coming Soon!").reporting
+          a(href='#') Reporting
+        li(data-tooltip,class="comingSoon has-tip tip-bottom",title="Coming Soon!").admin
+          a(href='#') Admin
+      ul.right
+        li
+          a(href='/logout') logout
