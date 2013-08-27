@@ -6,7 +6,7 @@ module.exports = function(app) {
   // Home
   app.get('/', function(req, res) {
 
-    res.render('splash', {
+    res.render('roster', {
       school: "texas tech"
     });
   });
