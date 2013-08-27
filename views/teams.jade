@@ -11,9 +11,9 @@ body
     hr
   .row
     .small-6.columns
-      url.small-block-grid-4
-        li.box Basketball
-        li.box Football
+      for team in teamsPage.apeLibrary.teams
+        url.small-block-grid-4
+          li.box= team.name
 
     .small-6.columns
       url.small-block-grid-4
