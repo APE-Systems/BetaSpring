@@ -9,16 +9,21 @@ body
       a.button(href='#', data-reveal-id='myModal') Create Team
     h5 Men's Teams
     hr
+
   .row
     .small-6.columns
-      for team in teamsPage.apeLibrary.teams
-        url.small-block-grid-4
-          li.box= team.name
+      ul.small-block-grid-4
+        for team in teamsPage.apeLibrary.teams
+          li.box
+            span.caption
+              p= team.name
 
     .small-6.columns
-      url.small-block-grid-4
-        li.box Volleyball
-        li.box Softball
+      ul.small-block-grid-4
+        for team in teamsPage.apeLibrary.teams
+          li.box
+            span.caption
+              p= team.name 
   include includes/footer
   #myModal.reveal-modal.large
     h4 Create Team

@@ -2,11 +2,21 @@
   
   min-width:175px;
   min-height: 175px;
-  margin: 10px;
+  margin: 20px;
   border-style:solid;
   border-width:1px;
   border-color: Gray;
   background-color: #69000c;
+  position:relative;
+
+}
+
+.caption {
+  position: absolute;
+  left:0;
+  bottom: -40px;
+  /*z-index: 100; */
+
 }
 
 .centered {
@@ -23,7 +33,7 @@
 
 .centered-div {
   position:fixed;
-  z-index: 100;  
+  /*z-index: 100;  */
   top:50%;  
   left:50%;  
   margin:-100px 0 0 -100px;  

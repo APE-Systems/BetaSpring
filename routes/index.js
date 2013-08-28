@@ -85,7 +85,7 @@ var teamsPage = {
           "teams": [
             {
               "TMID": "170c80ff-bf0e-4591-8473-ca739160917a",
-              "name": "eiusmod",
+              "name": "Football",
               "gender": "male",
               "image": "anim.jpg",
               "metricCat": [

@@ -39,7 +39,7 @@ app.configure('development', function(){
 
 // app.locals
 app.locals({
-  title: 'Ape System'
+  title: 'Ape Systems'
 });
 
 routes(app);
