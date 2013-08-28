@@ -1,9 +1,37 @@
 include includes/head
 link(rel='stylesheet', href='../_css/splash.css')
+link(rel='stylesheet', href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css')
 body
   include includes/splash-nav
 
   .row
+    a#left-menu(href='#sidr') Navigation
+    a#right-menu(href='#ape-lib') APE Library
+
+    #sidr
+      ul
+        li
+          a(href='#') Teams
+        li.active
+          a(href='#') Roster
+        li
+          a(href='#') Training
+        li
+          a(href='#') Reporting
+        li
+          a(href='#') Admin
+
+    #ape-lib
+      ul
+        li
+          a(href='#') Ape Global Library
+        li 
+          a(href='#') Basketball (Men)
+        li 
+          span There are currently
+
+
+
     .small-6.large-centered.columns.centered
       h3 Teams: All / Men / Women 
       a.button(href='#', data-reveal-id='myModal') Create Team
@@ -46,12 +74,13 @@ body
                 option(disabled='DISABLED') Select
                 option Male
                 option Female
-            
-
-
-
-
-
-
       .small-12.columns
         a.large.button.expand(href='#') Create Team
+
+  script.
+    $(document).ready(function() {
+      $('#left-menu').sidr();
+    });
+
+  script(src='../_js/vendor/sidr/jquery.sidr.min.js')
+            
