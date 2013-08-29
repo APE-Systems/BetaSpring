@@ -1,35 +1,50 @@
 include includes/head
-link(rel='stylesheet', href='../_css/splash.css')
+link(rel='stylesheet', href='../_css/teams.css')
 link(rel='stylesheet', href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css')
+
+script(src='http://code.jquery.com/jquery-1.10.1.min.js')
+script(src='../_js/vendor/sidr/jquery.sidr.min.js')
+script(type='text/javascript', src='../_js/vendor/accordion/jquery.cookie.js')
+script(type='text/javascript', src='../_js/vendor/accordion/jquery.hoverIntent.minified.js')
+script(type='text/javascript', src='../_js/vendor/accordion/jquery.dcjqaccordion.2.7.min.js')
+
+
 body
   include includes/splash-nav
 
   .row
-    a#left-menu(href='#sidr') Navigation
-    a#right-menu(href='#ape-lib') APE Library
-
-    #sidr
-      ul
+    #sidr-left
+      ul#side-nav.accordion
         li
           a(href='#') Teams
-        li.active
+        li
           a(href='#') Roster
         li
           a(href='#') Training
+          ul
+            li
+              a(href='#') Test Admin
+            li
+              a(href='#') Test
+            li
+              a(href='#') Training Plan Creator
         li
           a(href='#') Reporting
         li
           a(href='#') Admin
-
-    #ape-lib
-      ul
+    #sidr-right
+      ul#ape-nav.accordion
         li
-          a(href='#') Ape Global Library
-        li 
+          a(href='#') APE Global Library + 
+          ul
+            li
+              a(href='#') Create Metric Category
+            li
+              a(href='#') Create Metric
+        li
           a(href='#') Basketball (Men)
-        li 
-          span There are currently
-
+        li
+          a(href='#') Baseball (Men) 
 
 
     .small-6.large-centered.columns.centered
@@ -77,10 +92,34 @@ body
       .small-12.columns
         a.large.button.expand(href='#') Create Team
 
-  script.
+  script
     $(document).ready(function() {
-      $('#left-menu').sidr();
+    $('#left-menu').sidr({
+    name: 'sidr-left',
+    side: 'left' // By default
     });
+    $('#right-menu').sidr({
+    name: 'sidr-right',
+    side: 'right'
+    });
+    $('#ape-nav').dcAccordion({
+    eventType: 'click',
+    autoClose: true,
+    saveState: true,
+    disableLink: true,
+    speed: 'fast',
+    autoExpand: true,
+    });
+    $('#side-nav').dcAccordion({
+    eventType: 'click',
+    autoClose: true,
+    saveState: true,
+    disableLink: true,
+    speed: 'fast',
+    autoExpand: true,
+    });
+    });
+
 
   script(src='../_js/vendor/sidr/jquery.sidr.min.js')
             
