@@ -68,7 +68,27 @@ body
             span.caption
               p= team.name 
   include includes/footer
+
+
   #myModal.reveal-modal.large
+    h4 Create Team
+    form(action='...', method='post', enctype='multipart/form-data')
+      .row
+        .small-3.columns
+          img(src='http://placehold.it/150x200')
+          input(type='file', name='displayImage')
+        .small-9.columns
+          div
+            label name
+            input(type='text', name='name')
+          div
+            label gender
+            input(type='text', name='gender')
+          div
+            input(type='submit')
+
+  #myModalBACKUP.reveal-modal.large
+
     h4 Create Team
     .row
       .small-3.columns

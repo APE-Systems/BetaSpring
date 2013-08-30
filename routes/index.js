@@ -28,6 +28,13 @@ module.exports = function(app) {
     });
   });
 
+  // POST create team
+  app.post('/teams', function(req, res) {
+    var name = req.body.name;
+    var gender = req.body.gender;
+    console.log("Name: " + name);
+    console.log("Gender" + gender);
+  })
 };
 
 

@@ -29,6 +29,14 @@ app.configure(function() {
     }
     next();
   });
+
+  //Dan entered the following to enable POST data parsing - Express Web App Dev, page 166
+  app.use(express.bodyParser({
+    keepExtensions: true,
+    uploadDir: '/public/uploads'
+  }));
+
+
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
