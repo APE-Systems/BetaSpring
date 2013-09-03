@@ -1,0 +1,32 @@
+teams pseudocode
+
+routes:
+
+  app.get('/teams', function(req, res) {
+    Team.find({}, function (err, teams) {
+      res.render('teams/index', {
+        title: 'Teams index view',
+        teams: teams    <-- use mongoose connect to declare teams model
+      });
+    });
+  });
+
+/views/teams/index.jade
+
+  h1 Your Teams
+
+
+
+  h1 Your Teams
+
+  - if (teams.length)
+    table
+      tr
+        th Team
+          each team in docs
+            tr
+              td #{team.team}
+  - else
+    :: splash-no-teams.jade here ::
+
+    

@@ -4,7 +4,8 @@ var mid = require('../middleware').middle
   , user = controllers.User
   , athlete = controllers.Athlete
   , metrics = controllers.Metrics
-  , teams = controllers.Teams;
+  , teams = controllers.Teams
+  , fs = require('fs');
 
 module.exports = function(app) {
 
@@ -29,12 +30,35 @@ module.exports = function(app) {
   });
 
   // POST create team
-  app.post('/teams', function(req, res) {
+  app.post('/teams', function(req, res, next) {
+    
     var name = req.body.name;
     var gender = req.body.gender;
-    console.log("Name: " + name);
-    console.log("Gender" + gender);
-  })
+    
+    // Reference to the displayImage object
+    var displayImage = req.files.displayImage;
+
+    // Temporary location of the uploaded file
+    var tmp_path = displayImage.path;
+
+    // New location of the file
+    var target_path = './public/uploads/' + displayImage.name;
+
+    // Move the file from the new location
+    // fs.rename() will create the necessary directory
+    fs.rename(tmp_path, target_path, function(err) {
+      // If an error is encountered, pass it to the next handler
+      if (err) { next(err); }
+      // Delete the temporary file
+      fs.unlink(tmp_path, function() {
+        // If an error is encountered, pass it to the next handler
+        if (err) { next(err); }
+        console.log('File uploaded to: ' + target_path + ' - ' + displayImage.size + ' bytes');
+        res.redirect('/teams');
+      });
+    });
+  }); // /app.post
+
 };
 
 
