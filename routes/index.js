@@ -118,7 +118,7 @@ var teamsPage = {
               "TMID": "170c80ff-bf0e-4591-8473-ca739160917a",
               "name": "Football",
               "gender": "male",
-              "image": "anim.jpg",
+              "image": "/public/uploads/IMG_0502.jpg",
               "metricCat": [
                 {
                   "MTRCATID": "7329d366-3dc5-4b69-bf04-2cdc73c4bcce",
@@ -212,8 +212,8 @@ var teamsPage = {
             },
             {
               "TMID": "52b1ca9a-c5d5-40c9-8702-2a7ae64060ac",
-              "name": "sunt",
-              "gender": "male",
+              "name": "Volleyball",
+              "gender": "female",
               "image": "duis.jpg",
               "metricCat": [
                 {

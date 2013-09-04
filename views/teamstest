@@ -1,0 +1,61 @@
+<div id="teams-list">
+    <input class="search" placeholder="Search teams">
+    <ul class="sort-by">
+        <li class="sort btn" data-sort="name">Sort by name</li>
+        <li class="sort btn asc " data-sort="category">Sort by sport</li>
+    </ul>
+    <ul class="filter">
+        <li class="btn" id="filter-none">Show all</li>
+        <li class="btn" id="filter-games">Only show games</li>
+        <li class="btn" id="filter-beverages">Only show beverages</li>
+    </ul>
+    <ul class="list"><li>
+            <img src="/images/examples/coffee.jpg" class="thumb">
+            <h4><span class="name">Good Coffee</span> <span class="category">Beverage</span></h4>
+            <p class="description">Coffee is a brewed beverage with a dark, slightly acidic flavor prepared from the roasted seeds of the coffee plant, colloquially called coffee beans.</p>
+        </li><li>
+            <img src="/images/examples/brooklyn.jpg" class="thumb">
+            <h4><span class="name">Brooklyn Lager</span> <span class="category">Beverage</span></h4>
+            <p class="description">Brooklyn Brewery was started in 1987 by former Associated Press correspondent Steve Hindy and former Chemical Bank lending officer Tom Potter.</p>
+        </li></ul>
+</div>
+
+
+
+/*
+* LOVELY THINGS
+*/
+
+<script>
+var options = {
+     valueNames: [ 'name', 'gender' ]
+};
+
+var teamsList = new List('teams-list', options);
+
+$('#filter-male').click(function() {
+    teamsList.filter(function(item) {
+        if (item.values().gender == "male") {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    return false;
+});
+
+$('#filter-female').click(function() {
+    teamsList.filter(function(item) {
+        if (item.values().category == "female") {
+            return true;
+        } else {
+            return false;
+        }
+    });
+    return false;
+});
+$('#filter-none').click(function() {
+    teamsList.filter();
+    return false;
+});
+</script>

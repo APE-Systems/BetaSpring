@@ -1,0 +1,58 @@
+html
+  body
+    #teams-list
+      input.search(type='text', placeholder='Search teams')
+      ul.sort-by
+        li.sort.btn(data-sort='name') Sort by name
+        li.sort.btn.asc(data-sort='category') Sort by sport
+      ul.filter
+        li#filter-none.btn Show all
+        li#filter-games.btn Only show games
+        li#filter-beverages.btn Only show beverages
+      ul.list
+        li
+          img.thumb(src='/images/examples/coffee.jpg')
+          h4
+            span.name Good Coffee
+            span.category Beverage
+          p.description
+            | Coffee is a brewed beverage with a dark&comma; slightly acidic flavor prepared from the roasted seeds of the coffee plant&comma; colloquially called coffee beans&period;
+        li
+          img.thumb(src='/images/examples/brooklyn.jpg')
+          h4
+            span.name Brooklyn Lager
+            span.category Beverage
+          p.description
+            | Brooklyn Brewery was started in 1987 by former Associated Press correspondent Steve Hindy and former Chemical Bank lending officer Tom Potter&period;
+    | &sol;&midast;
+    | &midast; LOVELY THINGS
+    | &midast;&sol;
+    script
+      var options = {
+      valueNames: [ 'name', 'gender' ]
+      };
+      var teamsList = new List('teams-list', options);
+      $('#filter-male').click(function() {
+      teamsList.filter(function(item) {
+      if (item.values().gender == "male") {
+      return true;
+      } else {
+      return false;
+      }
+      });
+      return false;
+      });
+      $('#filter-female').click(function() {
+      teamsList.filter(function(item) {
+      if (item.values().category == "female") {
+      return true;
+      } else {
+      return false;
+      }
+      });
+      return false;
+      });
+      $('#filter-none').click(function() {
+      teamsList.filter();
+      return false;
+      });
