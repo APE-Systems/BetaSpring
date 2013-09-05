@@ -7,7 +7,10 @@ append head
 block content
   - if (typeof(teamsPage.apeLibrary.teams) !== "undefined")
     .small-6.large-centered.columns.centered
-      h3 Teams: All / Men / Women
+      span Teams 
+      a(href='#') All 
+      a(href='#') Men 
+      a(href='#') Women
       a.button(href='#', data-reveal-id='teamModal') Create Team
     h5 Men's Teams
     hr
@@ -36,9 +39,6 @@ block content
         span Welcome to the APE System! 
         br 
         span Get started by creating teams.
-   
-  hr
-  include includes/team-list-test 
 
 prepend scripts
   #teamModal.reveal-modal.large
@@ -54,7 +54,9 @@ prepend scripts
             input(type='text', name='name')
           div
             label gender
-            input(type='text', name='gender')
+            select#gender(name='gender')
+              option(value='male') Male
+              option(value='female') Female
           div
             input(type='submit', id='create-team-submit')
 
