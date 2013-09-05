@@ -1,0 +1,37 @@
+script(src='../_js/vendor/custom.modernizr.js', type='text/javascript')
+script(src='http://code.jquery.com/jquery-1.10.1.min.js', type='text/javascript')
+script(src='../_js/vendor/foundation/foundation.min.js', type='text/javascript')
+script(src='../_js/vendor/sidr/jquery.sidr.min.js')
+script(type='text/javascript', src='../_js/vendor/accordion/jquery.cookie.js')
+script(type='text/javascript', src='../_js/vendor/accordion/jquery.hoverIntent.minified.js')
+script(type='text/javascript', src='../_js/vendor/accordion/jquery.dcjqaccordion.2.7.min.js')
+script(type='text/javascript', src='../_js/vendor/list.min.js')
+script.
+  $(document).foundation();
+  $(document).ready(function() {
+  $('#left-menu').sidr({
+    name: 'sidr-left',
+    side: 'left' // By default
+    });
+    $('#right-menu').sidr({
+    name: 'sidr-right',
+    side: 'right'
+    });
+    $('#ape-nav').dcAccordion({
+    eventType: 'click',
+    autoClose: true,
+    saveState: true,
+    disableLink: true,
+    speed: 'fast',
+    autoExpand: true,
+    });
+    $('#side-nav').dcAccordion({
+    eventType: 'click',
+    autoClose: true,
+    saveState: true,
+    disableLink: true,
+    speed: 'fast',
+    autoExpand: true,
+    });
+  $('#create-team-submit').submit(function() { $('#teamModal').trigger('reveal:close'); });
+  });

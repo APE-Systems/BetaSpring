@@ -1,96 +1,38 @@
-include includes/head
-link(rel='stylesheet', href='../_css/teams.css')
-link(rel='stylesheet', href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css')
+extends layout
 
-script(src='http://code.jquery.com/jquery-1.10.1.min.js')
-script(src='../_js/vendor/sidr/jquery.sidr.min.js')
-script(type='text/javascript', src='../_js/vendor/accordion/jquery.cookie.js')
-script(type='text/javascript', src='../_js/vendor/accordion/jquery.hoverIntent.minified.js')
-script(type='text/javascript', src='../_js/vendor/accordion/jquery.dcjqaccordion.2.7.min.js')
-script(type='text/javascript', src='../_js/vendor/underscore.js')
-script(type='text/javascript', src='../_js/vendor/list.min.js')
+append head
+  link(rel='stylesheet', href='../_css/teams.css')
+  link(href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css', rel='stylesheet')
 
-body
-  include includes/splash-nav
+block header
+  p welcome to the header section
 
-  .row
-    #sidr-left
-      ul#side-nav.accordion
-        li
-          a(href='#') Teams
-        li
-          a(href='#') Roster
-        li
-          a(href='#') Training
-          ul
-            li
-              a(href='#') Test Admin
-            li
-              a(href='#') Test
-            li
-              a(href='#') Training Plan Creator
-        li
-          a(href='#') Reporting
-        li
-          a(href='#') Admin
-    #sidr-right
-      ul#ape-nav.accordion
-        li
-          a(href='#') APE Global Library + 
-          ul
-            li
-              a(href='#') Create Metric Category
-            li
-              a(href='#') Create Metric
-        li
-          a(href='#') Basketball (Men)
-        li
-          a(href='#') Baseball (Men) 
-
-
-    .small-6.large-centered.columns.centered
-      h3 Teams: All / Men / Women
-      a.button(href='#', data-reveal-id='myModal') Create Team
-    h5 Men's Teams
-    hr
+block content
+  .small-6.large-centered.columns.centered
+    h3 Teams: All / Men / Women
+    a.button(href='#', data-reveal-id='teamModal') Create Team
+  h5 Men's Teams
+  hr
 
   .row
-    .small-6.columns
-      ul.small-block-grid-4
-        for team in teamsPage.apeLibrary.teams
-          li.box
-            span.caption
-              p= team.name
+  .small-6.columns
+    ul.small-block-grid-4
+      for team in teamsPage.apeLibrary.teams
+        li.box
+          span.caption
+            p= team.name
 
-    .small-6.columns
-      ul.small-block-grid-4
-        for team in teamsPage.apeLibrary.teams
-          li.box
-            img= team.image
-            span.caption
-              p= team.name 
-    hr
-  .row
-    .small-12.columns
-      .teams-list
-        ul.filter
-          li#filter-none.btn Show All
-          li#filter-male Male
-          li#filter-female Female
+  .small-6.columns
+    ul.small-block-grid-4
+      for team in teamsPage.apeLibrary.teams
+        li.box
+          img= team.image
+          span.caption
+            p= team.name 
+  hr
 
-        ul.list
-          each team in teamsPage.apeLibrary.teams
-            img(src=team.image)
-            h4
-              span.name= team.name 
-              &nbsp;
-              span.gender= team.gender
-
-
-  include includes/footer
-
-
-  #myModal.reveal-modal.large
+prepend scripts
+  #teamModal.reveal-modal.large
     h4 Create Team
     form(action='/teams', method='post', enctype='multipart/form-data')
       .row
@@ -106,66 +48,5 @@ body
             input(type='text', name='gender')
           div
             input(type='submit', id='create-team-submit')
-
-
-  
-  script
-    $(document).ready(function() {
-    var options = {
-    valueNames: [ 'name', 'gender' ]
-    };
-    var teamsList = new List('teams-list', options);
-    $('#filter-male').click(function() {
-    alert("you clicked the male filter");
-    teamsList.filter(function(item) {
-    alert("teamsList.filter executed");
-    if (item.values().gender == "male") {
-    return true;
-    } else {
-    return false;
-    }
-    });
-    return false;
-    });
-    $('#filter-female').click(function() {
-    teamsList.filter(function(item) {
-    if (item.values().category == "female") {
-    return true;
-    } else {
-    return false;
-    }
-    });
-    return false;
-    });
-    $('#filter-none').click(function() {
-    teamsList.filter();
-    return false;
-    });
-    $('#left-menu').sidr({
-    name: 'sidr-left',
-    side: 'left' // By default
-    });
-    $('#right-menu').sidr({
-    name: 'sidr-right',
-    side: 'right'
-    });
-    $('#ape-nav').dcAccordion({
-    eventType: 'click',
-    autoClose: true,
-    saveState: true,
-    disableLink: true,
-    speed: 'fast',
-    autoExpand: true,
-    });
-    $('#side-nav').dcAccordion({
-    eventType: 'click',
-    autoClose: true,
-    saveState: true,
-    disableLink: true,
-    speed: 'fast',
-    autoExpand: true,
-    });
-    $('#create-team-submit').submit(function() { $('#myModal').trigger('reveal:close'); });
-    });
 
 

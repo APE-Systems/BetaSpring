@@ -9,16 +9,19 @@
           span Menu
     section.top-bar-section
       ul.left
-        li.dashboard
-          a(href='/#{school}/dashboard') Dashboard
-        li.rosters
-          a(href='/#{school}/rosters') Rosters
-        li.training
-          a(href='/#{school}/training') Training
-        li(data-tooltip,class="comingSoon has-tip tip-bottom",title="Coming Soon!").reporting
-          a(href='#') Reporting
-        li(data-tooltip,class="comingSoon has-tip tip-bottom",title="Coming Soon!").admin
-          a(href='#') Admin
+        li.has-form
+          form
+            .row.collapse
+              .small-8.columns
+                input(type='text', placeholder='Search Athletes')
+              .small-4.columns
+                a.alert.button(href='#') Search
       ul.right
         li
-          a(href='/logout') logout
+          a#left-menu(href='#left-menu') Side Nav
+        li
+          a#right-menu(href='#right-menu') Ape Library
+        li
+          a(href='/settings') Settings
+        li
+          a(href='/logout') Logout
