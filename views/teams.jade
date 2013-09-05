@@ -5,28 +5,38 @@ append head
   link(href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css', rel='stylesheet')
 
 block content
-  .small-6.large-centered.columns.centered
-    h3 Teams: All / Men / Women
-    a.button(href='#', data-reveal-id='teamModal') Create Team
-  h5 Men's Teams
-  hr
+  - if (typeof(teamsPage.apeLibrary.teams) !== "undefined")
+    .small-6.large-centered.columns.centered
+      h3 Teams: All / Men / Women
+      a.button(href='#', data-reveal-id='teamModal') Create Team
+    h5 Men's Teams
+    hr
 
-  .row
-  .small-6.columns
-    ul.small-block-grid-4
-      for team in teamsPage.apeLibrary.teams
-        li.box
-          span.caption
-            p= team.name
+    .row
+      .small-6.columns
+        ul.small-block-grid-4
+          for team in teamsPage.apeLibrary.teams
+            li.box
+              span.caption
+                p= team.name
 
-  .small-6.columns
-    ul.small-block-grid-4
-      for team in teamsPage.apeLibrary.teams
-        li.box
-          img= team.image
-          span.caption
-            p= team.name 
-  hr
+      .small-6.columns
+        ul.small-block-grid-4
+          for team in teamsPage.apeLibrary.teams
+            li.box
+              img= team.image
+              span.caption
+                p= team.name 
+  - else
+    .small-6.large-centered.columns
+      .centered-div
+        .box.gray
+          .centered
+            span#add-team +
+        span Welcome to the APE System! 
+        br 
+        span Get started by creating teams.
+    
 
 prepend scripts
   #teamModal.reveal-modal.large
