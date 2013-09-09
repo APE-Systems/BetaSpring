@@ -7,24 +7,25 @@ append head
 block content
   - if (typeof(teamsPage.apeLibrary.teams) !== "undefined")
     .small-6.large-centered.columns.centered
-      span Teams 
-      a(href='#') All 
-      a(href='#') Men 
-      a(href='#') Women
+      h3 Teams 
+      a#all(href='#') All 
+      a#show-male(href='#') Men 
+      a#show-female(href='#') Women
       a.button(href='#', data-reveal-id='teamModal') Create Team
-    h5 Men's Teams
     hr
 
     .row
-      .small-6.columns
-        ul.small-block-grid-4
+      .small-6.columns.male-teams
+        span Men's Teams
+        ul.small-block-grid-4.male
           for team in teamsPage.apeLibrary.teams
             li.box
               span.caption
                 p= team.name
 
-      .small-6.columns
-        ul.small-block-grid-4
+      .small-6.columns.female-teams
+        span Women's Teams
+        ul.small-block-grid-4.female
           for team in teamsPage.apeLibrary.teams
             li.box
               img= team.image
