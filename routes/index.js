@@ -59,6 +59,11 @@ module.exports = function(app) {
     });
   }); // /app.post
 
+  // Teams Page
+  app.get('/roster', function(req, res, next) {
+    res.render('roster');
+  });
+
 };
 
 
