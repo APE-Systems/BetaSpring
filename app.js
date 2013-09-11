@@ -48,7 +48,7 @@ app.configure('development', function(){
 
 // app.locals
 app.locals({
-  title: 'Ape Systems',
+  title: 'APE Systems',
   pretty: true // enabled during development for ease in troubleshooting
 });
 

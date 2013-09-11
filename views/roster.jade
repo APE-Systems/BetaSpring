@@ -1,0 +1,17 @@
+extends layout
+
+append head
+  link(href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css', rel='stylesheet')
+  link(rel='stylesheet', href='../_css/base.css')
+  link(rel='stylesheet', href='../_css/roster.css')
+block content
+  .large-12.columns.vanity-plate
+    .row.roster-profile
+      .large-4.columns.athlete-profile
+        .large-4.columns.athlete-image
+          img(src="http://lorempixel.com/g/200/200")
+          a.button(href='#') View 
+        .large-4.columns.athlete-demographics
+          h6 First Last
+            
+
