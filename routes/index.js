@@ -64,10 +64,6 @@ module.exports = function(app) {
     res.render('roster');
   });
 
-  app.get('/roster-test', function(req, res, next) {
-    res.render('roster-test');
-  });
-
 };
 
 
