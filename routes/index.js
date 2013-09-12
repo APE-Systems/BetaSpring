@@ -31,7 +31,6 @@ module.exports = function(app) {
 
   // POST create team
   app.post('/teams', function(req, res, next) {
-    
     var name = req.body.name;
     var gender = req.body.gender;
     

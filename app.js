@@ -2,6 +2,7 @@ var express = require('express')
   , routes = require('./routes')
   , http = require('http')
   , path = require('path')
+  , jshare = require('jshare')
   , expressValidator = require('express-validator');
 
 var app = express();
@@ -37,6 +38,7 @@ app.configure(function() {
     uploadDir: '/public/uploads'
   }));
 
+  app.use(jshare());
 
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
