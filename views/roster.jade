@@ -56,6 +56,16 @@ html.no-js(lang='en')
               .small-3.large-3.columns.text-center.catBox
                 h5.cat Back Squat
                 span.metric(contenteditable='true') --
+      .large-12.columns.rosterProfile-subnav
+        .row
+          .large-2.columns
+            a.small.button(href='#') Create Athlete
+          .large-5.large-offset-5.columns.btnGroup
+            ul.button-group.right
+             li: a.small.button.disabled(href='#') Remove
+             li: a.small.button(href='#') Create Group
+             li: a.small.button.disabled(href='#') Add to Group
+      // roster table
       .large-12.columns.roster-table
         table
           thead
@@ -70,3 +80,25 @@ html.no-js(lang='en')
               td Washington
               td Sprinter
               td Junior
+      // test table
+      .large-12.columns.test-table
+        table
+          thead
+            tr
+              th First Name
+              th Last Name
+              th Last Record
+              th Input Data
+              th Confirm
+          tbody
+            tr
+              td Kristopher
+              td Washington
+              td 90
+              td
+                input(placeholder='Input Data')
+              td
+                button Update
+      
+
+
