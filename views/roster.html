@@ -62,7 +62,7 @@
           <div class="large-5 large-offset-5 columns btnGroup">
             <ul class="button-group right">
               <li><a href="#" class="small button disabled">Remove</a></li>
-              <li><a href="#" class="small button">Create Group</a></li>
+              <li><a href="#" data-reveal-id="create-group-modal" class="small button">Create Group</a></li>
               <li><a href="#" class="small button disabled">Add to Group</a></li>
             </ul>
           </div>
@@ -116,6 +116,11 @@
           </tbody>
         </table>
       </div>
+    </div>
+    <div id="create-group-modal" class="reveal-modal large">
+      <h4>Create Group
+        <form action="/roster" method="/post" enctype="multipart/form-data"></form>
+      </h4>
     </div>
   </body>
 </html>

@@ -1,3 +1,15 @@
+ul.team-filter {
+  list-style-type: none;
+}
+
+ul.team-filter li {
+  display: inline;
+}
+
+ul.team-filter li a:after{
+  content: " / ";
+}
+
   .box {
   
   min-width:175px;

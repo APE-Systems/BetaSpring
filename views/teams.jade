@@ -7,10 +7,13 @@ append head
 block content
   - if (typeof(teamsPage.apeLibrary.teams) !== "undefined")
     .small-6.large-centered.columns.centered
-      h3 Teams 
-      a#all(href='#') All 
-      a#show-male(href='#') Men 
-      a#show-female(href='#') Women
+      span Teams
+      ul.team-filter
+        li
+          a#all(href='#') All 
+          a#show-male(href='#') Men
+          a#show-female(href='#') Women
+      br
       a.button(href='#', data-reveal-id='teamModal') Create Team
     hr
 
@@ -32,9 +35,7 @@ block content
               span.caption
                 p= team.name 
     hr
-    .row
     
-
   - else
     .small-6.large-centered.columns
       .centered-div
@@ -50,10 +51,7 @@ prepend scripts
     h4 Create Team
     form(action='/teams', method='post', enctype='multipart/form-data')
       .row
-        .small-3.columns
-          img(src='http://placehold.it/150x200')
-          input(type='file', name='displayImage')
-        .small-9.columns
+        .large-12.columns
           div
             label name
             input(type='text', name='name')

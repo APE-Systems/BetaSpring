@@ -63,7 +63,7 @@ html.no-js(lang='en')
           .large-5.large-offset-5.columns.btnGroup
             ul.button-group.right
              li: a.small.button.disabled(href='#') Remove
-             li: a.small.button(href='#') Create Group
+             li: a.small.button(href='#', data-reveal-id='create-group-modal') Create Group
              li: a.small.button.disabled(href='#') Add to Group
       // roster table
       .large-12.columns.roster-table
@@ -99,6 +99,10 @@ html.no-js(lang='en')
                 input(placeholder='Input Data')
               td
                 button Update
-      
+
+    #create-group-modal.reveal-modal.large
+      h4 Create Group
+        form(action='/roster', method='/post', enctype='multipart/form-data')
+
 
 
