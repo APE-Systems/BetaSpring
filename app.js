@@ -2,7 +2,6 @@ var express = require('express')
   , routes = require('./routes')
   , http = require('http')
   , path = require('path')
-  , jshare = require('jshare')
   , expressValidator = require('express-validator');
 
 var app = express();
@@ -32,19 +31,15 @@ app.configure(function() {
     next();
   });
 
-  //Dan entered the following to enable POST data parsing - Express Web App Dev, page 166
-  app.use(express.bodyParser({
-    keepExtensions: true,
-    uploadDir: '/public/uploads'
-  }));
-
-  app.use(jshare());
-
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function(){
+  app.use(express.errorHandler({showStack: true, dumpExceptions: true}));
+});
+
+app.configure('production', function(){
   app.use(express.errorHandler({showStack: true, dumpExceptions: true}));
 });
 
