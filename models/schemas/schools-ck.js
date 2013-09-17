@@ -1,0 +1,4 @@
+/*
+    School schema
+      GLOBAL picture of the school
+*/var mongoose=require("mongoose"),Schema=mongoose.Schema,Types=mongoose.Types,ObjIdType=Schema.ObjectId,ObjId=Types.ObjectId,SchoolSchema=module.exports=new Schema({createdBy:{type:ObjIdType,required:!0},createdOn:{type:Date,required:!0,"default":Date.now},teams:[{name:{type:String,required:!0},gender:{type:String,required:!0}}],name:{type:String,required:!0,index:{unique:!0}},webdom:[{type:String,required:!0}],coaches:[{username:{type:String,required:!0},name:{type:String,required:!0}}],athletes:[{name:{type:String,required:!0}}]},{collection:"schools",safe:!0});SchoolSchema.virtual("SCHID").get(function(){return this._id});
