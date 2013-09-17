@@ -7,60 +7,59 @@ append head
 block content
   - if (typeof(teamsPage.apeLibrary.teams) !== "undefined")
     .small-6.large-centered.columns.centered
-      span Teams
-      ul.team-filter
-        li
-          a#all(href='#') All 
-          a#show-male(href='#') Men
-          a#show-female(href='#') Women
-      br
       a.button(href='#', data-reveal-id='teamModal') Create Team
     hr
 
     .row
       .small-6.columns.male-teams
-        span Men's Teams
+        h3.center Men's Teams
         ul.small-block-grid-4.male
           for team in teamsPage.apeLibrary.teams
-            li.box
-              span.caption
-                p= team.name
+            //- refactor the following code to use buttons? may be cleaner
+            a(href='#')
+              li.box
+                span.caption
+                  p= team.name
 
       .small-6.columns.female-teams
-        span Women's Teams
-        ul.small-block-grid-4.female
-          for team in teamsPage.apeLibrary.teams
-            li.box
-              img= team.image
-              span.caption
-                p= team.name 
-    hr
-    
+        .row
+        h3 Women's Teams
+        //- ul.small-block-grid-4.female
+          //- for team in teamsPage.apeLibrary.teams
+            //- li.box
+              //- img= team.image
+              //- span.caption
+                //- p= team.name 
+
   - else
     .small-6.large-centered.columns
       .centered-div
-        .box.gray
+        .add-team-box.gray
           .centered
-            span#add-team +
+            a#add-team(href='#', data-reveal-id='teamModal') +
         span Welcome to the APE System! 
         br 
         span Get started by creating teams.
 
 prepend scripts
   #teamModal.reveal-modal.large
-    h4 Create Team
+    a.close-reveal-modal &#215;
     form(action='/teams', method='post', enctype='multipart/form-data')
       .row
         .large-12.columns
+          h4 Create Team
           div
-            label name
-            input(type='text', name='name')
+            label Sport
+            input(type='text', name='name', required='required', placeholder='Ex: Baseball, Football')
           div
-            label gender
+            label Gender
             select#gender(name='gender')
               option(value='male') Male
               option(value='female') Female
+      .row
+        .large-12.columns
           div
-            input(type='submit', id='create-team-submit')
+            input(type='submit', id='create-team-submit', value='Create Team')
+
 
 
