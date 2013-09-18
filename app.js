@@ -1,10 +1,14 @@
+;"use strict";
 var express = require('express')
-  , routes = require('./routes')
+  , app = express()
+  , RedisStore = require('connect-redis')(express);
+
+var routes = require('./routes')
   , http = require('http')
   , path = require('path')
-  , expressValidator = require('express-validator');
+  , expressValidator = require('express-validator')
+  , Sessions = require('./events').Sessions;
 
-var app = express();
 
 app.configure(function() {
   app.set('port', process.env.VCAP_APP_PORT || 3000);
@@ -23,6 +27,7 @@ app.configure(function() {
     secret: 'apeSystems_$&$_Beginnings',
     cookie: {httpOnly: true, expires: 0, path: '/'}
   }));
+
   // cache every file going out
   app.use(function(req, res, next) {
     if (!res.getHeader('Cache-Control')) {
@@ -30,7 +35,7 @@ app.configure(function() {
     }
     next();
   });
-
+  app.use(Sessions.isLoggedIn);
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });

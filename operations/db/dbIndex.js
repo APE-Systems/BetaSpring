@@ -1,27 +1,11 @@
 ;"use strict";
-var mongoose = require( 'mongoose' )
-  , ape, iw, usc, tt;
+var mongoose = require('mongoose')
+  , Sessions, ape;
 
-var mongo = {
-      ape: 'mongodb://localhost:27017/ape?safe=true',
-      iw: 'mongodb://localhost:27017/IW?safe=true',
-      usc: 'mongodb://localhost:27017/USC?safe=true',
-      tt: 'mongodb://localhost:27017/TT?safe=true'
-};
-
-ape = mongoose.createConnection(mongo.ape);
-iw = mongoose.createConnection(mongo.iw);
-usc = mongoose.createConnection(mongo.usc);
-tt = mongoose.createConnection(mongo.tt);
-
-console.log('connected to Mongo@ localhost:27017/ape, localhost:27017/iw, localhost:27017/usc, localhost:27017/tt');
-
-// APE models
-module.exports.Schools = ape.model('schools', require('./schemas/schools'));
-module.exports.Coaches = ape.model('coaches', require('./schemas/coaches'));
-// TODO:
-// create school database replicas
-
+//TODO:
+//  will use REDIS for session handling
+ape = mongoose.createConnection("mongodb://localhost:27017/ape?safe=true");
+Sessions = ape.model('sessions', require('../models/schemas/sessions'));
 
 module.exports.models = function(school, callback) {
   var models = {};
