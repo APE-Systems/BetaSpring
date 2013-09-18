@@ -15,7 +15,7 @@ module.exports = function(app) {
   // MODEL TESTING
   // get schools
   
-  app.get('/', function(req, res) {
+  /*app.get('/', function(req, res) {
 
     Models('universityofsoutherncalifornia', function(err, Models) {
       Models.Teams.find({}, function(err, teams) {
@@ -137,14 +137,14 @@ module.exports = function(app) {
 
   function formatSchool(school) {
     return school.toLowerCase().replace(/\s/g, '');
-  }
+  }*/
 
 
   // END MODEL TESTING
 
 
   // Home
-  /**
+  
   app.get('/', function(req, res) {
     res.redirect('/teams'); // should redirect to login
   });
@@ -198,7 +198,6 @@ module.exports = function(app) {
   app.get('/roster', function(req, res, next) {
     res.render('roster');
   });
-*/
 };
 
 
