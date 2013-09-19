@@ -4,21 +4,20 @@ var mongoose = require('mongoose')
   , Sessions, ape;
 
 //TODO:
-//  will use REDIS for session handling
+//  use REDIS for session handling
 ape = mongoose.createConnection("mongodb://localhost:27017/ape?safe=true");
 Sessions = ape.model('sessions', require('../models/schemas/sessions'));
 
 module.exports = exports = {
 
-  getUsername: function(session_id, callback) {
-    console.log('getUsername -- operations');
+  getSession: function(session_id, callback) {
+    console.log('SessionOPS: getUsername');
     if (!session_id) {
       console.log('no session id');
       callback(Error("Session not set"), null);
       return;
     }
-
-    Sessions.findOne({ '_id': session_id }, function(err, session) {
+    Sessions.findOne({ '_id': session_id }, {username:1, school:1}, function(err, session) {
       if (err) return callback(err, null);
 
       if (!session) {
@@ -27,7 +26,7 @@ module.exports = exports = {
         return;
       }
 
-      callback(null, session.username);
+      callback(null, session);
     });
   }
 

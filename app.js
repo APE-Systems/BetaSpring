@@ -1,14 +1,13 @@
 ;"use strict";
 var express = require('express')
-  , app = express()
-  , RedisStore = require('connect-redis')(express);
+  , app = express();
 
 var routes = require('./routes')
   , http = require('http')
   , path = require('path')
   , expressValidator = require('express-validator')
-  , Sessions = require('./events').Sessions;
-
+  , sessions = require('./middleware').Sessions
+  , models = require('./middleware').schoolModels;
 
 app.configure(function() {
   app.set('port', process.env.VCAP_APP_PORT || 3000);
@@ -35,7 +34,8 @@ app.configure(function() {
     }
     next();
   });
-  app.use(Sessions.isLoggedIn);
+  app.use(sessions.isLoggedIn);
+  app.use(models.getSchoolModels);
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
 });

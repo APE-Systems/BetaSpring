@@ -1,7 +1,6 @@
 ;"use strict";
 
 module.exports.Login = require('./login');
-module.exports.Sessions = require('./sessions');
 module.exports.Teams = require('./teams');
 
 

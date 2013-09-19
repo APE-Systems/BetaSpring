@@ -1,5 +1,6 @@
 /*
-    Session schema
+    Users schema
+      Only Stores the usernames/passwords/school
 */
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
@@ -7,35 +8,26 @@ var mongoose = require('mongoose')
   , ObjIdType = Schema.ObjectId
   , ObjId = Types.ObjectId;
 
-var SessionSchema = module.exports = new mongoose.Schema({
+var UserSchema = module.exports = new mongoose.Schema({
   username: {
     type: String
   , require: true
   , index: {unique: true}
   },
-  cookie: {
-    type: String
-  , require: true
-  , index: {unique: true}
-  },
-  date: {
-    type: Date,
-    default: Date.now
-  },
-  school: {
+  password: {
     type: String
   , require: true
   , index: true
   }
 }, {
-  collection: 'sessions',
+  collection: 'users',
   safe: true
 });
 
 // virtuals
-SessionSchema.virtual('SSID').get(function() {
+UserSchema.virtual('UID').get(function() {
   return this._id;
 });
 
 // indexes
-// SessionSchema.index({username: 1, cookie: 1, date: 1});
+// UserSchema.index({username: 1, cookie: 1, date: 1});

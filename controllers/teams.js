@@ -1,4 +1,4 @@
-var Athlete = require('../models').Athletes;
+// var Athlete = require('../models').Athletes;
 
 // Returns the latest metric value for each athlete on a team
 // params.id - the team identifier

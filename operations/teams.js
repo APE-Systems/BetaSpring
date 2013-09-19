@@ -2,20 +2,33 @@
 /*
   OPERATIONS: TEAMS
  */
-var mongoose = require('mongoose')
-  , ape, Teams;
-ape = mongoose.createConnection("mongodb://localhost:27017/ape?safe=true");
-Teams = ape.model('teams', require('../models/schemas/teams'));
 
-module.exports = exports = {
+var TeamOPS = {
 
-  getTeams: function(school, callback) {
-
-    Teams.find({school: school}, {name:1}, function(err, teams) {
+  getTeams: function(req, callback) {
+    var Mods = req.models;
+    var school = req.school;
+    Mods.Teams.find({school: school}, {name:1}, function(err, teams) {
       if (err) return callback(err, null);
 
-      console.log("Found " + teams.length + " teams");
       callback(null, teams);
+      return;
     });
   }
 }
+
+module.exports = exports = TeamOPS;
+
+
+
+// module.exports = exports = {
+
+//   getTeams: function(school, callback) {
+
+//     Teams.find({school: school}, {name:1}, function(err, teams) {
+//       if (err) return callback(err, null);
+
+//       callback(null, teams);
+//     });
+//   }
+// }

@@ -15,18 +15,18 @@ var mid = require('../middleware').middle
 
 module.exports = function(app) {
 
-  // Teams Page
-  app.get('/:school/teams', tmEvts.getTeams);
-
-
-
   // Login
   app.get('/login', loginEvts.displayLogin);
   // app.post('/login', sanitize, authenticate, authorize, redirect);
 
-
   // Logout
-  // app.get('/logout', mid.checkCookie, mid.checkSession, user.logout);
+  app.get('/logout', mid.checkCookie, mid.checkSession, user.logout);
+
+
+  // Teams Page
+  app.get('/:school/teams', tmEvts.getTeams);
+
+
 
 /*
   // POST create team

@@ -2,14 +2,15 @@
 /*
   EVENTS: TEAMS
  */
-var TeamOPS = require('../operations').Teams;
 
-module.exports = exports = {
+var teamOPS = require('../operations').Teams;
+
+var teamEvents = {
 
   getTeams: function(req, res, next) {
     console.log('getTeams event triggered');
-    var school = req.params.school;
-    TeamOPS.getTeams(school, function(err, teams) {
+
+    teamOPS.getTeams(req, function(err, teams) {
       if (err) throw new Error(err);
 
       console.log('Number of teams:', teams.length);
@@ -19,10 +20,17 @@ module.exports = exports = {
       //   teamsPage: teams
       // });
     });
+  },
+
+  createTeam: function(req, res, next) {
+
+  },
+  updateTeam: function(req, res, next) {
+
+  },
+  deleteTeam: function(req, res, next) {
+
   }
 }
 
-// Teams.createTeam
-// Teams.getTeams
-// Team.updateTeam
-// Team.deleteTeam
+module.exports = exports = teamEvents;

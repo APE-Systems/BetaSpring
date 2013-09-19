@@ -1,8 +1,8 @@
-var Session = require('../models').Sessions
-  , Coach = require('../models').Coaches
-  , Athlete = require('../models').Athletes
-  , secure = require('../security').secureMe
-  , user, school;
+// var Session = require('../models').Sessions
+//   , Coach = require('../models').Coaches
+//   , Athlete = require('../models').Athletes
+//   , secure = require('../security').secureMe
+//   , user, school;
 
 // authenticate
 module.exports.authenticate = function(req, res, next) {

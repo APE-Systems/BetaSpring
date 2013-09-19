@@ -1,7 +1,7 @@
-var Athlete = require('../models').Athletes
-  , Coach = require('../models').Coaches
-  , Session = require('../models').Sessions
-  , filter = require('../middleware').dbHits;
+// var Athlete = require('../models').Athletes
+//   , Coach = require('../models').Coaches
+//   , Session = require('../models').Sessions
+//   , filter = require('../middleware').dbHits;
 
 var labels = {
     "bioHT": "Body Height (in)",
