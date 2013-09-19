@@ -54,25 +54,27 @@ TESTING CRAP */
 
 /*==================
       BASE RULES    
-  ==================*/
+  ==================
 @font-face {
   font-family: 'alte_din_1451';
   src: url("fonts/din1451alt.eot");
   src: url("fonts/din1451alt.eot?#iefix") format("embedded-opentype"), url("fonts/din1451alt.woff") format("woff"), url("fonts/din1451alt.ttf") format("truetype"), url("fonts/din1451alt.svg#alte_din_1451_mittelschriftRg") format("svg");
   font-weight: 400;
   font-style: normal;
-}
+} */
+
 html {
   overflow-y: scroll;
  /* margin-top: 1.5em; /* Shitty Nav fix */
 }
 body {
-  background: #fff;
+  /*background: #fff;
   color: #222;
   font-family: "alte_din_1451", Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-style: normal;
   line-height: 1;
+  */
 }
 /* Link Styles */
 a {
@@ -1029,10 +1031,7 @@ div.clickable a {
   .top-bar.expanded {
     background: #383c3a;
   }
-  .contain-to-grid .top-bar {
-    max-width: 62.5em;
-    margin: 0 auto;
-  }
+
   .top-bar-section {
     -webkit-transition: none 0 0;
     -moz-transition: none 0 0;

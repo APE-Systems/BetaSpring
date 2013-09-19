@@ -4,7 +4,47 @@ LIGHT GRAY: #F2F2F2;
 MEDIUM GRAY: #CCCCCC;
 DARK GRAY: 
 
+DARK RED: #83000F;
+LIGHT RED:; #9C0012;
+
 */
+
+/* TYPOGRAPHY */
+
+.name-style {
+	font-family: 'helvetica neue', helvetica, arial;
+	font-size:20px;
+	font-weight: 100;
+	letter-spacing: 1px;
+	text-shadow: #262729 0 -1px 0;	
+}
+
+.bold {
+	font-weight: bolder;
+}
+
+/* GROUP ROW STYLE */
+ul.filter {
+	/*display: block; */
+	margin-bottom: 10px;
+	overflow: hidden;
+}
+
+
+li.btn {
+	display:block;
+	float: left;
+	border: solid 1px;
+	border-radius:10px;
+	padding: 1px 5px;
+	margin-right: 5px;
+	cursor: pointer;
+	background-color: #F2F2F2;
+}
+
+li.btn:hover {
+	background-color: #CCCCCC;
+}
 
 /* Roster metrics -- rename to vanity plate */
 .roster-metrics {

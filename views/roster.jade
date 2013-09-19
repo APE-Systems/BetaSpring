@@ -14,8 +14,9 @@ block content
             a.vProfile(href='/UniversityofLouisville/rosters/athlete/51ae42878f1d55041300001a', role='button') View Profile
           .large-9.small-12.columns.nameInfo
             h5.name
-              span.first-name(contenteditable='true') Kristopher
-              span.last-name(contenteditable='true') Washington
+              span.first-name.name-style(contenteditable='true') Kristopher
+              br
+              span.last-name.name-style.bold(contenteditable='true') Washington
             .demoInfo
               .specInfo
                 dl
@@ -31,16 +32,16 @@ block content
         .large-8.small-12.columns
           .row.catBoxes
             .small-3.large-3.columns.text-center.catBox
-              h5.cat Body Weight 
+              h5.cat.name-style Body Weight 
               span.metric(contenteditable='true') --
             .small-3.large-3.columns.text-center.catBox
-              h5.cat Body Fat
+              h5.cat.name-style Body Fat
               span.metric(contenteditable='true') --
             .small-3.large-3.columns.text-center.catBox
-              h5.cat Power Clean
+              h5.cat.name-style Power Clean
               span.metric(contenteditable='true') --
             .small-3.large-3.columns.text-center.catBox
-              h5.cat Back Squat
+              h5.cat.name-style Back Squat
               span.metric(contenteditable='true') --
     .large-12.columns.rosterProfile-subnav
       .row
@@ -53,6 +54,10 @@ block content
            li: a.small.button(href='#', data-reveal-id='create-group-modal') Create Group
     // roster table
     .large-12.columns.roster-table
+      ul.filter.clearfix
+        li.btn#filter-none Show All
+        li.btn#filter-group1 Group 1
+        li.btn#filter-group2 Group 2
       table
         thead
           tr
@@ -69,25 +74,7 @@ block content
             td Washington
             td Sprinter
             td Junior
-    // test table
-    .large-12.columns.test-table
-      table
-        thead
-          tr
-            th First Name
-            th Last Name
-            th Last Record
-            th Input Data
-            th Confirm
-        tbody
-          tr
-            td Kristopher
-            td Washington
-            td 90
-            td
-              input(placeholder='Input Data')
-            td
-              button Update
+
 
   #create-group-modal.reveal-modal.small
     h4 Create Group
