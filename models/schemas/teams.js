@@ -12,7 +12,7 @@ var TeamSchema = module.exports = new Schema({
     //origin
     createdBy: {type: ObjIdType, required: true}
   , createdOn: {type: Date, required: true, default: Date.now}
-  , school: {type: String, required: true}
+  , school: {type: String, required: true, index: true}
 
     //LO
   , coaches: [{

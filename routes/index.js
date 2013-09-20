@@ -8,15 +8,12 @@ var mid = require('../middleware').middle
   , teams = controllers.Teams
 
   , fs = require('fs')
-  , tmEvts = require('../events').Teams
-  , athEvts = require('../events').Athletes
-  , loginEvts = require('../events').Login;
-
+  , tmEvts = require('../events').TeamsPageEvts;
 
 module.exports = function(app) {
 
   // Login
-  app.get('/login', loginEvts.displayLogin);
+  // app.get('/login', loginEvts.displayLogin);
   // app.post('/login', sanitize, authenticate, authorize, redirect);
 
   // Logout
@@ -24,8 +21,10 @@ module.exports = function(app) {
 
 
   // Teams Page
-  app.get('/:school/teams', tmEvts.getTeams);
-
+  app.get('/:school/teams', tmEvts.getTeamsPage);
+  
+    // createTeams AJAX
+  app.post('/:school/teams/new', tmEvts.createTeam);
 
 
 /*

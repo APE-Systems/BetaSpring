@@ -6,14 +6,22 @@ ape = mongoose.createConnection('mongodb://localhost:27017/ape');
 console.info('connected to APEdb');
 ape.on('error', APEconnectionError);
 
+var apeMods = {
+  mtrcats: ape.model('metriccats', require('../schemas/metricCategories')),
+  metrics: ape.model('metrics', require('../schemas/metrics')),
+  dbCodes: ape.model('dbcodes', require('../schemas/dbcodes'));
+}
+
+module.exports = exports = apeMods;
+
 // Upon Application StartUp, Connect to all the databases
-var dbCodes, host, port, opts;
+var host, port, opts;
 dbCodes = ape.model('dbcodes', require('../schemas/dbcodes'));
 host = 'localhost';
 port = 27017;
 opts = {};
 
-dbCodes.find({}, function(err, dbCodes) {
+apeMods.dbCodes.find({}, function(err, dbCodes) {
   if (err) throw new Error(err);
 
   var count = dbCodes.length;

@@ -1,7 +1,7 @@
 ;"use strict";
 
 module.exports.Login = require('./login');
-module.exports.Teams = require('./teams');
+module.exports.TeamsPageEvts = require('./teamsPage');
 
 
 
