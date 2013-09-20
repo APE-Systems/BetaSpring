@@ -11,7 +11,7 @@ block content
         .large-4.columns.playaInfo
           .large-3.columns.imageProfile.hide-for-small
             img.aPhoto(src='http://placehold.it/150x200')
-            a.vProfile(href='/UniversityofLouisville/rosters/athlete/51ae42878f1d55041300001a', role='button') View Profile
+            a.small.button(href='#') View Profile
           .large-9.small-12.columns.nameInfo
             h5.name
               span.first-name.name-style(contenteditable='true') Kristopher
@@ -45,16 +45,17 @@ block content
               span.metric(contenteditable='true') --
     .large-12.columns.rosterProfile-subnav
       .row
-        .large-2.columns
+        .large-5.columns
           a.small.button(href='#', data-reveal-id='create-athlete-modal') Create Athlete
-        .large-5.large-offset-5.columns.btnGroup
+          a.small.button.disabled(href='#') Remove Athlete
+        .large-5.large-offset-2.columns.btnGroup
           ul.button-group.right
            li: a.small.button.disabled(href='#') Remove
            li: a.small.button.disabled(href='#') Add to Group
            li: a.small.button(href='#', data-reveal-id='create-group-modal') Create Group
     // roster table
     .large-12.columns.roster-table
-      ul.filter.clearfix
+      ul.groups.clearfix
         li.btn#filter-none Show All
         li.btn#filter-group1 Group 1
         li.btn#filter-group2 Group 2
@@ -66,7 +67,7 @@ block content
             th Last Name
             th Position
             th Group
-        tbody
+        tbody.list
           tr
             td
               input(type='checkbox')
@@ -80,8 +81,8 @@ block content
     h4 Create Group
     a.close-reveal-modal &#215;
     form(action='/roster', method='/post', enctype='multipart/form-data')
-      input(type='text', name='group-name', placeholder='Group Name')
-      input(type='submit', id='create-group-submit', value='Save')
+      input#group-name(type='text', name='group-name', placeholder='Group Name')
+      a.button#create-group-submit Save
 
   #create-athlete-modal.reveal-modal.xlarge
     h4 Create Athlete
