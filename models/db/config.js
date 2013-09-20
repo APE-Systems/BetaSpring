@@ -9,7 +9,7 @@ ape.on('error', APEconnectionError);
 var apeMods = {
   mtrcats: ape.model('metriccats', require('../schemas/metricCategories')),
   metrics: ape.model('metrics', require('../schemas/metrics')),
-  dbCodes: ape.model('dbcodes', require('../schemas/dbcodes'));
+  dbCodes: ape.model('dbcodes', require('../schemas/dbcodes'))
 }
 
 module.exports = exports = apeMods;

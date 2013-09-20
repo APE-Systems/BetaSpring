@@ -1,108 +1,118 @@
-!!! 5
-//if IE 8
-  html.no-js.lt-ie9(lang='en')
-// [if gt IE 8] <!
-html.no-js(lang='en')
-  // <![endif]
-  head
-    meta(charset='utf-8')
-    meta(name='viewport', content='width=device-width')
-    title Ape System
-    link(href='/_css/foundation.min.css', rel='stylesheet', type='text/css', media='all')
-    link(href='/_css/normalize.min.css', rel='stylesheet', type='text/css', media='all')
-    link(href='/_css/app.css', rel='stylesheet', type='text/css', media='all')
-    link(rel='stylesheet', href='../_css/roster.css')       
-    script(src='/_js/vendor/custom.modernizr.js', type='text/javascript')
-    script(src='/_js/vendor/jquery/jquery-1.9.1-min.js')
+extends layout
+  
+append head
+  link(rel='stylesheet', href='../_css/roster.css')       
+  link(rel='stylesheet', href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css')
 
-  body.rosters
-    .row
-      .large-12.columns.rosterProfile
-        .row.roster-metrics
-          .large-4.columns.playaInfo
-            .large-3.columns.imageProfile.hide-for-small
-              img.aPhoto(src='http://placehold.it/150x200')
-              a.vProfile(href='/UniversityofLouisville/rosters/athlete/51ae42878f1d55041300001a', role='button') View Profile
-            .large-9.small-12.columns.nameInfo
-              h5.name
-                span.first-name(contenteditable='true') Kristopher
-                span.last-name(contenteditable='true') Washington
-              .demoInfo
-                .specInfo
-                  dl
-                    dt.position Position
-                    dd(contenteditable='true') Sprinter
+block content
+  .row
+    .large-12.columns.rosterProfile
+      .row.roster-metrics
+        .large-4.columns.playaInfo
+          .large-3.columns.imageProfile.hide-for-small
+            img.aPhoto(src='http://placehold.it/150x200')
+            a.small.button(href='#') View Profile
+          .large-9.small-12.columns.nameInfo
+            h5.name
+              span.first-name.name-style(contenteditable='true') Kristopher
+              br
+              span.last-name.name-style.bold(contenteditable='true') Washington
+            .demoInfo
+              .specInfo
+                dl
+                  dt.position Position
+                  dd(contenteditable='true') Sprinter
+                  dt.group Group
+                  dd(contenteditable='true') 400m
+                  dt.year Year
+                  dd(contenteditable='true') Junior
+                  dt.hometown Hometown
+                  dd(contenteditable='true') Los Angeles
 
-                    dt.group Group
-                    dd(contenteditable='true') 400m
+        .large-8.small-12.columns
+          .row.catBoxes
+            .small-3.large-3.columns.text-center.catBox
+              h5.cat.name-style Body Weight 
+              span.metric(contenteditable='true') --
+            .small-3.large-3.columns.text-center.catBox
+              h5.cat.name-style Body Fat
+              span.metric(contenteditable='true') --
+            .small-3.large-3.columns.text-center.catBox
+              h5.cat.name-style Power Clean
+              span.metric(contenteditable='true') --
+            .small-3.large-3.columns.text-center.catBox
+              h5.cat.name-style Back Squat
+              span.metric(contenteditable='true') --
+    .large-12.columns.rosterProfile-subnav
+      .row
+        .large-5.columns
+          a.small.button(href='#', data-reveal-id='create-athlete-modal') Create Athlete
+          a.small.button.disabled(href='#') Remove Athlete
+        .large-5.large-offset-2.columns.btnGroup
+          ul.button-group.right
+           li: a.small.button.disabled(href='#') Remove
+           li: a.small.button.disabled(href='#') Add to Group
+           li: a.small.button(href='#', data-reveal-id='create-group-modal') Create Group
+    // roster table
+    .large-12.columns.roster-table
+      ul.groups.clearfix
+        li.btn#filter-none Show All
+        li.btn#filter-group1 Group 1
+        li.btn#filter-group2 Group 2
+      table
+        thead
+          tr
+            th &nbsp;
+            th First Name
+            th Last Name
+            th Position
+            th Group
+        tbody.list
+          tr
+            td
+              input(type='checkbox')
+            td Kristopher
+            td Washington
+            td Sprinter
+            td Junior
 
-                    dt.year Year
-                    dd(contenteditable='true') Junior
 
-                    dt.hometown Hometown
-                    dd(contenteditable='true') Los Angeles
+  #create-group-modal.reveal-modal.small
+    h4 Create Group
+    a.close-reveal-modal &#215;
+    form(action='/roster', method='/post', enctype='multipart/form-data')
+      input#group-name(type='text', name='group-name', placeholder='Group Name')
+      a.button#create-group-submit Save
 
-          .large-8.small-12.columns
-            .row.catBoxes
-              .small-3.large-3.columns.text-center.catBox
-                h5.cat Body Weight 
-                span.metric(contenteditable='true') --
-              .small-3.large-3.columns.text-center.catBox
-                h5.cat Body Fat
-                span.metric(contenteditable='true') --
-              .small-3.large-3.columns.text-center.catBox
-                h5.cat Power Clean
-                span.metric(contenteditable='true') --
-              .small-3.large-3.columns.text-center.catBox
-                h5.cat Back Squat
-                span.metric(contenteditable='true') --
-      .large-12.columns.rosterProfile-subnav
-        .row
-          .large-2.columns
-            a.small.button(href='#') Create Athlete
-          .large-5.large-offset-5.columns.btnGroup
-            ul.button-group.right
-             li: a.small.button.disabled(href='#') Remove
-             li: a.small.button(href='#', data-reveal-id='create-group-modal') Create Group
-             li: a.small.button.disabled(href='#') Add to Group
-      // roster table
-      .large-12.columns.roster-table
-        table
-          thead
-            tr
-              th First Name
-              th Last Name
-              th Position
-              th Group
-          tbody
-            tr
-              td Kristopher
-              td Washington
-              td Sprinter
-              td Junior
-      // test table
-      .large-12.columns.test-table
-        table
-          thead
-            tr
-              th First Name
-              th Last Name
-              th Last Record
-              th Input Data
-              th Confirm
-          tbody
-            tr
-              td Kristopher
-              td Washington
-              td 90
-              td
-                input(placeholder='Input Data')
-              td
-                button Update
+  #create-athlete-modal.reveal-modal.xlarge
+    h4 Create Athlete
+    a.close-reveal-modal &#215;
+    form(action='/athlete', method='/post', enctype='multipart/form-data')
+      .row
+        .large-2.columns
+          span Photo
+        .large-5.columns
+          label First Name
+          input(type='text', name='first-name', placeholder='John')
 
-    #create-group-modal.reveal-modal.large
-      h4 Create Group
-        form(action='/roster', method='/post', enctype='multipart/form-data')
+          label Last Name
+          input(type='text', name='last-name', placeholder='Doe')
+
+          label Height
+          input(type='text', name='height', placeholder="6'1")
+
+        .large-5.columns
+          label Position
+          input(type='text', name='position', placeholder='Quarterback')
+
+          label Year
+          input(type='text', name='year', placeholder='Junior')
+
+          label Hometown
+          input(type='text', name='hometown', placeholder='Providence, RI')
+      .row
+        input(type='submit', id='create-athlete-submit', value='Create Athlete')
+
 
 
 

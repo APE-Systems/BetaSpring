@@ -11,6 +11,11 @@ var mid = require('../middleware').middle
   , tmEvts = require('../events').TeamsPageEvts;
 
 module.exports = function(app) {
+  // Home
+  
+  app.get('/', function(req, res) {
+    res.redirect('/teams'); // should redirect to login
+  });
 
   // Login
   // app.get('/login', loginEvts.displayLogin);
@@ -61,8 +66,9 @@ module.exports = function(app) {
   app.get('/roster', function(req, res, next) {
     res.render('roster');
   });
-*/
 };
+*/
+}
 
 
 /*

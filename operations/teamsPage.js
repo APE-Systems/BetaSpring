@@ -42,7 +42,7 @@ function getTeams(req, callback) {
 }
 
 function getAPElib(req, callback) {
-  APE.mtrcats.
+  // APE.mtrcats.
 }
 
 
