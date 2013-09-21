@@ -1,8 +1,8 @@
-var Athlete = require('../models').Athletes
-  , School = require('../models').Schools
-  , stats = require('../middleware').stats
-  , filter = require('../middleware').dbHits
-  , moment = require('moment');
+// var Athlete = require('../models').Athletes
+//   , School = require('../models').Schools
+//   , stats = require('../middleware').stats
+//   , filter = require('../middleware').dbHits
+//   , moment = require('moment');
 
 var labels = {
     "bioHT": "Body Height (in)",

@@ -1,6 +1,6 @@
-var Athlete = require('../models').Athletes
-  , School = require('../models').Schools
-  , moment = require('moment');
+// var Athlete = require('../models').Athletes
+//   , School = require('../models').Schools
+//   , moment = require('moment');
 
 
 // Models is an array
