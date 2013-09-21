@@ -31,7 +31,7 @@ module.exports = function(app) {
     // createTeams AJAX
   app.post('/:school/teams/new', tmEvts.createTeam);
 
-  app.post('/:school/teams/groups/new', grpEvts.createGroup);
+  //app.post('/:school/teams/groups/new', grpEvts.createGroup);
 
 /*
   // POST create team
