@@ -7,15 +7,10 @@ var APE = require('../models/db/config').apeMods;
 
 var teamsPageOps = {
 
-  getTeamsPage: function(req, callback) {
-    var Mods = req.models;
-    var school = req.school;
-    Mods.Teams.find({school: school}, {name:1}, function(err, teams) {
-      if (err) return callback(err, null);
+  getTeamsPage: function(req, evtCallback) {
 
-      callback(null, teams);
-      return;
-    });
+    getTeams(req, getAPElib(evtCallback));
+
   },
 
   createTeam: function(req, callback) {
@@ -32,24 +27,53 @@ var teamsPageOps = {
     newTeam.save(function(err) {
       callback(err);
     });
+  },
+
+  updateTeam: function(req, callback) {
+    console.log('Operation: updateTeam');
+  },
+
+  deleteTeam: function(req, callback) {
+    console.log('Operation: deleteTeam');
   }
 }
 
 function getTeams(req, callback) {
-  var query = {school: school, 'coaches.username': req.username};
+  var dataLoad = {};
+  var Mods = req.models;
+  var school = req.school;
+  var username = req.username;
+  var query = {school: school, 'coaches.username': username};
   var proj = {name:1, gender:1, mtrcats:1, metrics:1};
-  Mods.Teams.find(query, proj, callback);
+
+  Mods.Teams.find(query, proj, function(err, teams) {
+    if (err) callback(err, null);
+    dataLoad.teams = teams;
+    callback(dataLoad);
+  });
 }
 
-function getAPElib(req, callback) {
-  // APE.mtrcats.
+function getAPElib(evtCallback) {
+  return function(dataLoad) {
+    var apeLibPackage = {};
+    var query = {};
+    var proj = {name:1, metrics:1};
+    APE.mtrcats.find(query, proj, function(err, mcs) {
+      if (err) evtCallback(err, null);
+
+      apeLibPackage.mtrcats = mcs;
+      APE.metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
+        if (err) evtCallback(err, null);
+
+        apeLibPackage.metrics = mtrs;
+        // console.log('apeLibPackage:\n', apeLibPackage);
+        dataLoad.apeLibPackage = apeLibPackage;
+        // console.log('dataLoad\n', dataLoad);
+        return evtCallback(null, dataLoad);
+      });
+    });
+  };
 }
-
-
-
-
-
-
 
 module.exports = exports = teamsPageOps;
 

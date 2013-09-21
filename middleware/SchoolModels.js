@@ -4,7 +4,7 @@
   MIDDLEWARE: School Models
     A user has access only to their Schools Models
  */
-var Mods = require('../models/db/config');
+var Mods = require('../models/db/config').getModels;
 
 module.exports = exports = {
 

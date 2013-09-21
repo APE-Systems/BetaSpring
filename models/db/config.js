@@ -6,13 +6,11 @@ ape = mongoose.createConnection('mongodb://localhost:27017/ape');
 console.info('connected to APEdb');
 ape.on('error', APEconnectionError);
 
-var apeMods = {
+module.exports.apeMods = apeMods = {
   mtrcats: ape.model('metriccats', require('../schemas/metricCategories')),
   metrics: ape.model('metrics', require('../schemas/metrics')),
   dbCodes: ape.model('dbcodes', require('../schemas/dbcodes'))
-}
-
-module.exports = exports = apeMods;
+};
 
 // Upon Application StartUp, Connect to all the databases
 var host, port, opts;
@@ -36,7 +34,7 @@ apeMods.dbCodes.find({}, function(err, dbCodes) {
   }
 });
 
-function getModels(school) {
+module.exports.getModels = function(school) {
   var db = databases[databases[school]];
   var models = {
     Coaches: db.model('coaches', require('../schemas/coaches')),
@@ -52,9 +50,6 @@ function getModels(school) {
   console.log(school + ' models retrieved\n');
   return models;
 };
-
-module.exports = exports = getModels;
-
 
 // ERROR HANDLERS
 function databaseConnectionError(err) {

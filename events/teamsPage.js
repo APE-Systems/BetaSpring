@@ -13,32 +13,12 @@ var teamsPageEvts = {
     tmspgOps.getTeamsPage(req, function(err, payLoad) {
       if (err) throw new Error(err);
 
-      console.log('Number of teams:', payLoad.teams.length);
-      // res.render('teamsPage', {
-      //   nav: req.school,
-      //   teams: [{
-      //     _id:
-      //     name: ,
-      //     mtrcats: [{
-      //       _id: ,
-      //       name:
-      //     }],
-      //     metrics: [{
-      //       _id: ,
-      //       name:
-      //     }]
-      //   }],
-      //   apeLib: {
-      //     mtrcats: [{
-      //       _id: ,
-      //       name:
-      //     }],
-      //     metrics: [{
-      //       _id: ,
-      //       name:
-      //     }]
-      //   }
-      // });
+      // console.log('payLoad:', payLoad);
+      res.render('teamsPage', {
+        nav: req.school,
+        teams: payLoad.teams,
+        apeLib: payLoad.apeLibPackage
+      });
     });
   },
 
