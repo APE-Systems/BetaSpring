@@ -1,0 +1,4 @@
+/*
+    Team schema
+      Information about a specific team within a school
+*/var mongoose=require("mongoose"),Schema=mongoose.Schema,Types=mongoose.Types,ObjIdType=Schema.ObjectId,ObjId=Types.ObjectId,TeamSchema=module.exports=new Schema({createdBy:{type:ObjIdType,required:!0},createdOn:{type:Date,required:!0,"default":Date.now},school:{type:String,required:!0},coaches:[{username:{type:String,required:!0},name:{type:String,required:!0}}],name:{type:String,required:!0,index:!0},gender:{type:String,required:!0,index:!0},groups:[{name:{type:String,required:!0}}],trplans:[{name:{type:String,required:!0}}],surveys:[{name:{type:String,required:!0}}],mtrcats:[{name:{type:String,required:!0},metrics:[{name:{type:String,required:!0}}]}],metrics:[{name:{type:String,required:!0}}],athletes:[{name:{type:String,required:!0}}]},{collection:"teams",safe:!0});TeamSchema.virtual("TMID").get(function(){return this._id});TeamSchema.index({name:1,gender:-1},{unique:!0});

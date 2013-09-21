@@ -988,6 +988,10 @@ div.clickable a {
         -webkit-border-radius: 1000px;
         border-radius: 1000px;
     }
+
+    .highlight-table-row {
+      background-color: rgba(156, 0, 18, .3);
+    }
 }
 
 /* 768px & larger - Revist this Media Query, does it make sense?*/

@@ -198,6 +198,11 @@ module.exports = function(app) {
   app.get('/roster', function(req, res, next) {
     res.render('roster');
   });
+
+  // POST athlete information
+  app.post('/athletes', function(req, rest, next) {
+    res.send(200);
+  });
 };
 
 
