@@ -10,6 +10,7 @@ script(type='text/javascript', src='../_js/vendor/underscore-min.js')
 script.
   $(document).foundation();
   $(document).ready(function() {
+  $('.roster-list').find('tr:first').addClass('highlight-table-row');
   $('#left-menu').sidr({
     name: 'sidr-left',
     side: 'left' // By default
