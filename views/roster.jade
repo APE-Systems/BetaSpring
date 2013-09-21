@@ -80,9 +80,10 @@ block content
   #create-group-modal.reveal-modal.small
     h4 Create Group
     a.close-reveal-modal &#215;
-    form(action='/roster', method='/post', enctype='multipart/form-data')
+    form#create-group-form(action='/roster', method='/post', enctype='multipart/form-data')
       input#group-name(type='text', name='group-name', placeholder='Group Name')
-      a.button#create-group-submit Save
+      //- a.button#create-group-submit Save
+      input#create-group-submit(type='submit', value='Create Team')
 
   #create-athlete-modal.reveal-modal.xlarge
     h4 Create Athlete

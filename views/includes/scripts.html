@@ -36,10 +36,29 @@
     autoExpand: true,
     });
   $('#create-team-submit').submit(function() { $('#teamModal').trigger('reveal:close'); });
-  $('#create-group-submit').on("click", function() {
+  $('#create-group-form').on("submit", function(event) {
+    console.log('clicked!');
+    event.preventDefault();
     var groupname = $("#group-name").val();
     $(".groups").append("<li class='btn'>" + groupname + "</li>");
-    $(this).trigger('reveal:close');
-    });
-  });
+    console.log($(this).serialize() );
+    var form = $(this);
+    console.log(form);
+    $.ajax({
+      url: '/group',
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      data: form.serialize(),
+      timeout: 3000
+    }).fail(function(msg) {
+      console.log(msg);
+    }).done(function(msg) {
+      alert("data saved: " + msg);
+      
+    }).always(function() {
+      $('a.close-reveal-modal').trigger('click');
+    }); 
+  }); //on submit - create group form
+  }); // document ready
 </script>
