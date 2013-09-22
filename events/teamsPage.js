@@ -31,7 +31,7 @@ var teamsPageEvts = {
         res.send(500, "Problem saving team");
       } else {
         console.log('createTeam: Success');
-        res.send(200);
+        res.json(200, {"_id": "abracadabra"});
       }
     })
   },

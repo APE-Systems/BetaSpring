@@ -43,10 +43,15 @@ script.
     var form = $(this);
     console.log(form);
     var school = $('#school-name').text();
-    console.log(school);
+    var teamName = $('#team-name').val();
+    var teamGender = $('#team-gender').val();
+    console.log("school: " + school);
+    console.log("teamName: " + teamName);
+    console.log("teamGender: " + teamGender);;
+
 
     $.ajax({
-      url: '/'+ school +'/teams',
+      url: '/'+ school + '/' + teamName + '/' + teamGender,
       type: 'POST',
       contentType: 'application/json: charset=utf-8',
       dataType: 'json',

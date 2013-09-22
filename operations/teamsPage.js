@@ -19,12 +19,13 @@ var teamsPageOps = {
     var school = req.school;
     var newTeam = new Mods.Teams();
 
-    newTeam.createdBy = req.username;
+    newTeam.createdBy = "52272b1a101fb81008000023";
     newTeam.coaches.push({name: "coach name", username: req.username});
     newTeam.school = school;
-    newTeam.name = req.body.name;
-    newTeam.gender = req.body.gender;
+    newTeam.name = req.params.team;
+    newTeam.gender = req.params.gender;
 
+    console.log(newTeam);
     newTeam.save(function(err) {
       callback(err);
     });

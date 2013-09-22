@@ -33,7 +33,12 @@ module.exports = function(app) {
 
   // Teams Page
   app.get('/:school/teams', tmEvts.getTeamsPage);
-  app.post('/:school/:team', tmEvts.createTeam);
+  app.post('/:school/:team/:gender', tmEvts.createTeam);
+  // app.post('/:school/:team/:gender', function(req, res) {
+  //   console.log(req.params.school);
+  //   console.log(req.params.team);
+  //   console.log(req.params.gender);
+  // });
   app.put('/:school/:team/', tmEvts.updateTeam);
   app.delete('/:school/:team', tmEvts.deleteTeam);
 

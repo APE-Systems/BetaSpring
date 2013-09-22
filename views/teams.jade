@@ -5,7 +5,7 @@ append head
   link(href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css', rel='stylesheet')
 
 block content
-  - if (typeof(teams) !== "undefined")
+  - if (typeof(teamsPage.apeLibrary.teams) !== "undefined")
     .small-6.large-centered.columns.centered
       a.button(href='#', data-reveal-id='teamModal') Create Team
     hr
@@ -14,7 +14,7 @@ block content
       .small-6.columns.male-teams
         h3.center Men's Teams
         ul.small-block-grid-4.male
-          for team in teams
+          for team in teamsPage.apeLibrary.teams
             //- refactor the following code to use buttons? may be cleaner
             a(href='#')
               li.box
@@ -50,13 +50,16 @@ prepend scripts
           h4 Create Team
           div
             label Sport
-            input#team-name(type='text', name='team-name', required='required', placeholder='Ex: Baseball, Football')
+            input(type='text', name='name', required='required', placeholder='Ex: Baseball, Football')
           div
             label Gender
-            select#team-gender(name='team-gender')
-              option(value='men') Men
-              option(value='women') Women
+            select#gender(name='gender')
+              option(value='male') Male
+              option(value='female') Female
       .row
         .large-12.columns
           div
             input(type='submit', id='create-team-submit', value='Create Team')
+
+
+
