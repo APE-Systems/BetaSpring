@@ -16,17 +16,19 @@ var teamsPageOps = {
     console.log('Operation: createTeam');
     // Need to check if unique NAME for team
     var Mods = req.models;
-    var school = req.school;
+    var school = req.sess.school;
     var newTeam = new Mods.Teams();
 
-    newTeam.createdBy = req.username;
-    newTeam.coaches.push({name: "coach name", username: req.username});
+    newTeam.createdBy = req.sess.COID;
+    newTeam.coaches.push({name: "coach name", username: req.sess.username});
     newTeam.school = school;
-    newTeam.name = req.body.name;
-    newTeam.gender = req.body.gender;
+    newTeam.name = req.params.team;
+    newTeam.gender = req.params.gender;
+
+    console.log('newTeam:\n', newTeam);
 
     newTeam.save(function(err) {
-      callback(err);
+      callback(err, newTeam);
     });
   },
 
@@ -69,8 +71,8 @@ var teamsPageOps = {
 function getTeams(req, callback) {
   var dataLoad = {};
   var Mods = req.models;
-  var school = req.school;
-  var username = req.username;
+  var school = req.sess.school;
+  var username = req.sess.username;
   var query = {school: school, 'coaches.username': username};
   var proj = {name:1, gender:1, mtrcats:1, metrics:1};
 

@@ -81,12 +81,12 @@ var rostersPageOps = {
 function getAthletes(req, callback) {
   var dataLoad = {};
   var Mods = req.models;
-  var school = req.school;
+  var school = req.sess.school;
   var team = {
     name: req.params.team,
-    gender: "men"
+    gender: req.params.gender
   };
-  var username = req.username;
+  var username = req.sess.username;
   var query = {school: school, team: team, 'coaches.username': username };
   var proj = {name:1, positions:1, years:1, metrics:1};
 

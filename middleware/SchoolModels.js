@@ -9,8 +9,8 @@ var Mods = require('../models/db/config').getModels;
 module.exports = exports = {
 
   getSchoolModels: function(req, res, next) {
-    if (req.username) {
-      req.models = new Mods(req.school);
+    if (req.sess.username) {
+      req.models = new Mods(req.sess.school);
       console.log('middleware: Models');
       return next();
     }

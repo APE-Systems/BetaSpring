@@ -14,11 +14,12 @@ var rostersPageEvts = {
       if (err) throw new Error(err);
 
       // console.log('payLoad:', payLoad);
-      res.render('rostersPage', {
-        nav: req.school,
-        athletes: payLoad.athletes,
-        apeLib: payLoad.apeLibPackage
-      });
+      res.send(payLoad);
+      // res.render('rostersPage', {
+      //   nav: req.school,
+      //   athletes: payLoad.athletes,
+      //   apeLib: payLoad.apeLibPackage
+      // });
     });
   },
 

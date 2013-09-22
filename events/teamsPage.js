@@ -25,13 +25,20 @@ var teamsPageEvts = {
   createTeam: function(req, res, next) {
     console.log('Event: createTeam');
 
-    tmspgOps.createTeam(req, function(err) {
+    tmspgOps.createTeam(req, function(err, team) {
       if (err) {
         console.error("createTeam: Error\n", err);
-        res.send(500, "Problem saving team");
+        res.json({
+          status: 500, 
+          error: {
+            Msg: "Problem saving team",
+            err: err
+          }
+        });
       } else {
         console.log('createTeam: Success');
-        res.send(200);
+        console.log(team);
+        res.json(200, {id: team._id, name: team.name, gender: team.gender});
       }
     })
   },

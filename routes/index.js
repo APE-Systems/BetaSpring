@@ -26,23 +26,23 @@ module.exports = function(app) {
   app.get('/logout', mid.checkCookie, mid.checkSession, user.logout);
 
   // Rosters Page
-  app.get('/:school/:team/roster', rosEvts.getRostersPage);
+  app.get('/:school/:team/:gender/roster', rosEvts.getRostersPage);
   // app.post();
   // app.put();
   // app.delete();
 
   // Teams Page
   app.get('/:school/teams', tmEvts.getTeamsPage);
-  app.post('/:school/:team', tmEvts.createTeam);
-  app.put('/:school/:team/', tmEvts.updateTeam);
-  app.delete('/:school/:team', tmEvts.deleteTeam);
+  app.post('/:school/:team/:gender', tmEvts.createTeam);
+  app.put('/:school/:team/:gender/', tmEvts.updateTeam);
+  app.delete('/:school/:team/:gender', tmEvts.deleteTeam);
 
 
 
   // Rosters Page
   
     // createGroups AJAX
-  app.post('/:school/teams/groups', function(req, res, next) {
+  app.post('/:school/:team/:gender/:group', function(req, res, next) {
     console.log(req.body.params);
     res.send(200, req.body.params);
   });

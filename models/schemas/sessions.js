@@ -8,6 +8,12 @@ var mongoose = require('mongoose')
   , ObjId = Types.ObjectId;
 
 var SessionSchema = module.exports = new mongoose.Schema({
+  COID: {type: ObjIdType, required: true},
+  name: {
+    type: String
+  , require: true
+  , index: true
+  },
   username: {
     type: String
   , require: true
@@ -18,14 +24,14 @@ var SessionSchema = module.exports = new mongoose.Schema({
   , require: true
   , index: {unique: true}
   },
-  date: {
-    type: Date,
-    default: Date.now
-  },
   school: {
     type: String
   , require: true
   , index: true
+  },
+  date: {
+    type: Date,
+    default: Date.now
   }
 }, {
   collection: 'sessions',

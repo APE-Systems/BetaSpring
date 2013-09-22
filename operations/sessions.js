@@ -17,7 +17,7 @@ module.exports = exports = {
       callback(Error("Session not set"), null);
       return;
     }
-    Sessions.findOne({ '_id': session_id }, {username:1, school:1}, function(err, session) {
+    Sessions.findOne({ '_id': session_id }, function(err, session) {
       if (err) return callback(err, null);
 
       if (!session) {

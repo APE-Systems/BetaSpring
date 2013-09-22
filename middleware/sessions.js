@@ -12,12 +12,11 @@ module.exports = exports = {
   isLoggedIn: function(req, res, next) {
       console.log('Middleware: isLoggedIn');
       // var session_id = req.cookies.session;
-      var session_id = "523a1cc6b7bdb660f912e067";
+      var session_id = "523f5dc87f3fff94d940a7a8";
       SessionOPS.getSession(session_id, function(err, session) {
           if (!err && session.username) {
               console.log('username in session');
-              req.username = session.username;
-              req.school = session.school;
+              req.sess = session;
           }
           return next();
       });
