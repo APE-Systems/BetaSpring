@@ -7,8 +7,8 @@ script(type='text/javascript', src='../_js/vendor/accordion/jquery.hoverIntent.m
 script(type='text/javascript', src='../_js/vendor/accordion/jquery.dcjqaccordion.2.7.min.js')
 script(type='text/javascript', src='../_js/vendor/list.min.js')
 script(type='text/javascript', src='../_js/vendor/underscore-min.js')
-script(type='text/javascript', src='../_js/fetchAthlete.js')
-script(type='text/javascript', src='../_js/createTeams.js')
+//-script(type='text/javascript', src='../_js/fetchAthlete.js')
+//-script(type='text/javascript', src='../_js/createTeams.js')
 script.
   $(document).foundation();
   $(document).ready(function() {
@@ -37,25 +37,29 @@ script.
     speed: 'fast',
     autoExpand: true,
     });
-  /*$('#create-team-form').on("submit", function(event) { 
+  $('#create-team-form').on("submit", function(event) { 
     console.log("clicked from " + this );
     event.preventDefault();
     var form = $(this);
     console.log(form);
+    var school = $('#school-name').text();
+    console.log(school);
 
     $.ajax({
-      url: '/tobedetermind',
+      url: '/'+ school +'/teams',
       type: 'POST',
       contentType: 'application/json: charset=utf-8',
       dataType: 'json',
-    }).fail(function(msg) {
-      console.log("failure: " + msg);
+      data: form.serialize()
     }).done(function(msg) {
       alert("data saved: " + msg);
+    }).fail(function(msg) {
+      console.log("failure: " + msg);
+      console.dir(msg);
     }).always(function() {
       $('a.close-reveal-modal').trigger('click');     
     }); // ajax
-  }); // create form on subsmit */
+  }); // create form on subsmit 
   
   $('#create-group-form').on("submit", function(event) {
     console.log('clicked!');
@@ -66,8 +70,9 @@ script.
     var form = $(this);
     console.log(form);
     
+
     $.ajax({
-      url: '/group',
+      url: '/test',
       type: 'POST',
       contentType: 'application/json; charset=utf-8',
       dataType: 'json',

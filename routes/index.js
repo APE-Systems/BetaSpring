@@ -200,8 +200,9 @@ module.exports = function(app) {
   });
 
   // POST athlete information
-  app.post('/athletes', function(req, rest, next) {
-    res.send(200);
+  app.post('/:school/teams', function(req, res, next) {
+    console.log(req.params.school);
+    res.json(200, {status: "success"});
   });
 };
 

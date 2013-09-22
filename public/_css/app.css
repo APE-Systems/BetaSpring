@@ -1145,6 +1145,10 @@ div.clickable a {
       color: #fff;
   }
 
+  .top-bar-section #school-name {
+    color: white;
+  }
+
   /* Roster stuff. research if you can remove */
   .roster-name .date {
     text-align: right;
