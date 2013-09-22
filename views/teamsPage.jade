@@ -42,9 +42,13 @@ block content
         span Get started by creating teams.
 
 prepend scripts
-  #teamModal.reveal-modal.large
+  #teamModal.reveal-modal.small
     a.close-reveal-modal &#215;
+<<<<<<< HEAD:views/teamsPage.jade
     form(id="createTeam", action='/teams/new', method='POST')
+=======
+    form#create-team-form(action='/teams', method='post', enctype='multipart/form-data')
+>>>>>>> feature/createAthleteAJAXrequests:views/teams.jade
       .row
         .large-12.columns
           h4 Create Team

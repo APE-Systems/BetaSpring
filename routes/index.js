@@ -85,6 +85,15 @@ module.exports = function(app) {
   app.get('/roster', function(req, res, next) {
     res.render('roster');
   });
+<<<<<<< HEAD
+=======
+
+  // POST athlete information
+  app.post('/:school/teams', function(req, res, next) {
+    console.log(req.params.school);
+    res.json(200, {status: "success"});
+  });
+>>>>>>> feature/createAthleteAJAXrequests
 };
 */
 }
