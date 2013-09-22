@@ -15,7 +15,7 @@ var teamsPageEvts = {
 
       // console.log('payLoad:', payLoad);
       res.render('teamsPage', {
-        nav: req.school,
+        nav: req.sess.school,
         teams: payLoad.teams,
         apeLib: payLoad.apeLibPackage
       });

@@ -58,7 +58,7 @@ script.
       data: form.serialize()
     }).done(function(msg) {
       alert("data saved: " + msg);
-      $(".male").append("<li class='box'><span class='caption'><p>" + msg + "</p></span></li>")  
+      $(".male").append("<li class='box'><span class='caption'><p>" + msg.name + "</p></span></li>")  
     }).fail(function(msg) {
       console.log("failure: " + msg);
       console.dir(msg);
