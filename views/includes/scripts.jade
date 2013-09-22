@@ -7,6 +7,8 @@ script(type='text/javascript', src='../_js/vendor/accordion/jquery.hoverIntent.m
 script(type='text/javascript', src='../_js/vendor/accordion/jquery.dcjqaccordion.2.7.min.js')
 script(type='text/javascript', src='../_js/vendor/list.min.js')
 script(type='text/javascript', src='../_js/vendor/underscore-min.js')
+script(type='text/javascript', src='../_js/fetchAthlete.js')
+script(type='text/javascript', src='../_js/createTeams.js')
 script.
   $(document).foundation();
   $(document).ready(function() {
@@ -35,7 +37,26 @@ script.
     speed: 'fast',
     autoExpand: true,
     });
-  $('#create-team-submit').submit(function() { $('#teamModal').trigger('reveal:close'); });
+  /*$('#create-team-form').on("submit", function(event) { 
+    console.log("clicked from " + this );
+    event.preventDefault();
+    var form = $(this);
+    console.log(form);
+
+    $.ajax({
+      url: '/tobedetermind',
+      type: 'POST',
+      contentType: 'application/json: charset=utf-8',
+      dataType: 'json',
+    }).fail(function(msg) {
+      console.log("failure: " + msg);
+    }).done(function(msg) {
+      alert("data saved: " + msg);
+    }).always(function() {
+      $('a.close-reveal-modal').trigger('click');     
+    }); // ajax
+  }); // create form on subsmit */
+  
   $('#create-group-form').on("submit", function(event) {
     console.log('clicked!');
     event.preventDefault();
@@ -44,6 +65,7 @@ script.
     console.log($(this).serialize() );
     var form = $(this);
     console.log(form);
+    
     $.ajax({
       url: '/group',
       type: 'POST',
