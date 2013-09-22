@@ -44,19 +44,22 @@ block content
 prepend scripts
   #teamModal.reveal-modal.small
     a.close-reveal-modal &#215;
-    form#create-team-form(action='/teams', method='post', enctype='multipart/form-data')
+    form#create-team-submit(action='/teams', method='post', enctype='multipart/form-data')
       .row
         .large-12.columns
           h4 Create Team
           div
             label Sport
-            input#team-name(type='text', name='team-name', required='required', placeholder='Ex: Baseball, Football')
+            input(type='text', name='name', required='required', placeholder='Ex: Baseball, Football')
           div
             label Gender
-            select#team-gender(name='team-gender')
-              option(value='men') Men
-              option(value='women') Women
+            select#gender(name='gender')
+              option(value='male') Male
+              option(value='female') Female
       .row
         .large-12.columns
           div
             input(type='submit', id='create-team-submit', value='Create Team')
+
+
+

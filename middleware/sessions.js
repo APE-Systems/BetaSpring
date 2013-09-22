@@ -14,6 +14,7 @@ module.exports = exports = {
       // var session_id = req.cookies.session;
       var session_id = "523f5dc87f3fff94d940a7a8";
       SessionOPS.getSession(session_id, function(err, session) {
+          console.log(session.school);
           if (!err && session.username) {
               console.log('username in session');
               req.sess = session;

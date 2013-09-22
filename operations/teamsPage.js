@@ -27,6 +27,7 @@ var teamsPageOps = {
 
     console.log('newTeam:\n', newTeam);
 
+    console.log(newTeam);
     newTeam.save(function(err) {
       callback(err, newTeam);
     });

@@ -37,7 +37,6 @@ var teamsPageEvts = {
         });
       } else {
         console.log('createTeam: Success');
-        console.log(team);
         res.json(200, {id: team._id, name: team.name, gender: team.gender});
       }
     })
