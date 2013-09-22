@@ -8,7 +8,7 @@ var mongoose = require('mongoose')
   , ObjId = Types.ObjectId;
 
 var SessionSchema = module.exports = new mongoose.Schema({
-  COID: {type: ObjIdType, required: true},
+  COID: {type: ObjIdType, required: true, index: {unique: true}},
   name: {
     type: String
   , require: true

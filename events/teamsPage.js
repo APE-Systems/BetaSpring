@@ -15,13 +15,14 @@ var teamsPageEvts = {
 
       // console.log('payLoad:', payLoad);
       res.render('teamsPage', {
-        nav: req.school,
+        nav: req.sess.school,
         teams: payLoad.teams,
         apeLib: payLoad.apeLibPackage
       });
     });
   },
 
+  //AJAX
   createTeam: function(req, res, next) {
     console.log('Event: createTeam');
 
@@ -42,6 +43,7 @@ var teamsPageEvts = {
     })
   },
 
+  //AJAX
   updateTeam: function(req, res, next) {
     console.log('Event: updateTeam');
 
@@ -56,6 +58,7 @@ var teamsPageEvts = {
     });
   },
 
+  //AJAX
   deleteTeam: function(req, res, next) {
     console.log('Event: deleteTeam');
 
