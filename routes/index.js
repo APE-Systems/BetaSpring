@@ -8,7 +8,8 @@ var mid = require('../middleware').middle
   , teams = controllers.Teams
 
   , fs = require('fs')
-  , tmEvts = require('../events').TeamsPageEvts;
+  , tmEvts = require('../events').TeamsPageEvts
+  , rosEvts = require('../events').RostersPageEvts;
 
 module.exports = function(app) {
   // Home
@@ -24,14 +25,31 @@ module.exports = function(app) {
   // Logout
   app.get('/logout', mid.checkCookie, mid.checkSession, user.logout);
 
+  // Rosters Page
+  app.get('/:school/:team/roster', rosEvts.getRostersPage);
+  // app.post();
+  // app.put();
+  // app.delete();
 
   // Teams Page
   app.get('/:school/teams', tmEvts.getTeamsPage);
-  
-    // createTeams AJAX
-  app.post('/:school/teams/new', tmEvts.createTeam);
+  app.post('/:school/:team', tmEvts.createTeam);
+  app.put('/:school/:team/', tmEvts.updateTeam);
+  app.delete('/:school/:team', tmEvts.deleteTeam);
+
 
   //app.post('/:school/teams/groups/new', grpEvts.createGroup);
+
+
+  // Rosters Page
+  
+    // createGroups AJAX
+  app.post('/:school/teams/groups', function(req, res, next) {
+    console.log(req.body.params);
+    res.send(200, req.body.params);
+  });
+    // 
+
 
 /*
   // POST create team
@@ -66,11 +84,6 @@ module.exports = function(app) {
   // Teams Page
   app.get('/roster', function(req, res, next) {
     res.render('roster');
-  });
-
-  // POST athlete information
-  app.post('/athletes', function(req, rest, next) {
-    res.send(200);
   });
 };
 */

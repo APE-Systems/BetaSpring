@@ -1,22 +1,22 @@
 ;"use strict";
 /*
-  EVENTS: teamsPage
+  EVENTS: rostersPage
  */
 
-var tmspgOps = require('../operations').TeamsPageOps;
+var rospgOps = require('../operations').RostersPageOps;
 
-var teamsPageEvts = {
+var rostersPageEvts = {
 
-  getTeamsPage: function(req, res, next) {
-    console.log('Event: getTeamsPage');
+  getRostersPage: function(req, res, next) {
+    console.log('Event: getRostersPage');
 
-    tmspgOps.getTeamsPage(req, function(err, payLoad) {
+    rospgOps.getRostersPage(req, function(err, payLoad) {
       if (err) throw new Error(err);
 
       // console.log('payLoad:', payLoad);
-      res.render('teamsPage', {
+      res.render('rostersPage', {
         nav: req.school,
-        teams: payLoad.teams,
+        athletes: payLoad.athletes,
         apeLib: payLoad.apeLibPackage
       });
     });
@@ -25,7 +25,7 @@ var teamsPageEvts = {
   createTeam: function(req, res, next) {
     console.log('Event: createTeam');
 
-    tmspgOps.createTeam(req, function(err) {
+    rospgOps.createTeam(req, function(err) {
       if (err) {
         console.error("createTeam: Error\n", err);
         res.send(500, "Problem saving team");
@@ -39,7 +39,7 @@ var teamsPageEvts = {
   updateTeam: function(req, res, next) {
     console.log('Event: updateTeam');
 
-    tmspgOps.updateTeam(req, function(err) {
+    rospgOps.updateTeam(req, function(err) {
       if (err) {
         console.error("updateTeam: Error:\n", err);
         res.send(500, "Problem updating team");
@@ -53,7 +53,7 @@ var teamsPageEvts = {
   deleteTeam: function(req, res, next) {
     console.log('Event: deleteTeam');
 
-    tmspgOps.deleteTeam(req, function(err) {
+    rospgOps.deleteTeam(req, function(err) {
       if (err) {
         console.error("deleteTeam: Error:\n", err);
         res.send(500, "Problem deleteing team");
@@ -66,4 +66,4 @@ var teamsPageEvts = {
 
 }
 
-module.exports = exports = teamsPageEvts;
+module.exports = exports = rostersPageEvts;

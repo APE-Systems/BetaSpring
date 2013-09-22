@@ -3,3 +3,5 @@ node_modules
 npm-debug.log
 notes.txt
 public/_imgs
+
+*/[a-zA-Z]*-ck.js
