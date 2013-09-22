@@ -44,7 +44,7 @@ block content
 prepend scripts
   #teamModal.reveal-modal.large
     a.close-reveal-modal &#215;
-    form(action='/teams', method='post', enctype='multipart/form-data')
+    form(id="createTeam", action='/teams/new', method='POST')
       .row
         .large-12.columns
           h4 Create Team
@@ -60,6 +60,3 @@ prepend scripts
         .large-12.columns
           div
             input(type='submit', id='create-team-submit', value='Create Team')
-
-
-

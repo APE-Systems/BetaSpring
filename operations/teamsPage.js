@@ -8,12 +8,13 @@ var APE = require('../models/db/config').apeMods;
 var teamsPageOps = {
 
   getTeamsPage: function(req, evtCallback) {
-
+    console.log('Operation: getTeamsPage');
     getTeams(req, getAPElib(evtCallback));
-
   },
 
   createTeam: function(req, callback) {
+    console.log('Operation: createTeam');
+    // Need to check if unique NAME for team
     var Mods = req.models;
     var school = req.school;
     var newTeam = new Mods.Teams();
@@ -31,10 +32,37 @@ var teamsPageOps = {
 
   updateTeam: function(req, callback) {
     console.log('Operation: updateTeam');
+    var Mods = req.models;
+    var school = req.school;
+
+    var cond = {name: req.params.team};
+    var update = {
+      name: req.body.name,
+      gender: req.body.gender
+    };
+    Mods.Teams.findOneAndUpdate(cond, update, function(err, updated) {
+      if (err) callback(err);
+
+      console.log('teamUpdate:', update);
+      callback(null);
+    });
+
   },
 
   deleteTeam: function(req, callback) {
     console.log('Operation: deleteTeam');
+    var Mods = req.models;
+    var school = req.school;
+
+    //TODO:
+    //  check to see if athletes are following this team
+    //  if so, then report back before deleting
+    Mods.Teams.findOneAndRemove(cond, function(err, deldoc) {
+      if (err) callback(err);
+
+      console.log('teamDelete:', deldoc);
+      callback(null);
+    });
   }
 }
 
@@ -76,6 +104,3 @@ function getAPElib(evtCallback) {
 }
 
 module.exports = exports = teamsPageOps;
-
-
-
