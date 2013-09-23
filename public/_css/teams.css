@@ -5,7 +5,7 @@
 
 #all-teams li {
   list-style:none;
-  background: rgba(37, 43, 48, 0.8);
+  background: #383c3a;
   float: left;
   padding: 0.5em;
   margin: 0.5em;
@@ -33,8 +33,17 @@
 }
 
 #teams-list > li h3 {
+  margin-bottom: 0.1em;
   color:white;
   text-transform:capitalize;
+}
+
+a > i {
+  color: gray;
+}
+
+a > i:hover {
+  color: white;
 }
 
 
