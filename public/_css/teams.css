@@ -32,8 +32,9 @@
   width: 100%;
 }
 
-h3 {
+#teams-list > li h3 {
   color:white;
+  text-transform:capitalize;
 }
 
 

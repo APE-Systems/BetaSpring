@@ -16,11 +16,11 @@ block content
 
     .row
       .large-centered.columns#all-teams
-        ul
+        ul#teams-list
           for team in teams
-            li.team-name.team-gender
-              h3= team.name
-              span= team.gender
+            li(class=team.name + " " + team.gender)
+              h3.capitalize= team.name
+              span.capitalize= team.gender
               button View team
 
 
@@ -37,13 +37,13 @@ block content
 prepend scripts
   #teamModal.reveal-modal.small
     a.close-reveal-modal &#215;
-    form#create-team-form(action='/teams', method='post', enctype='multipart/form-data')
+    form.data-abide#create-team-form(action='/teams', method='post', enctype='multipart/form-data')
       .row
         .large-12.columns
           h4 Create Team
           div
             label Sport
-            input#team-name(type='text', name='team-name', required='required', placeholder='Ex: Baseball, Football')
+            input#team-name(type='text', name='team-name', required='required', pattern='[a-zA-Z0-9]+', placeholder='Ex: Baseball, Football')
           div
             label Gender
             select#team-gender(name='team-gender')

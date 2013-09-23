@@ -49,7 +49,6 @@ script.
     console.log("teamName: " + teamName);
     console.log("teamGender: " + teamGender);;
 
-
     $.ajax({
       url: '/'+ school + '/' + teamName + '/' + teamGender,
       type: 'POST',
@@ -72,12 +71,9 @@ script.
     console.log('clicked!');
     event.preventDefault();
     var groupname = $("#group-name").val();
-    $(".groups").append("<li class='btn'>" + groupname + "</li>");
-    console.log($(this).serialize() );
+    $("#teams-list").append("<li class='btn'>" + groupname + "</li>");
     var form = $(this);
-    console.log(form);
     
-
     $.ajax({
       url: '/test',
       type: 'POST',
