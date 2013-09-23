@@ -57,8 +57,9 @@ script.
       dataType: 'json',
       data: form.serialize()
     }).done(function(msg) {
-      alert("data saved: " + msg);
-      $(".male").append("<li class='box'><span class='caption'><p>" + msg.name + "</p></span></li>")  
+      console.log("data saved: " + msg);
+      $(".male").append("<li class='box'><span class='caption'><p>" + msg.name + "</p></span></li>");
+      location.reload();  
     }).fail(function(msg) {
       console.log("failure: " + msg);
       console.dir(msg);

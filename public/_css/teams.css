@@ -1,16 +1,44 @@
-ul {
+
+#all-teams ul {
   list-style-type: none;
 }
 
-ul.team-filter li {
-  display: inline;
+#all-teams li {
+  list-style:none;
+  background: rgba(37, 43, 48, 0.8);
+  float: left;
+  padding: 0.5em;
+  margin: 0.5em;
+  max-width: 20%;
+  min-width: 20%;
 }
 
-ul.team-filter li a:after{
-  content: " / ";
+#all-teams span {
+  display: block;
+  font-weight: bold;
+  left: 0.5em;
+  bottom: 0.5em;
+  padding: 3px 0;
+  color: white;
 }
+
+#all-teams ul li button {
+  font-size: 0.77778em;
+  line-height: 1.28571em;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+  border: 1px solid #081f09;
+  display: block;
+  width: 100%;
+}
+
+h3 {
+  color:white;
+}
+
 
 input[type=submit] {
+  margin-top: 0.6em;
   background-color: #9c0012;
   padding: 10px;
   color: white;

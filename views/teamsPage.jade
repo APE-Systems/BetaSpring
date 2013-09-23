@@ -10,30 +10,19 @@ block content
     mixin flash-messages(flash)
 
   - if (typeof(teams) !== "undefined")
-    .small-6.large-centered.columns.centered
+    .large-12.large-centered.columns.centered
       a.button(href='#', data-reveal-id='teamModal') Create Team
     hr
 
     .row
-      .small-6.columns.male-teams
-        h3.center Men's Teams
-        ul.small-block-grid-4.male
+      .large-centered.columns#all-teams
+        ul
           for team in teams
-            //- refactor the following code to use buttons? may be cleaner
-            a(href='#')
-              li.box
-                span.caption
-                  p= team.name
+            li.team-name.team-gender
+              h3= team.name
+              span= team.gender
+              button View team
 
-      .small-6.columns.female-teams
-        .row
-        h3 Women's Teams
-        //- ul.small-block-grid-4.female
-          //- for team in teamsPage.apeLibrary.teams
-            //- li.box
-              //- img= team.image
-              //- span.caption
-                //- p= team.name 
 
   - else
     .small-6.large-centered.columns
@@ -60,7 +49,5 @@ prepend scripts
             select#team-gender(name='team-gender')
               option(value='men') Men
               option(value='women') Women
-      .row
-        .large-12.columns
           div
             input(type='submit', id='create-team-submit', value='Create Team')
