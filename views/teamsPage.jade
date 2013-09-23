@@ -3,7 +3,7 @@ extends layout
 append head
   link(rel='stylesheet', href='../_css/teams.css')
   link(href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css', rel='stylesheet')
-
+  link(rel='stylesheet', href='../_icons/stylesheets/general_foundicons.css')
 block content
   - if(typeof flash != 'undefined')
     include includes/mixins/flash-messages
@@ -22,6 +22,9 @@ block content
               h3.capitalize= team.name
               span.capitalize= team.gender
               button View team
+              i.foundicon-trash.right
+              i.foundicon-edit.right
+              
 
 
   - else

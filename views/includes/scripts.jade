@@ -37,6 +37,13 @@ script.
     speed: 'fast',
     autoExpand: true,
     });
+
+    var teamsArray = $('#teams-list h3').map(function() {
+      return $(this).text();
+    }).get();
+
+    
+
   $('#create-team-form').on("submit", function(event) { 
     console.log("clicked from " + this );
     event.preventDefault();
@@ -48,24 +55,31 @@ script.
     console.log("school: " + school);
     console.log("teamName: " + teamName);
     console.log("teamGender: " + teamGender);
+    console.log("teamsArray:" + teamsArray);
+    console.log($.inArray(teamName, teamsArray));
 
-
-    $.ajax({
-      url: '/'+ school + '/' + teamName + '/' + teamGender,
-      type: 'POST',
-      contentType: 'application/json: charset=utf-8',
-      dataType: 'json',
-      data: form.serialize()
-    }).done(function(msg) {
-      console.log("data saved: " + msg);
-      $(".male").append("<li class='box'><span class='caption'><p>" + msg.name + "</p></span></li>");
-      location.reload();  
-    }).fail(function(msg) {
-      console.log("failure: " + msg);
-      console.dir(msg);
-    }).always(function() {
-      $('a.close-reveal-modal').trigger('click');     
-    }); // ajax
+    if ( $.inArray(teamName,teamsArray) == -1)  {
+      $.ajax({
+        url: '/'+ school + '/' + teamName + '/' + teamGender,
+        type: 'POST',
+        contentType: 'application/json: charset=utf-8',
+        dataType: 'json',
+        data: form.serialize()
+      }).done(function(msg) {
+        console.log("data saved: " + msg);
+        $(".male").append("<li class='box'><span class='caption'><p>" + msg.name + "</p></span></li>");
+        //location.reload();  
+      }).fail(function(msg) {
+        console.log("failure: " + msg);
+        console.dir(msg);
+      }).always(function() {
+        $('a.close-reveal-modal').trigger('click');     
+      }); // ajax
+    } else {
+      alert("Name already exists in database");
+      $('a.close-reveal-modal').trigger('click');
+    }
+    
   }); // create form on subsmit 
   
   $('#create-group-form').on("submit", function(event) {
