@@ -47,6 +47,7 @@ module.exports = function(app) {
   app.post('/:school/:team/:gender/:group', function(req, res, next) {
     console.log(req.body.params);
     res.send(200, req.body.params);
+    req.flash('info', 'Group created');
   });
     // 
 

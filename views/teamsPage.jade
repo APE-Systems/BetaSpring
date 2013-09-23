@@ -5,6 +5,10 @@ append head
   link(href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css', rel='stylesheet')
 
 block content
+  - if(typeof flash != 'undefined')
+    include includes/mixins/flash-messages
+    mixin flash-messages(flash)
+
   - if (typeof(teams) !== "undefined")
     .small-6.large-centered.columns.centered
       a.button(href='#', data-reveal-id='teamModal') Create Team
