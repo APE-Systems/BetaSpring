@@ -28,14 +28,21 @@ var teamsPageEvts = {
 
     tmspgOps.createTeam(req, function(err, team) {
       if (err) {
-        console.error("createTeam: Error\n", err);
-        res.json({
-          status: 500, 
-          error: {
-            Msg: "Problem saving team",
-            err: err
-          }
-        });
+        if (err.code === 422) {
+          console.error("Invalid Team name\n", err);
+          res.json(200, {error: err});
+        } else if (err.code === 11000) {
+          console.error("duplicate key\n", err);
+          res.json(200, {error: {msg: "Team name already in database", err: err}});
+        } else {
+          console.error("createTeam: Error\n", err);
+          res.json(200, {
+            error: {
+              msg: "Problem saving team",
+              err: err
+            }
+          });
+        }
       } else {
         console.log('createTeam: Success');
         res.json(200, {id: team._id, name: team.name, gender: team.gender});
@@ -49,11 +56,22 @@ var teamsPageEvts = {
 
     tmspgOps.updateTeam(req, function(err) {
       if (err) {
-        console.error("updateTeam: Error:\n", err);
-        res.send(500, "Problem updating team");
+        if (err.code === 422) {
+          console.error("Invalid Team name\n", err);
+          res.json(200, {error: err});
+        } else {
+          console.error("updateTeam: Error\n", err);
+          res.json({
+            status: 200, 
+            error: {
+              Msg: "Problem updating team",
+              err: err
+            }
+          });
+        }
       } else {
         console.log('updateTeam: Success');
-        res.send(200);
+        res.json(200, {status: "success"});
       }
     });
   },
@@ -64,11 +82,17 @@ var teamsPageEvts = {
 
     tmspgOps.deleteTeam(req, function(err) {
       if (err) {
-        console.error("deleteTeam: Error:\n", err);
-        res.send(500, "Problem deleteing team");
+        console.error("deleteTeam: Error\n", err);
+        res.json({
+          status: 500, 
+          error: {
+            Msg: "Problem deleting team",
+            err: err
+          }
+        });
       } else {
         console.log('deleteTeam: Success');
-        res.send(200);
+        res.json(200, {status: "success"});
       }
     });
   }

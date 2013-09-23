@@ -31,7 +31,7 @@ var rostersPageOps = {
   },
 
   createGroup: function(req, callback) {
-
+    
   },
 
   updateAthlete: function(req, callback) {
@@ -103,11 +103,11 @@ function getAPElib(evtCallback) {
     var apeLibPackage = {};
     var query = {};
     var proj = {name:1, metrics:1};
-    APE.mtrcats.find(query, proj, function(err, mcs) {
+    APE.MetricCats.find(query, proj, function(err, mcs) {
       if (err) evtCallback(err, null);
 
       apeLibPackage.mtrcats = mcs;
-      APE.metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
+      APE.Metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
         if (err) evtCallback(err, null);
 
         apeLibPackage.metrics = mtrs;

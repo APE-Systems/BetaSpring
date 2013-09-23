@@ -39,7 +39,6 @@ script.
     });
   $('#create-team-form').on("submit", function(event) { 
     console.log("clicked from " + this );
-    event.preventDefault();
     var form = $(this);
     console.log(form);
     var school = $('#school-name').text();
@@ -48,13 +47,16 @@ script.
     console.log("school: " + school);
     console.log("teamName: " + teamName);
     console.log("teamGender: " + teamGender);
+    console.log('formSerialize:', form.serialize());
+    //- var url = '/'+ school + '/' + teamName + '/' + teamGender;
+    var url = '/'+ school + '/baseball/men';
 
     $.ajax({
-      url: '/'+ school + '/' + teamName + '/' + teamGender,
-      type: 'POST',
+      url: url,
+      type: 'put',
       contentType: 'application/json: charset=utf-8',
       dataType: 'json',
-      data: form.serialize()
+      data: {"name": 'soccer', "gender": 'women'}
     }).done(function(msg) {
       alert("data saved: " + msg);
       $(".male").append("<li class='box'><span class='caption'><p>" + msg.name + "</p></span></li>")  
@@ -64,7 +66,9 @@ script.
     }).always(function() {
       $('a.close-reveal-modal').trigger('click');     
     }); // ajax
-  }); // create form on subsmit 
+
+    event.preventDefault();
+  }); // create form on subsmit
   
   $('#create-group-form').on("submit", function(event) {
     console.log('clicked!');

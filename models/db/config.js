@@ -7,9 +7,10 @@ console.info('connected to APEdb');
 ape.on('error', APEconnectionError);
 
 module.exports.apeMods = apeMods = {
-  mtrcats: ape.model('metriccats', require('../schemas/metricCategories')),
-  metrics: ape.model('metrics', require('../schemas/metrics')),
-  dbCodes: ape.model('dbcodes', require('../schemas/dbcodes'))
+  MetricCats: ape.model('metriccats', require('../schemas/metricCategories')),
+  Metrics: ape.model('metrics', require('../schemas/metrics')),
+  dbCodes: ape.model('dbcodes', require('../schemas/dbcodes')),
+  Schools: ape.model('schools', require('../schemas/schools'))
 };
 
 // Upon Application StartUp, Connect to all the databases

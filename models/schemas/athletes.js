@@ -13,8 +13,8 @@ var AthleteSchema = module.exports = new Schema({
   , createdOn: {type: Date, required: true, default: Date.now}
   , school: {type: String, required: true}
   , team: {
-      name: {type: String, required: true}
-    , gender: {type: String, required: true}
+      name: {type: String}
+    , gender: {type: String}
     }
   , coaches: [{
       username: {type: String, required: true}

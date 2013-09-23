@@ -13,7 +13,7 @@ app.configure(function() {
   app.set('port', process.env.VCAP_APP_PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
-  //app.set('view options', { layout: false });
+  // app.set('view options', { layout: false });
   app.use(express.favicon(__dirname + '/public/_imgs/ape.ico'));
   app.use(express.logger('dev'));
   app.use(express.compress()); // compress responses
