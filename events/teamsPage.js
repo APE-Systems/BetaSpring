@@ -22,6 +22,7 @@ var teamsPageEvts = {
     });
   },
 
+  //AJAX
   createTeam: function(req, res, next) {
     console.log('Event: createTeam');
 
@@ -42,6 +43,7 @@ var teamsPageEvts = {
     })
   },
 
+  //AJAX
   updateTeam: function(req, res, next) {
     console.log('Event: updateTeam');
 
@@ -56,6 +58,7 @@ var teamsPageEvts = {
     });
   },
 
+  //AJAX
   deleteTeam: function(req, res, next) {
     console.log('Event: deleteTeam');
 

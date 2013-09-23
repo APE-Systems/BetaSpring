@@ -50,11 +50,12 @@ script.
     var form = $(this);
     console.log(form);
     var school = $('#school-name').text();
-    var teamName = $('#team-name').val();
-    var teamGender = $('#team-gender').val();
+    var teamName = $('#team-name').val().toLowerCase();
+    var teamGender = $('#team-gender').val().toLowerCase();
     console.log("school: " + school);
     console.log("teamName: " + teamName);
     console.log("teamGender: " + teamGender);
+
     console.log("teamsArray:" + teamsArray);
     console.log($.inArray(teamName, teamsArray));
 
@@ -80,6 +81,23 @@ script.
       $('a.close-reveal-modal').trigger('click');
     }
     
+
+    $.ajax({
+      url: '/'+ school + '/' + teamName + '/' + teamGender,
+      type: 'POST',
+      contentType: 'application/json: charset=utf-8',
+      dataType: 'json',
+      data: form.serialize()
+    }).done(function(msg) {
+      alert("data saved: " + msg);
+      $(".male").append("<li class='box'><span class='caption'><p>" + msg.name + "</p></span></li>")  
+    }).fail(function(msg) {
+      console.log("failure: " + msg);
+      console.dir(msg);
+    }).always(function() {
+      $('a.close-reveal-modal').trigger('click');     
+    }); // ajax
+
   }); // create form on subsmit 
   
   $('#create-group-form').on("submit", function(event) {

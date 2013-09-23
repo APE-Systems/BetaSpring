@@ -25,8 +25,6 @@ var teamsPageOps = {
     newTeam.name = req.params.team;
     newTeam.gender = req.params.gender;
 
-    console.log('newTeam:\n', newTeam);
-
     console.log(newTeam);
     newTeam.save(function(err) {
       callback(err, newTeam);
