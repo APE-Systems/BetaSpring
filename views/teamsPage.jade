@@ -3,33 +3,31 @@ extends layout
 append head
   link(rel='stylesheet', href='../_css/teams.css')
   link(href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css', rel='stylesheet')
-
+  link(rel='stylesheet', href='../_icons/stylesheets/general_foundicons.css')
 block content
+  - if(typeof flash != 'undefined')
+    include includes/mixins/flash-messages
+    mixin flash-messages(flash)
+
   - if (typeof(teams) !== "undefined")
-    .small-6.large-centered.columns.centered
+    .large-12.large-centered.columns.centered
       a.button(href='#', data-reveal-id='teamModal') Create Team
     hr
 
     .row
-      .small-6.columns.male-teams
-        h3.center Men's Teams
-        ul.small-block-grid-4.male
+      .large-centered.columns#all-teams
+        ul#teams-list
           for team in teams
-            //- refactor the following code to use buttons? may be cleaner
-            a(href='#')
-              li.box
-                span.caption
-                  p= team.name
+            li(class=team.name + " " + team.gender)
+              h3.capitalize= team.name
+              span.capitalize= team.gender
+              button View team
+              a(href='#')
+                i.foundicon-trash.right
+              a(href='#')
+                i.foundicon-edit.right
+              
 
-      .small-6.columns.female-teams
-        .row
-        h3 Women's Teams
-        //- ul.small-block-grid-4.female
-          //- for team in teamsPage.apeLibrary.teams
-            //- li.box
-              //- img= team.image
-              //- span.caption
-                //- p= team.name 
 
   - else
     .small-6.large-centered.columns
@@ -51,13 +49,11 @@ prepend scripts
           h4 Create Team
           div
             label Sport
-            input#team-name(type='text', name='team-name', required='required', placeholder='Ex: Baseball, Football')
+            input#team-name(type='text', name='team-name', required='required', pattern='[a-zA-Z0-9]+', placeholder='Ex: Baseball, Football')
           div
             label Gender
             select#team-gender(name='team-gender')
               option(value='men') Men
               option(value='women') Women
-      .row
-        .large-12.columns
           div
             input(type='submit', id='create-team-submit', value='Create Team')
