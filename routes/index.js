@@ -38,12 +38,8 @@ module.exports = function(app) {
 
   // Teams Page
   app.get('/:school/teams', tmEvts.getTeamsPage);
-  // app.post('/:school/:team/:gender', tmEvts.createTeam);
-  // app.put('/:school/:team/:gender', tmEvts.updateTeam);
-  app.put('/:school/:team/:gender', function(req, res) {
-    console.log('putter');
-    console.log(req.body);
-  });
+  app.post('/:school/:team/:gender', tmEvts.createTeam);
+  app.put('/:school/:team/:gender', tmEvts.updateTeam);
   app.delete('/:school/:team/:gender', tmEvts.deleteTeam);
 
 }
