@@ -44,13 +44,12 @@ prepend scripts
   #teamModal.reveal-modal.small
     a.close-reveal-modal &#215;
     form#create-team-form(action='#', method='post')
-      input(type='hidden', name='_method', value='put')
       .row
         .large-12.columns
           h4 Create Team
           div
             label Sport
-            input#team-name(type='text', name='team-name', required='required', pattern='[a-zA-Z0-9]+', placeholder='Ex: Baseball, Football')
+            input#team-name(type='text', name='team-name', required='required', pattern='^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$', placeholder='Ex: Baseball, Football')
           div
             label Gender
             select#team-gender(name='team-gender')

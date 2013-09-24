@@ -42,12 +42,10 @@ script.
       return $(this).text();
     }).get();
 
-    
-
   $('#create-team-form').on("submit", function(event) { 
     console.log("clicked from " + this );
     var form = $(this);
-    console.log(form);
+    //- console.log(form);
     var school = $('#school-name').text();
     var teamName = $('#team-name').val().toLowerCase();
     var teamGender = $('#team-gender').val().toLowerCase();
@@ -55,22 +53,25 @@ script.
     console.log("teamName: " + teamName);
     console.log("teamGender: " + teamGender);
     console.log('formSerialize:', form.serialize());
-    //- var url = '/'+ school + '/' + teamName + '/' + teamGender;
-    var url = '/'+ school + '/baseball/men';
+    var url = '/'+ school + '/' + teamName + '/' + teamGender;
+    //- var url = '/'+ school + '/baseball/men';
+    //- var url = '/'+ school + '/hardball/women';
 
     console.log("teamsArray:" + teamsArray);
     console.log($.inArray(teamName, teamsArray));
 
-    if ( $.inArray(teamName,teamsArray) == -1)  {
+    //- if ( $.inArray(teamName,teamsArray) === -1)  {
+      console.log('sending PUT ajax', url);
       $.ajax({
-        url: '/'+ school + '/' + teamName + '/' + teamGender,
+        //- url: '/'+ school + '/' + teamName + '/' + teamGender,
+        url: url,
         type: 'POST',
-        contentType: 'application/json: charset=utf-8',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
         dataType: 'json',
         data: form.serialize()
       }).done(function(msg) {
         console.log("data saved: " + msg);
-        $(".male").append("<li class='box'><span class='caption'><p>" + msg.name + "</p></span></li>");
+        alert(msg);
         //location.reload();  
       }).fail(function(msg) {
         console.log("failure: " + msg);
@@ -78,28 +79,10 @@ script.
       }).always(function() {
         $('a.close-reveal-modal').trigger('click');     
       }); // ajax
-    } else {
-      alert("Name already exists in database");
-      $('a.close-reveal-modal').trigger('click');
-    }
-    
-
-    $.ajax({
-      url: url,
-      type: 'put',
-      contentType: 'application/json: charset=utf-8',
-      dataType: 'json',
-      data: {"name": 'soccer', "gender": 'women'}
-    }).done(function(msg) {
-      alert("data saved: " + msg);
-      $(".male").append("<li class='box'><span class='caption'><p>" + msg.name + "</p></span></li>")  
-    }).fail(function(msg) {
-      console.log("failure: " + msg);
-      console.dir(msg);
-    }).always(function() {
-      $('a.close-reveal-modal').trigger('click');     
-    }); // ajax
-
+    //- } else {
+    //-   alert("Name already exists in database");
+    //-   $('a.close-reveal-modal').trigger('click');
+    //- }
     event.preventDefault();
   }); // create form on subsmit
 
@@ -113,7 +96,7 @@ script.
     $.ajax({
       url: '/test',
       type: 'POST',
-      contentType: 'application/json; charset=utf-8',
+      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
       dataType: 'json',
       data: form.serialize(),
       timeout: 3000

@@ -1,7 +1,8 @@
 .DS_Store
-node_modules
+node_modules/
 npm-debug.log
 notes.txt
 public/_imgs
+middleware/sessions.js
 
 */[a-zA-Z]*-ck.js

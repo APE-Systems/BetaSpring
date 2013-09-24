@@ -16,7 +16,9 @@ var teamsPageOps = {
     console.log('Operation: createTeam');
     validateInput(req.params.team, insertTeam);
 
-    // Need to propagate new team to Coaches and School models
+    //NOTE:
+    //  new team propagates to all coaches in same school
+    //  need to figure out which coaches get updated
     function insertTeam(err, team) {
       if (err) return callback(err, null);
 
@@ -25,14 +27,26 @@ var teamsPageOps = {
       var newTeam = new Mods.Teams();
 
       newTeam.createdBy = req.sess.COID;
-      newTeam.coaches.push({name: "coach name", username: req.sess.username});
+      newTeam.coaches.push({_id: req.sess.COID, username: req.sess.username, name: req.sess.name});
       newTeam.school = school;
       newTeam.name = team;
       newTeam.gender = req.params.gender;
 
       // console.log(newTeam);
       newTeam.save(function(err) {
-        return callback(err, newTeam);
+        if (err) throw new Error(err);
+
+        insertSchoolTeam(newTeam, function(err, doc) {
+          if (err) throw new Error(err);
+
+          console.info("Team saved in School", doc);
+          insertCoachesTeam(req, newTeam, function(err, doc) {
+            if (err) throw new Error(err);
+
+            console.info("Team saved in coaches", doc);
+            callback(null, newTeam);
+          });
+        });
       });
     }
   },//END createTeam
@@ -91,6 +105,19 @@ var teamsPageOps = {
 /*
   ------ HELPER FUNCTIONS ------
  */
+
+function insertCoachesTeam(req, team, callback) {
+  var Mods = req.models;
+  var query = {school: team.school};
+  var update = {$push: {teams: {_id: team._id, name: team.name, gender: team.gender}}}
+  Mods.Coaches.update(query, update, {multi:true}, callback);
+}
+
+function insertSchoolTeam(team, callback) {
+  var query = {name: team.school};
+  var update = {$push: {teams: {_id: team._id, name: team.name, gender: team.gender}}}
+  APE.Schools.update(query, update, callback);
+}
 
 function validateInput(tName, callback) {
   console.log('Operations: validateInput\n');

@@ -11,7 +11,7 @@ module.exports = exports = {
   getSchoolModels: function(req, res, next) {
     if (req.sess.username) {
       req.models = new Mods(req.sess.school);
-      console.log('middleware: Models');
+      console.log('middleware: Models Loaded\n');
       return next();
     }
     return next();

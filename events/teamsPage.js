@@ -14,7 +14,7 @@ var teamsPageEvts = {
       if (err) throw new Error(err);
 
       // console.log('payLoad:', payLoad);
-      res.render('teamsPage', {
+      res.render("teamsPage", {
         nav: req.sess.school,
         teams: payLoad.teams,
         apeLib: payLoad.apeLibPackage
@@ -44,7 +44,7 @@ var teamsPageEvts = {
           });
         }
       } else {
-        console.log('createTeam: Success');
+        console.log('createTeam: Success\n');
         res.json(200, {id: team._id, name: team.name, gender: team.gender});
       }
     })

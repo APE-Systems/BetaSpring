@@ -48,7 +48,7 @@ module.exports.getModels = function(school) {
     //RecordTime: db.model('recordTimes', require('../schemas/recordTime'));
   }
 
-  console.log(school + ' models retrieved\n');
+  console.log(school + ' models retrieved');
   return models;
 };
 
@@ -64,28 +64,3 @@ function APEconnectionError(err) {
   console.error(err);
   if (err) throw new Error(err);
 }
-
-/*
-module.exports = exports = function(school, callback) {
-
-      callback(null, getModels(databases));
-
-      function getModels(databases) {
-
-          var db = databases[databases[school]];
-          var models = {
-            Coaches: db.model('coaches', require('../schemas/coaches')),
-            Teams: db.model('teams', require('../schemas/teams')),
-            Athletes: db.model('athletes', require('../schemas/athletes')),
-            MetricCats: db.model('metriccats', require('../schemas/metricCategories')),
-            Metrics: db.model('metrics', require('../schemas/metrics')),
-            Athmetrics: db.model('athmetrics', require('../schemas/athmetrics')),
-            Groups: db.model('groups', require('../schemas/groups'))
-            //RecordTime: db.model('recordTimes', require('../schemas/recordTime'));
-          }
-
-          console.log(school + ' models retrieved\n');
-          return models;
-      }
-};
-*/

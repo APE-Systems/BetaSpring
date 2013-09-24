@@ -25,6 +25,14 @@ module.exports = function(app) {
   // Logout
   // app.get('/logout', mid.checkCookie, mid.checkSession, user.logout);
 
+  // Teams Page
+  app.get('/:school/teams', tmEvts.getTeamsPage);
+  app.post('/:school/:team/:gender', tmEvts.createTeam);
+  app.put('/:school/:team/:gender', tmEvts.updateTeam);
+  app.delete('/:school/:team/:gender', tmEvts.deleteTeam);
+
+
+
   // Rosters Page
   app.get('/:school/:team/:gender/roster', rosEvts.getRostersPage);
   app.post('/:school/:team/:gender/:group', function(req, res, next) {
@@ -34,12 +42,4 @@ module.exports = function(app) {
   });
   // app.put();
   // app.delete();
-
-
-  // Teams Page
-  app.get('/:school/teams', tmEvts.getTeamsPage);
-  app.post('/:school/:team/:gender', tmEvts.createTeam);
-  app.put('/:school/:team/:gender', tmEvts.updateTeam);
-  app.delete('/:school/:team/:gender', tmEvts.deleteTeam);
-
 }
