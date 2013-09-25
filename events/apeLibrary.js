@@ -9,17 +9,15 @@ var ApeLibEvts = {
 
   createMetricCat: function(req, res, next) {
     console.log('Event: createMetricCat');
-
     var team = { name: req.params.team || null,
-                 gender: req.params.gender || null
-               };
+               gender: req.params.gender || null
+             };
     var mtrcat = req.params.mtrcat;
-    console.log(mtrcat);
-    /*
+
     ApeLibOps.createMetricCat(req, team, mtrcat, function(err, mtrcat) {
       if (err) {
         if (err.code === 422) {
-          console.error("Invalid Metric name\n", err);
+          console.error("Invalid Metric Category name\n", err);
           res.json(200, {error: err});
         } else if (err.code === 11000) {
           console.error("duplicate key\n", err);
@@ -38,11 +36,37 @@ var ApeLibEvts = {
         res.json(200, {id: mtrcat._id, name: mtrcat.name});
       }
     });
-    */
   },
 
   createMetric: function(req, res, next) {
+    console.log('Event: createMetric');
+    var team = { name: req.params.team || null,
+               gender: req.params.gender || null
+             };
+    var metric = req.params.metric;
 
+    ApeLibOps.createMetric(req, team, metric, function(err, metric) {
+      if (err) {
+        if (err.code === 422) {
+          console.error("Invalid Metric name\n", err);
+          res.json(200, {error: err});
+        } else if (err.code === 11000) {
+          console.error("duplicate key\n", err);
+          res.json(200, {error: {msg: "Metric name already in database", err: err}});
+        } else {
+          console.error("createMetric: Error\n", err);
+          res.json(200, {
+            error: {
+              msg: "Problem saving metric",
+              err: err
+            }
+          });
+        }
+      } else {
+        console.log('createMetric: Success\n');
+        res.json(200, {id: metric._id, name: metric.name});
+      }
+    });
   },
 
   editMetricCat: function(req, res, next) {
@@ -76,15 +100,7 @@ var ApeLibEvts = {
 
 }
 
+module.exports = exports = ApeLibEvts;
 /*
   ------ HELPER FUNCTION ------
  */
-
-
-
-
-
-
-
-
-module.exports = exports = ApeLibEvts;
