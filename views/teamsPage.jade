@@ -20,16 +20,13 @@ block content
         ul#teams-list
           for team in teams
             li(class=team.name + " " + team.gender)
-              h3.capitalize= team.name
+              h3.capitalize=team.name
               span.capitalize= team.gender
               button View team
-              a(href='#')
+              a#delete-team(href='#')
                 i.foundicon-trash.right
-              a(href='#')
+              a.edit-team(href='#')
                 i.foundicon-edit.right
-              
-
-
   - else
     .small-6.large-centered.columns
       .centered-div
@@ -57,3 +54,19 @@ prepend scripts
               option(value='women') Women
           div
             input(type='submit', id='create-team-submit', value='Create Team')
+  #edit-team-modal.reveal-modal.small
+    a.close-reveal-modal &#215;
+    form#edit-team-form(action='#', method='put')
+      .row
+        .large-12.columns
+          h4 Edit Team
+          div
+            label Sport
+            input#edit-team-name(type='text', name='edit-team-name', required='required', pattern='^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$', placeholder='::FORMER NAME::')
+          div
+            label Gender
+            select#edit-team-gender(name='edit-team-gender')
+              option(value='men') Men
+              option(value='women') Women
+          div
+            input(type='submit', id='edit-team-submit', value='Edit Team')
