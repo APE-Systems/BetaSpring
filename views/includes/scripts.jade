@@ -43,10 +43,16 @@ script.
     }).get();
     var school = $('#school-name').text();
 
+  $('.delete-team').on("click", function(event) {
+    event.preventDefault();
+    prompt("Are you sure you want to delete this team?");
+    });
+
   //- EDIT TEAM FUNCTION BELOW
   $('.edit-team').on("click", function(event) {
     $(this).find('.foundicon-edit').addClass('white');
     var teamName = $(this).closest('li').find('h3');
+    var teamNameCopy = teamName;
     var teamGender = $(this).closest('li').find('span').html();
     console.log("teamGender : " + teamGender);
     var url = '/'+ school + '/' + teamName.html() + '/' + teamGender;
@@ -70,6 +76,8 @@ script.
           }).done(function(msg) {
             console.log("data saved " + msg);
           }).fail(function(msg) {
+            alert("Sorry, couldn't save to the database.");
+            console.log(teamName);
             console.log("failure");
             console.dir(msg);
           }).always(function() {
