@@ -1,4 +1,6 @@
-
+.white {
+  color: white;
+}
 #all-teams ul {
   list-style-type: none;
 }

@@ -43,8 +43,9 @@ script.
     }).get();
     var school = $('#school-name').text();
 
-// EDIT TEAM FUNCTION BELOW
+  //- EDIT TEAM FUNCTION BELOW
   $('.edit-team').on("click", function(event) {
+    $(this).find('.foundicon-edit').addClass('white');
     var teamName = $(this).closest('li').find('h3');
     var teamGender = $(this).closest('li').find('span').html();
     console.log("teamGender : " + teamGender);
@@ -55,6 +56,7 @@ script.
     $(teamName).keypress(function(e) {
       if(e.which == 13) {
         console.log("user pressed Enter key");
+        $('.foundicon-edit').removeClass('white');
         console.log(teamName);
         console.log(teamGender);
         console.log("name: " + name);
@@ -76,7 +78,7 @@ script.
       }
       });
   });  
-// END EDIT TEAM FUNCTION
+  //- END EDIT TEAM FUNCTION
 
   $('#create-team-form').on("submit", function(event) { 
     console.log("clicked from " + this );
