@@ -7,6 +7,20 @@ var ApeLibOps = require('../operations').ApeLibOps;
 
 var ApeLibEvts = {
 
+  // Drag'N Drop
+  metricCatMetricToTeam: function(req, res, next) {
+    res.send(200, 'goog');
+  },
+
+  metricCatToTeam: function(req, res, next) {
+    res.send(200, 'goog');
+  },
+
+  metricToTeam: function(req, res, next) {
+    res.send(200, 'goog');
+  }
+
+  /*
   createMetricCat: function(req, res, next) {
     console.log('Event: createMetricCat');
     var team = { name: req.params.team || null,
@@ -38,8 +52,8 @@ var ApeLibEvts = {
     });
   },
 
-  createMetric: function(req, res, next) {
-    console.log('Event: createMetric');
+  editMetricCat: function(req, res, next) {
+    console.log('Event: editMetric');
     var team = { name: req.params.team || null,
                gender: req.params.gender || null
              };
@@ -69,38 +83,19 @@ var ApeLibEvts = {
     });
   },
 
-  editMetricCat: function(req, res, next) {
-
-  },
-
   editMetric: function(req, res, nect) {
-
   },
 
   deleteMetricCat: function(req, res, next) {
-
   },
 
   deleteMetric: function(req, res, next) {
-
   },
-
-  // Drag'N Drop
-  metricCatMetricToTeam: function(req, res, next) {
-
-  },
-
-  metricCatToTeam: function(req, res, next) {
-
-  },
-
-  metricToTeam: function(req, res, next) {
-
-  },
-
+  */
 }
 
 module.exports = exports = ApeLibEvts;
+
 /*
   ------ HELPER FUNCTION ------
  */

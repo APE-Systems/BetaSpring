@@ -49,7 +49,7 @@ script.
     var teamName = $(this).closest('li').find('h3');
     var teamGender = $(this).closest('li').find('span').html();
     console.log("teamGender : " + teamGender);
-    var url = '/'+ school + '/' + teamName.html() + '/' + teamGender;
+    var url = '/'+ school + '/' + teamName.html() +'-' + teamGender;
     var name = '"' + teamName.html() + '"';
     console.log(name);
     $(teamName).attr("contenteditable", "true");

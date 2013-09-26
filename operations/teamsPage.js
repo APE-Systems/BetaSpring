@@ -34,16 +34,16 @@ var teamsPageOps = {
 
       // console.log(newTeam);
       newTeam.save(function(err) {
-        if (err) throw new Error(err);
+        if (err) return callback(err, null);
 
         insertSchoolTeam(newTeam, function(err, doc) {
-          if (err) throw new Error(err);
+          if (err) return callback(err, null);
 
-          console.info("Team saved in School", doc);
+          console.info("Team saved in School\n", doc);
           insertCoachesTeam(req, newTeam, function(err, doc) {
-            if (err) throw new Error(err);
+            if (err) return callback(err, null);
 
-            console.info("Team saved in coaches", doc);
+            console.info("Team saved in coaches\n", doc);
             callback(null, newTeam);
           });
         });
@@ -76,9 +76,6 @@ var teamsPageOps = {
     }
   },//END updateTeam
 
-  //TODO:
-  //  check to see if athletes are following this team
-  //  if so, then report back before deleting
   deleteTeam: function(req, callback) {
     console.log('Operation: deleteTeam');
 
@@ -119,20 +116,20 @@ function insertSchoolTeam(team, callback) {
   APE.Schools.update(query, update, callback);
 }
 
-function validateInput(tName, callback) {
+function validateInput(input, callback) {
   console.log('Operations: validateInput\n');
   var maxCharLen = 45;
-  var team = tName;
   var rego = /^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$/;
-  if (maxCharLen === team.length) {
-    var err = {name: "ValidationError", msg: 'Team exceeds number of characaters allowed', code: 422};
+  if (maxCharLen === input.length) {
+    var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422};
     return callback(err, null);
   }
-  if (!rego.test(team)) {
+  if (!rego.test(input)) {
     var err = {name: "ValidationError", msg: 'Not valid input', code: 422};
     return callback(err, null);
   }
-  return callback(null, team);
+  console.info("Validation: Success");
+  return callback(null, input);
 }
 
 function getTeams(req, callback) {
@@ -286,19 +283,32 @@ function propagateDelete(req, delTeam, callback) {
   deleteSchoolTeam(delTeam);
 
   function deleteSchoolTeam(delTeam) {
+    var schCond = {
+      name: req.sess.school,
+      'teams.name': req.params.team,
+      'teams.gender': req.params.gender
+    };
 
+    APE.Schools.update(schCond, function(err, delDoc) {
+    // APE.Schools.findOne(schCond, function(err, schDoc) {
+      if (err) throw new Error(err);
+
+      console.info('Deleted: School\n', delDoc);
+      deleteCoachesTeam(delTeam);
+      return;
+    });
   }//END
 
   function deleteCoachesTeam(delTeam) {
-
+    Mods.Coaches.update();
   }//END
 
   function deleteMetricsTeam(delTeam) {
-
+    Mods.Metrics.update();
   }//END
 
   function deleteMetricCatsTeam(delTeam) {
-
+    Mods.MetricCats.update()
   }//END
 
   function deleteAthletesTeam(delTeam) {

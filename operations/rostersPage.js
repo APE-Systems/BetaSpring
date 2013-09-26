@@ -13,25 +13,21 @@ var rostersPageOps = {
   },
 
   createAthlete: function(req, callback) {
-    console.log('Operation: createTeam');
-    // Need to check if unique NAME for team
-    var Mods = req.models;
+    console.log('Operation: createAthlete');
+
+    var team = {name: req.params.team, gender: req.params.gender};
     var school = req.school;
-    var newTeam = new Mods.Teams();
+    var Mods = req.models;
+    var newAthlete = new Mods.Athletes();
 
-    newTeam.createdBy = req.username;
-    newTeam.coaches.push({name: "coach name", username: req.username});
-    newTeam.school = school;
-    newTeam.name = req.body.name;
-    newTeam.gender = req.body.gender;
+    newAthlete.createdBy = req.sess.COID;
+    newAthlete.school = school;
+    newAthlete.name = req.body.name;
+    newAthlete.gender = req.body.gender;
 
-    newTeam.save(function(err) {
+    newAthlete.save(function(err) {
       callback(err);
     });
-  },
-
-  createGroup: function(req, callback) {
-    
   },
 
   updateAthlete: function(req, callback) {
@@ -53,10 +49,6 @@ var rostersPageOps = {
 
   },
 
-  updateGroup: function(req, callback) {
-
-  },
-
   deleteAthlete: function(req, callback) {
     console.log('Operation: deleteTeam');
     var Mods = req.models;
@@ -73,10 +65,79 @@ var rostersPageOps = {
     });
   },
 
+  createGroup: function(req, callback) {
+    console.log('Operation: createGroup');
+
+    validateInput(req.params.group, insertGroup);
+
+    function insertGroup(err, group) {
+      if (err) return callback(err, null);
+
+      var team = {name: req.params.team, gender: req.params.gender};
+      var group = req.params.group;
+      var school = req.sess.school;
+      var Mods = req.models;
+      var newGroup = new Mods.Groups();
+
+      newGroup.createdBy = req.sess.COID;
+      newGroup.school = school;
+      newGroup.team = team;
+      newGroup.name = group;
+
+      // console.log('newGroup\n', newGroup);
+      newGroup.save(function(err) {
+        if (err) return callback(err, null);
+
+        console.log("Group saved");
+        insertTeamGroup(req, newGroup, function(err, numUp) {
+          if (err) return callback(err, null);
+
+          console.log('Team updated with group', numUp);
+          return callback(null, newGroup);
+        });
+      });
+    }
+  },
+
+  updateGroup: function(req, callback) {
+
+  },
+
   deleteGroup: function(req, callback) {
 
   }
 };
+
+/*
+  ------ HELPER FUNCTIONS ------
+ */
+
+function insertTeamGroup(req, group, callback) {
+  console.log("inserting group into team");
+  var Mods = req.models;
+  var query = {school: group.school, name: group.team.name, gender: group.team.gender};
+  var update = {$push: {groups: {_id: group._id, name: group.name}}}
+  Mods.Teams.update(query, update, {multi:true}, callback);
+  return;
+}
+
+function validateInput(input, callback) {
+  console.log('Operations: validateInput');
+  var maxCharLen = 45;
+  var rego = /^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$/;
+  if (maxCharLen === input.length) {
+    console.info("Validation: Error\n");
+    var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422};
+    return callback(err, null);
+  }
+  if (!rego.test(input)) {
+    console.info("Validation: Error\n");
+    var err = {name: "ValidationError", msg: 'Not valid input', code: 422};
+    return callback(err, null);
+  }
+  console.info("Validation: Success\n");
+  return callback(null, input);
+}
 
 function getAthletes(req, callback) {
   var dataLoad = {};

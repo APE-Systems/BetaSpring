@@ -33,8 +33,34 @@ module.exports = function(app) {
   app.put('/:school/:team-:gender', tmEvts.updateTeam);
   app.delete('/:school/:team-:gender', tmEvts.deleteTeam);
 
-
   //APE Library
+    //Drag'N Drop
+  app.post('/:school/apelibrary/:mtrcat/:metric/:teamTgt-:genderTgt', apeLibEvts.metricCatMetricToTeam);
+  app.post('/:school/apelibrary/:mtrcat/:teamTgt-:genderTgt', apeLibEvts.metricCatToTeam);
+  app.post('/:school/apelibrary/:metric/:teamTgt-:genderTgt', apeLibEvts.metricToTeam);
+
+  // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:mtrcat/:metric/:teamTgt-:genderTgt', apeLibEvts.metricCatMetricToTeam);
+  // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:mtrcat/:teamTgt-:genderTgt', apeLibEvts.metricCatToTeam)
+  // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:metric/:teamTgt-:genderTgt', apeLibEvts.metricToTeam)
+
+  // Rosters Page
+  app.get('/:school/:team-:gender/roster/athletes', rosEvts.getRostersPage);
+  app.post('/:school/:team-:gender/roster/athlete', rosEvts.createAthlete);
+  app.put('/:school/:team-:gender/roster/athlete/:athlete', rosEvts.updateAthlete);
+  app.delete('/:school/:team-:gender/roster/athlete/:athlete', rosEvts.deleteAthlete);
+
+  app.post('/:school/:team-:gender/roster/group/:group', rosEvts.createGroup);
+  app.put('/:school/:team-:gender/roster/group/:group', rosEvts.updateGroup);
+  app.delete('/:school/:team-:gender/roster/group/:group', rosEvts.deleteGroup);
+
+}
+
+// -------------------------------------------------------------------------- //
+//  APE LIBRARY URI TO SUPPORT CRUD
+// -------------------------------------------------------------------------- //
+/*
+    
+
   app.post('/:school/apelibrary/metriccategory-:mtrcat', apeLibEvts.createMetricCat);
   app.put('/:school/apelibrary/metriccateogry-:mtrcat', apeLibEvts.editMetricCat);
   app.delete('/:school/apelibrary/metriccateogry-:mtrcat', apeLibEvts.deleteMetricCat);
@@ -45,42 +71,16 @@ module.exports = function(app) {
 
 // -------------------------------------------------------------------------- //
 
-  //try to use the ?team=baseball&gender=women&mtrcat=laterals&metric=jumpies
-  // University of Southern California/apelibrary/Laterals
-  // University of Southern California/apelibrary/Laterals/jumpies
-  // University of Southern California/apelibrary/loose/hoppies
   app.post('/:school/apelibrary/:team-:gender/:mtrcat/:metric', apeLibEvts.createMetric);
   app.post('/:school/apelibrary/:team-:gender/metriccategory-:mtrcat', apeLibEvts.createMetricCat);
-  app.post('/:school/apelibrary/:team-:gender/:metric', apeLibEvts.createMetric);
-
+  app.put('/:school/apelibrary/:team-:gender/metriccategory-:mtrcat', apeLibEvts.editMetricCat);
+  app.put('/:school/apelibrary/:team-:gender/metriccategory-:mtrcat/metric-:metric', apeLibEvts.editMetric);
+  app.put('/:school/apelibrary/:team-:gender/metric-:metric', apeLibEvts.editMetric);
+  app.post('/:school/apelibrary/:team-:gender/:metric', apeLibEvts.createMetric);\
   app.put('/:school/apelibrary/:team-:gender/:mtrcat/:metric', apeLibEvts.editMetric);
-  app.put('/:school/apelibrary/:team-:gender/:mtrcat', apeLibEvts.editMetricCat);
-  app.put('/:school/apelibrary/:team-:gender/:metric', apeLibEvts.editMetric);
-
   app.delete('/:school/apelibrary/:team-:gender/:mtrcat/:metric', apeLibEvts.deleteMetric);
   app.delete('/:school/apelibrary/:team-:gender/:mtrcat', apeLibEvts.deleteMetricCat);
   app.delete('/:school/apelibrary/:team-:gender/:metric', apeLibEvts.deleteMetric);
-
+  */
 // -------------------------------------------------------------------------- //
-
-    //Drag'N Drop
-  app.post('/:school/apelibrary/:mtrcat/:metric/:teamTgt-:genderTgt', apeLibEvts.metricCatMetricToTeam);
-  app.post('/:school/apelibrary/:mtrcat/:teamTgt-:genderTgt', apeLibEvts.metricCatToTeam);
-  app.post('/:school/apelibrary/:metric/:teamTgt-:genderTgt', apeLibEvts.metricToTeam);
-
-  app.post('/:school/apelibrary/:teamSrc-:genderSrc/:mtrcat/:metric/:teamTgt-:genderTgt', apeLibEvts.metricCatMetricToTeam);
-  app.post('/:school/apelibrary/:teamSrc-:genderSrc/:mtrcat/:teamTgt-:genderTgt', apeLibEvts.metricCatToTeam)
-  app.post('/:school/apelibrary/:teamSrc-:genderSrc/:metric/:teamTgt-:genderTgt', apeLibEvts.metricToTeam)
-
-
-
-  // Rosters Page
-  app.get('/:school/:team/:gender/roster', rosEvts.getRostersPage);
-  app.post('/:school/:team/:gender/:group', function(req, res, next) {
-    console.log(req.body.params);
-    res.send(200, req.body.params);
-    req.flash('info', 'Group created');
-  });
-  // app.put();
-  // app.delete();
-}
+// -------------------------------------------------------------------------- //
