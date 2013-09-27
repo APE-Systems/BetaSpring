@@ -139,7 +139,7 @@ script.
     console.log('clicked!');
     event.preventDefault();
     var groupname = $("#group-name").val();
-    $("#teams-list").append("<li class='btn'>" + groupname + "</li>");
+    $(".sub-nav").append("<dd><a href='#'>" + groupname + "</a></dd>");
     var form = $(this);
     
     $.ajax({
