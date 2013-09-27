@@ -2,9 +2,7 @@ extends layout
 
 append head
   link(rel='stylesheet', href='../_css/teams.css')
-  link(rel='stylesheet', href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css')
-  link(rel='stylesheet', href='../_icons/stylesheets/general_foundicons.css')
-  link
+
 block content
   - if(typeof flash != 'undefined')
     include includes/mixins/flash-messages

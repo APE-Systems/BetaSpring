@@ -1,13 +1,13 @@
 
-<script src="../_js/vendor/custom.modernizr.js" type="text/javascript"></script>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js" type="text/javascript"></script>
-<script src="../_js/vendor/foundation/foundation.min.js" type="text/javascript"></script>
-<script src="../_js/vendor/sidr/jquery.sidr.min.js"></script>
-<script type="text/javascript" src="../_js/vendor/accordion/jquery.cookie.js"></script>
-<script type="text/javascript" src="../_js/vendor/accordion/jquery.hoverIntent.minified.js"></script>
-<script type="text/javascript" src="../_js/vendor/accordion/jquery.dcjqaccordion.2.7.min.js"></script>
-<script type="text/javascript" src="../_js/vendor/list.min.js"></script>
-<script type="text/javascript" src="../_js/vendor/underscore-min.js"></script>
+<script type="text/javascript" src="/_js/vendor/custom.modernizr.js"></script>
+<script type="text/javascript" src="/_js/vendor/jquery/jquery-1.10.1.js"></script>
+<script type="text/javascript" src="/_js/vendor/foundation/foundation.min.js"></script>
+<script type="text/javascript" src="/_js/vendor/sidr/jquery.sidr.min.js"></script>
+<script type="text/javascript" src="/_js/vendor/accordion/jquery.cookie.js"></script>
+<script type="text/javascript" src="/_js/vendor/accordion/jquery.hoverIntent.minified.js"></script>
+<script type="text/javascript" src="/_js/vendor/accordion/jquery.dcjqaccordion.2.7.min.js"></script>
+<script type="text/javascript" src="/_js/vendor/list.min.js"></script>
+<script type="text/javascript" src="/_js/vendor/underscore-min.js"></script>
 <script>
   $(document).foundation();
   $(document).ready(function() {
@@ -36,19 +36,114 @@
     speed: 'fast',
     autoExpand: true,
     });
-  $('#create-team-submit').submit(function() { $('#teamModal').trigger('reveal:close'); });
+    
+    var teamsArray = $('#teams-list h3').map(function() {
+      return $(this).text();
+    }).get();
+    var school = $('#school-name').text();
+    
+  $('.delete-team').on("click", function(event) {
+    event.preventDefault();
+    prompt("Are you sure you want to delete this team?");
+    });
+    
+  //- EDIT TEAM FUNCTION BELOW
+  $('.edit-team').on("click", function(event) {
+    $(this).find('.foundicon-edit').addClass('white');
+    var teamName = $(this).closest('li').find('h3');
+    var teamNameCopy = teamName;
+    var teamGender = $(this).closest('li').find('span').html();
+    console.log("teamGender : " + teamGender);
+    
+    var url = '/'+ school + '/' + teamName.html() +'-' + teamGender;
+    var name = '"' + teamName.html() + '"';
+    console.log(name);
+    $(teamName).attr("contenteditable", "true");
+    $(teamName).keypress(function(e) {
+      if(e.which == 13) {
+        console.log("user pressed Enter key");
+        $('.foundicon-edit').removeClass('white');
+        console.log(teamName);
+        console.log(teamGender);
+        var name = '"' + teamName.html() + '"';
+        console.log("name: " + name);
+        $.ajax({
+          url: url,
+          type: 'PUT',
+          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+          dataType: 'json',
+          data: {"teamName": name},
+          }).done(function(msg) {
+            console.log("data saved " + msg);
+          }).fail(function(msg) {
+            alert("Sorry, couldn't save to the database.");
+            console.log(teamName);
+            console.log("failure");
+            console.dir(msg);
+          }).always(function() {
+            console.log("always function");
+            })
+        $(this).attr("contenteditable", "false");
+      }
+      });
+  });  
+  //- END EDIT TEAM FUNCTION
+  
+  $('#create-team-form').on("submit", function(event) { 
+    console.log("clicked from " + this );
+    var form = $(this);
+    //- console.log(form);
+    var school = $('#school-name').text();
+    var teamName = $('#team-name').val().toLowerCase();
+    var teamGender = $('#team-gender').val().toLowerCase();
+    console.log("school: " + school);
+    console.log("teamName: " + teamName);
+    console.log("teamGender: " + teamGender);
+    console.log('formSerialize:', form.serialize());
+    var url = '/'+ school + '/' + teamName + '/' + teamGender;
+    //- var url = '/'+ school + '/baseball/men';
+    //- var url = '/'+ school + '/hardball/women';
+    
+    console.log("teamsArray:" + teamsArray);
+    console.log($.inArray(teamName, teamsArray));
+    
+    //- if ( $.inArray(teamName,teamsArray) === -1)  {
+      console.log('sending PUT ajax', url);
+      $.ajax({
+        //- url: '/'+ school + '/' + teamName + '/' + teamGender,
+        url: url,
+        type: 'POST',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        dataType: 'json',
+        data: form.serialize()
+      }).done(function(msg) {
+        console.log("data saved: " + msg);
+        $("#teams-list").append("<li><h3 class='capitalize'>" + teamName + "</h3><span class='capitalize'>" + teamGender + "</span></li>");
+        //location.reload();  
+      }).fail(function(msg) {
+        console.log("failure: " + msg);
+        console.dir(msg);
+      }).always(function() {
+        $('a.close-reveal-modal').trigger('click');     
+      }); // ajax
+    //- } else {
+    //-   alert("Name already exists in database");
+    //-   $('a.close-reveal-modal').trigger('click');
+    //- }
+    event.preventDefault();
+  }); // create form on subsmit
+  
   $('#create-group-form').on("submit", function(event) {
     console.log('clicked!');
     event.preventDefault();
     var groupname = $("#group-name").val();
-    $(".groups").append("<li class='btn'>" + groupname + "</li>");
-    console.log($(this).serialize() );
+    $("#teams-list").append("<li class='btn'>" + groupname + "</li>");
     var form = $(this);
-    console.log(form);
+    
     $.ajax({
-      url: '/group',
+      url: '/test',
       type: 'POST',
-      contentType: 'application/json; charset=utf-8',
+      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
       dataType: 'json',
       data: form.serialize(),
       timeout: 3000
