@@ -73,34 +73,32 @@ var rostersPageOps = {
     function insertGroup(err, group) {
       if (err) return callback(err, null);
 
-      var team = {name: req.params.team, gender: req.params.gender};
-      var group = req.params.group;
-      var school = req.sess.school;
-      var Mods = req.models;
-      var newGroup = new Mods.Groups();
+      var newGroup = {
+        name: req.params.group,
+        team: {name: req.params.team, gender: req.params.gender},
+        sess: req.sess,
+        Mods: req.models
+      };
+      var crGroup = new newGroup.Mods.Groups();
 
-      newGroup.createdBy = req.sess.COID;
-      newGroup.school = school;
-      newGroup.team = team;
-      newGroup.name = group;
+      crGroup.createdBy = newGroup.sess.COID;
+      crGroup.school = newGroup.sess.school;
+      crGroup.team = newGroup.team;
+      crGroup.name = newGroup.name;
 
-      // console.log('newGroup\n', newGroup);
-      newGroup.save(function(err) {
+      console.log('create ', crGroup.name);
+      crGroup.save(function(err) {
         if (err) return callback(err, null);
+        console.log("crGroup:", crGroup.name);
 
-        console.log("Group saved");
-        insertTeamGroup(req, newGroup, function(err, numUp) {
-          if (err) return callback(err, null);
-
-          console.log('Team updated with group', numUp);
-          return callback(null, newGroup);
-        });
+        newGroup.doc = crGroup;
+        propagateGroupCreate(newGroup, callback);
       });
     }
   },
 
   updateGroup: function(req, callback) {
-    console.log('Operation: createGroup');
+    console.log('Operation: updateGroup');
     //who follows groups? Teams, Athletes, mtrcats, metrics
 
     validateInput(req.params.oldGroup, updateGroup);
@@ -109,7 +107,7 @@ var rostersPageOps = {
       if (err) return callback(err, null);
 
       var upGroup = {
-        newGroup: req.body.name,
+        newGroup: req.body.upName,
         oldGroup: req.params.oldGroup,
         team: {name: req.params.team, gender: req.params.gender},
         sess: req.sess,
@@ -121,8 +119,8 @@ var rostersPageOps = {
       var update = {$set: {name: upGroup.newGroup}};
 
       upGroup.Mods.Groups.findOneAndUpdate(cond, update, function(err, group) {
-        if (err) callback(err, null);
-      console.log('newGroup:\n', group);
+        if (err) return callback(err, null);
+      console.log('upGroup:\n', group.name);
 
       upGroup.doc = group;
       propagateGroupUpdate(upGroup, callback);
@@ -131,7 +129,31 @@ var rostersPageOps = {
   },
 
   deleteGroup: function(req, callback) {
+    console.log('Operation: deleteGroup');
 
+    validateInput(req.params.group, deleteGroup);
+
+    function deleteGroup(err, group) {
+      if (err) return callback(err, null);
+
+      var delGroup = {
+        name: req.params.group,
+        team: {name: req.params.team, gender: req.params.gender},
+        sess: req.sess,
+        Mods: req.models
+      };
+
+      console.log('delete ' + delGroup.name);
+      var cond = {school: delGroup.sess.school, team: delGroup.team, name: delGroup.name};
+
+      delGroup.Mods.Groups.findOneAndRemove(cond, function(err, group) {
+        if (err) return callback(err, null);
+      console.log('delGroup:\n', group);
+
+      delGroup.doc = group;
+      propagateGroupDelete(delGroup, callback);
+      });
+    }
   }
 };
 
@@ -139,61 +161,127 @@ var rostersPageOps = {
   ------ HELPER FUNCTIONS ------findOneAndUpdate
  */
 
-function propagateGroupUpdate(upGroup, callback) {
-  // return function(err, numUp) {
-    // if (err) return callback(err, null);
+function propagateGroupDelete(delGroup, callback) {
+  console.info('propagating delGroup');
+  deleteCoachGroup(delGroup);
 
-    console.info('propagating group');
-    updateCoachGroup(upGroup, updateTeamGroup)
+  function deleteCoachGroup(delGroup) {
+    console.log('deleteCoachGroup');
 
-    function updateCoachGroup(upGroup, updateTeamGroup) {
-      console.log('updateCoachGroup');
-      var cond = {school: upGroup.sess.school, "groups.name": upGroup.oldGroup};
-      var update = {$set: {groups: {name: upGroup.newGroup}}};
-      upGroup.Mods.Coaches.update(cond, update, function(err, coach) {
-        if (err) return callback(err, null);
-        console.log('coach:\n', coach.groups);
+    //TODO:
+    //  delete a single coach group rather all coaches?
+    var cond = {school: delGroup.sess.school, "groups.name": delGroup.name};
+    var update = {$pull: {groups: {name: delGroup.name}}};
+    delGroup.Mods.Coaches.update(cond, update, function(err, numUp) {
+      if (err) return callback(err, null);
+      console.log('coach:\n', numUp);
 
-        updateTeamGroup(upGroup);
-      });
-    }
+      deleteTeamGroup(delGroup);
+      return;
+    });
+  }
 
-    function updateTeamGroup(upGroup) {
-      console.log('updateTeamGroup');
+  function deleteTeamGroup(delGroup) {
+    console.log('deleteTeamGroup');
 
-      var cond = {school: upGroup.sess.school, name: upGroup.team.name, gender: upGroup.team.gender, "groups.name": upGroup.oldGroup};
-      var update = {$set: {groups: {name: upGroup.newGroup}}};
-      upGroup.Mods.Teams.findOneAndUpdate(cond, update, function(err, team) {
-        if (err) return callback(err, null);
-        console.log('team:\n', team.groups);
+    var cond = {school: delGroup.sess.school, name: delGroup.team.name, gender: delGroup.team.gender, "groups.name": delGroup.name};
+    var update = {$pull: {groups: {name: delGroup.name}}};
+    delGroup.Mods.Teams.update(cond, update, function(err, numUp) {
+      if (err) return callback(err, null);
+      console.log('team:\n', numUp);
 
-        updateAthleteGroup(upGroup);
-      });
-    }
+      deleteAthleteGroup(delGroup);
+      return;
+    });
+  }
 
-    function updateAthleteGroup(upGroup) {
-      console.log('updateAthleteGroup');
+  function deleteAthleteGroup(delGroup) {
+    console.log('deleteAthleteGroup');
 
-      var cond = {school: upGroup.sess.school, "coaches.username": upGroup.sess.username, "coaches.name": upGroup.sess.name, "groups.name": upGroup.oldGroup};
-      var update = {$set: {groups: {name: upGroup.newGroup}}};
-      upGroup.Mods.Athletes.update(cond, update, {multi: true}, function(err, numUp) {
-        if (err) return callback(err, null);
-        console.log('athletes:', numUp);
+    var cond = {school: delGroup.sess.school, team: delGroup.team, "groups.name": delGroup.name};
+    var update = {$pull: {groups: {name: delGroup.name}}};
+    delGroup.Mods.Athletes.update(cond, update, {multi:true}, function(err, numUp) {
+      if (err) return callback(err, null);
+      console.log('athlete:\n', numUp);
 
-        callback(null, upGroup.doc);
-      });
-    }
-
-  // }
+      return callback(null, delGroup.doc);
+    });
+  }
 }
 
-function insertTeamGroup(req, group, callback) {
-  console.log("inserting group into team");
-  var Mods = req.models;
-  var query = {school: group.school, name: group.team.name, gender: group.team.gender};
-  var update = {$push: {groups: {_id: group._id, name: group.name}}}
-  Mods.Teams.update(query, update, {multi:true}, callback);
-  return;
+function propagateGroupUpdate(upGroup, callback) {
+  console.info('propagating upGroup');
+  updateCoachGroup(upGroup);
+
+  function updateCoachGroup(upGroup) {
+    console.log('updateCoachGroup');
+
+    var cond = {school: upGroup.sess.school, "groups.name": upGroup.oldGroup};
+    var update = {$set: {'groups.$.name': upGroup.newGroup}};
+    upGroup.Mods.Coaches.findOneAndUpdate(cond, update, function(err, coach) {
+      if (err) return callback(err, null);
+      console.log('coaches:\n', coach.groups);
+
+      updateTeamGroup(upGroup);
+    });
+  }
+
+  function updateTeamGroup(upGroup) {
+    console.log('updateTeamGroup');
+
+    var cond = {school: upGroup.sess.school, name: upGroup.team.name, gender: upGroup.team.gender, "groups.name": upGroup.oldGroup};
+    var update = {$set: {'groups.$.name': upGroup.newGroup}};
+    upGroup.Mods.Teams.findOneAndUpdate(cond, update, function(err, team) {
+      if (err) return callback(err, null);
+      console.log('team:\n', team.groups);
+
+      updateAthleteGroup(upGroup);
+    });
+  }
+
+  function updateAthleteGroup(upGroup) {
+    console.log('updateAthleteGroup');
+
+    var cond = {school: upGroup.sess.school, "coaches.username": upGroup.sess.username, "coaches.name": upGroup.sess.name, "groups.name": upGroup.oldGroup};
+    var update = {$set: {'groups.$.name': upGroup.newGroup}};
+    upGroup.Mods.Athletes.update(cond, update, {multi: true}, function(err, numUp) {
+      if (err) return callback(err, null);
+      console.log('athletes:', numUp);
+
+      callback(null, upGroup.doc);
+    });
+  }
+}
+
+function propagateGroupCreate(newGroup, callback) {
+  console.info('propagating newGroup');
+  return insertCoachGroup(newGroup);
+
+  function insertCoachGroup(newGroup) {
+    console.log('insertCoachGroup');
+
+    var cond = {school: newGroup.sess.school, username: newGroup.sess.username, "teams.name": newGroup.team.name, "teams.gender": newGroup.team.gender};
+    var update = {$push: {groups: {_id: newGroup.doc._id, name: newGroup.doc.name}}};
+    newGroup.Mods.Coaches.findOneAndUpdate(cond, update, function(err, coach) {
+      if (err) return callback(err, null);
+      console.log('coach:\n', coach.groups);
+
+      return insertTeamGroup(newGroup);
+    });
+  }
+
+  function insertTeamGroup(newGroup) {
+    console.log("insertTeamGroup");
+
+    var cond = {school: newGroup.sess.school, name: newGroup.team.name, gender: newGroup.team.gender};
+    var update = {$push: {groups: {_id: newGroup.doc._id, name: newGroup.doc.name}}};
+    newGroup.Mods.Teams.findOneAndUpdate(cond, update, function(err, team) {
+      if (err) return callback(err, null);
+      console.log('team:\n', team.groups);
+
+      return callback(null, newGroup.doc);
+    });
+  }
 }
 
 function validateInput(input, callback) {

@@ -119,7 +119,27 @@ var rostersPageEvts = {
   },
 
   deleteGroup: function(req, res, next) {
+    console.log('Event: deleteGroup');
 
+    rospgOps.deleteGroup(req, function(err, group) {
+      if (err) {
+        if (err.code === 422) {
+          console.error("Invalid Group name\n", err);
+          res.json(200, {error: err});
+        } else {
+          console.error("deleteGroup: Error\n", err);
+          res.json(200, {
+            error: {
+              msg: "Problem deleting group",
+              err: err
+            }
+          });
+        }
+      } else {
+        console.log('deleteGroup: Success\n');
+        res.json(200, {id: group._id, name: group.name});
+      }
+    });
   }
 
 }
