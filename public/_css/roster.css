@@ -11,6 +11,65 @@ LIGHT RED:; #9C0012;
 
 /* TYPOGRAPHY */
 
+.athlete-photo img {
+	display:block;
+	width: 100%;
+}
+.vanity-plate {
+	background-color:#F2F2F2;
+	padding-top: 0.5em;
+
+}
+
+.athlete-photo button {
+	display: block;
+	width: 100%;
+}
+
+.athlete-metrics {
+	text-align: center;
+}
+.athlete-metrics h3{
+	font-family: 'helvetica neue', helvetica, arial;
+	font-size: 1.5em;
+	font-weight: 100;
+	letter-spacing: 1px;
+	text-shadow: #262729 0 -1px 0;	
+}
+
+.athlete-metrics span {
+	display:block;
+}
+span.metric-value {
+	font-size: 4.5em;
+	font-weight: normal;
+	line-height: 1;
+
+}
+
+span.metric-measurement {
+	padding-top: 0.5em;
+	font-size: 1.5em;
+	line-height: 1;
+	font-weight: 100;
+	
+}
+
+.athlete-info dl {
+	line-height: .75em;
+}
+.athlete-info dl dt {
+	float: left;
+	font-weight: bold;
+	margin-right: 10px;
+}
+
+.roster-subnav {
+	background-color: #F2F2F2;
+}
+
+
+
 .name-style {
 	font-family: 'helvetica neue', helvetica, arial;
 	font-size:20px;
@@ -23,40 +82,18 @@ LIGHT RED:; #9C0012;
 	font-weight: bolder;
 }
 
-/* GROUP ROW STYLE */
-ul.filter {
-	/*display: block; */
-	margin-bottom: 10px;
-	overflow: hidden;
+.sub-nav {
+	margin-bottom: 0em;
+	margin-top: 1em;
+	margin-left: 0em;
+}
+
+.sub-nav dd.active a {
+	background: #9C0012;
 }
 
 
-li.btn {
-	display:block;
-	float: left;
-	border: solid 1px;
-	border-radius:10px;
-	padding: 1px 5px;
-	margin-right: 5px;
-	cursor: pointer;
-	background-color: #F2F2F2;
-}
 
-li.btn:hover {
-	background-color: #CCCCCC;
-}
-
-/* Roster metrics -- rename to vanity plate */
-.roster-metrics {
-	background-color: #F2F2F2;
-}
-
-
-.button.disabled {
-	background-color: #CCCCCC;
-	color: #F2F2F2;
-	border: 0px;
-}
 
 
 input[type=submit] {
@@ -81,22 +118,8 @@ h5 {
 }
 
 
-dl {
-	line-height: .75em;
-}
-dl dt {
-	float: left;
-	font-weight: bold;
-	margin-right: 10px;
-}
 
-dl dd {
 
-}
-
-dt:after {
-	content:":";
-}
 
 [contenteditable]:hover:after {
 	content: ' click to edit';
@@ -118,12 +141,5 @@ dt:after {
 	content: '';
 }
 
-.rosterProfile {
 
-}
-
-
-a.vProfile {
-	width: 6 em;
-}
 

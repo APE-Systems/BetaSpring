@@ -1,88 +1,127 @@
 extends layout
   
 append head
-  link(rel='stylesheet', href='../_css/roster.css')       
-  link(rel='stylesheet', href='../_js/vendor/sidr/stylesheets/jquery.sidr.dark.css')
+  link(rel='stylesheet', href='/_css/roster.css')       
+  
 
 block content
+  .row          
+    .large-12.columns.vanity-plate
+      .large-4.small-12.columns.athlete-demographics
+        .row
+          .large-5.columns.athlete-photo
+            img(src='/_imgs/washington-kristopher.jpeg')
+            button Profile
+          .large-7.columns.athlete-info
+            h4 Kristopher Washington
+            dl
+              dt.position Position
+              dd Sprinter
+              dt.group Group
+              dd 400m
+              dt.year Year
+              dd Junior
+              dt.hometown Hometown
+              dd(contenteditable='true') Los Angeles
+              dt.height Height
+              dd 5'8"
+      .large-8.small-12.columns.athlete-metrics
+        .row
+          .large-3.columns
+            h3 Body Weight
+            span.metric-value 175
+            span.metric-measurement lbs
+          .large-3.columns
+            h3 Body Fat
+            span.metric-value 14
+            span.metric-measurement %
+          .large-3.columns
+            h3 Power Clean
+            span.metric-value 114
+            span.metric-measurement kilos
+          .large-3.columns
+            h3 Back Squat
+            span.metric-value 400
+            span.metric-measurement lbs
   .row
-    .large-12.columns.rosterProfile
-      .row.roster-metrics
-        .large-4.columns.playaInfo
-          .large-3.columns.imageProfile.hide-for-small
-            img.aPhoto(src='http://placehold.it/150x200')
-            a.small.button(href='#') View Profile
-          .large-9.small-12.columns.nameInfo
-            h5.name
-              span.first-name.name-style(contenteditable='true') Kristopher
-              br
-              span.last-name.name-style.bold(contenteditable='true') Washington
-            .demoInfo
-              .specInfo
-                dl
-                  dt.position Position
-                  dd(contenteditable='true') Sprinter
-                  dt.group Group
-                  dd(contenteditable='true') 400m
-                  dt.year Year
-                  dd(contenteditable='true') Junior
-                  dt.hometown Hometown
-                  dd(contenteditable='true') Los Angeles
+    .large-12.columns.roster-subnav
+        .large-4.columns
+          .row
+            .large-5.columns
+              ul.button-group.radius
+                li
+                  a.small.button.secondary(href='#') New Athlete
 
-        .large-8.small-12.columns
-          .row.catBoxes
-            .small-3.large-3.columns.text-center.catBox
-              h5.cat.name-style Body Weight 
-              span.metric(contenteditable='true') --
-            .small-3.large-3.columns.text-center.catBox
-              h5.cat.name-style Body Fat
-              span.metric(contenteditable='true') --
-            .small-3.large-3.columns.text-center.catBox
-              h5.cat.name-style Power Clean
-              span.metric(contenteditable='true') --
-            .small-3.large-3.columns.text-center.catBox
-              h5.cat.name-style Back Squat
-              span.metric(contenteditable='true') --
-    .large-12.columns.rosterProfile-subnav
-      .row
-        .large-5.columns
-          a.small.button(href='#', data-reveal-id='create-athlete-modal') Create Athlete
-          a.small.button.disabled(href='#') Remove Athlete
-        .large-5.large-offset-2.columns.btnGroup
-          ul.button-group.right
-           li: a.small.button.disabled(href='#') Remove
-           li: a.small.button.disabled(href='#') Add to Group
-           li: a.small.button(href='#', data-reveal-id='create-group-modal') Create Group
-    // roster table
-    .large-12.columns.roster-table
-      ul.groups.clearfix
-        li.btn#filter-none Show All
-        li.btn#filter-group1 Group 1
-        li.btn#filter-group2 Group 2
-      table
-        thead
-          tr
-            th &nbsp;
-            th First Name
-            th Last Name
-            th Position
-            th Group
-        tbody.roster-list
-          tr
-            td
-              input(type='checkbox')
-            td Kristopher
-            td Washington
-            td Sprinter
-            td Junior
-          tr
-            td
-              input(type='checkbox')
-            td J'Dinklage
-            td Morgoone
-            td Runningback
-            td Senior
+        .large-8.columns
+          ul.button-group.radius.right
+            li
+              a.small.button.secondary.disabled(href='#') Remove
+            li
+              a.small.button.secondary.disabled(href='#') Add to Group
+            li
+              a.small.button.secondary(href='#') Create Group
 
+  //- Display Groups
+  .row
+    .large-12.columns.groups-nav
+      dl.sub-nav
+        dt Filter:
+          dd.active 
+            a(href='#') All
+          dd: a(href='#') Injured
+          dd: a(href='#') Ninnies
+    table
+      thead
+        tr
+          th &nbsp;
+          th First Name
+          th Last Name
+          th Position
+          th Group
+      tbody.roster-list
+        tr
+          td
+            input(type='checkbox')
+          td Kristopher
+          td Washington
+          td Sprinter
+          td Junior
+        tr
+          td
+            input(type='checkbox')
+          td J'Dinklage
+          td Morgoone
+          td Runningback
+          td Senior
+        tr
+          td
+            input(type='checkbox')
+          td Hingle
+          td McCringleberry
+          td Special Teams
+          td Senior
+        tr
+          td
+            input(type='checkbox')
+          td NyQuillus
+          td Dillwad
+          td Runningback
+          td Junior
+        tr
+          td
+            input(type='checkbox')
+          td Bismo
+          td Funyuns
+          td Runningback
+          td Senior
+        tr
+          td
+            input(type='checkbox')
+          td Mergatroid
+          td Skittle
+          td Quarterback
+          td Senior
+  
 
   #create-group-modal.reveal-modal.small
     h4 Create Group
