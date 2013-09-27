@@ -31,12 +31,13 @@ script.
     });
     $('#side-nav').dcAccordion({
     eventType: 'click',
-    autoClose: true,
+    autoClose: false,
     saveState: true,
     disableLink: true,
     speed: 'fast',
     autoExpand: true,
     });
+    //- $('#right-menu').trigger("click");
 
     var teamsArray = $('#teams-list h3').map(function() {
       return $(this).text();
