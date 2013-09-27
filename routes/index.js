@@ -461,13 +461,15 @@ module.exports = function(app) {
   // app.put();
   // app.delete();
 
+    //ATHLETES
   app.get('/:school/:team-:gender/roster/athletes', rosEvts.getRostersPage);
   app.post('/:school/:team-:gender/roster/athlete', rosEvts.createAthlete);
   app.put('/:school/:team-:gender/roster/athlete/:athlete', rosEvts.updateAthlete);
   app.delete('/:school/:team-:gender/roster/athlete/:athlete', rosEvts.deleteAthlete);
 
+    //GROUPS
   app.post('/:school/:team-:gender/roster/group/:group', rosEvts.createGroup);
-  app.put('/:school/:team-:gender/roster/group/:group', rosEvts.updateGroup);
+  app.put('/:school/:team-:gender/roster/group/:oldGroup', rosEvts.updateGroup);
   app.delete('/:school/:team-:gender/roster/group/:group', rosEvts.deleteGroup);
 
 

@@ -92,11 +92,54 @@ var rostersPageEvts = {
   },
 
   updateGroup: function(req, res, next) {
+    console.log('Event: updateGroup');
 
+    rospgOps.updateGroup(req, function(err, group) {
+      if (err) {
+        if (err.code === 422) {
+          console.error("Invalid Group name\n", err);
+          res.json(200, {error: err});
+        } else if (err.code === 11000) {
+          console.error("duplicate key\n", err);
+          res.json(200, {error: {msg: "Group name already in database", err: err}});
+        } else {
+          console.error("updateGroup: Error\n", err);
+          res.json(200, {
+            error: {
+              msg: "Problem saving group",
+              err: err
+            }
+          });
+        }
+      } else {
+        console.log('createGroup: Success\n');
+        res.json(200, {id: group._id, name: group.name});
+      }
+    });
   },
 
   deleteGroup: function(req, res, next) {
+    console.log('Event: deleteGroup');
 
+    rospgOps.deleteGroup(req, function(err, group) {
+      if (err) {
+        if (err.code === 422) {
+          console.error("Invalid Group name\n", err);
+          res.json(200, {error: err});
+        } else {
+          console.error("deleteGroup: Error\n", err);
+          res.json(200, {
+            error: {
+              msg: "Problem deleting group",
+              err: err
+            }
+          });
+        }
+      } else {
+        console.log('deleteGroup: Success\n');
+        res.json(200, {id: group._id, name: group.name});
+      }
+    });
   }
 
 }
