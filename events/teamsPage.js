@@ -80,11 +80,11 @@ var teamsPageEvts = {
   deleteTeam: function(req, res, next) {
     console.log('Event: deleteTeam');
 
-    tmspgOps.deleteTeam(req, function(err) {
+    tmspgOps.updateTeam(req, function(err) {
       if (err) {
         console.error("deleteTeam: Error\n", err);
         res.json({
-          status: 500, 
+          status: 200, 
           error: {
             Msg: "Problem deleting team",
             err: err

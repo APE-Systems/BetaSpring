@@ -14,30 +14,29 @@ var rostersPageEvts = {
       if (err) throw new Error(err);
 
       // console.log('payLoad:', payLoad);
-      res.send(payLoad);
-      // res.render('rostersPage', {
-      //   nav: req.school,
-      //   athletes: payLoad.athletes,
-      //   apeLib: payLoad.apeLibPackage
-      // });
+      res.render('rostersPage', {
+        nav: req.school,
+        athletes: payLoad.athletes,
+        apeLib: payLoad.apeLibPackage
+      });
     });
   },
 
-  createTeam: function(req, res, next) {
-    console.log('Event: createTeam');
+  createAthlete: function(req, res, next) {
+    console.log('Event: createAthlete');
 
-    rospgOps.createTeam(req, function(err) {
+    rospgOps.createAthlete(req, function(err, athlete) {
       if (err) {
-        console.error("createTeam: Error\n", err);
-        res.send(500, "Problem saving team");
+        console.error("createAthlete: Error\n", err);
+        res.send(500, "Problem saving athlete");
       } else {
-        console.log('createTeam: Success');
+        console.log('createAthlete: Success');
         res.send(200);
       }
     })
   },
 
-  updateTeam: function(req, res, next) {
+  updateAthlete: function(req, res, next) {
     console.log('Event: updateTeam');
 
     rospgOps.updateTeam(req, function(err) {
@@ -51,7 +50,7 @@ var rostersPageEvts = {
     });
   },
 
-  deleteTeam: function(req, res, next) {
+  deleteAthlete: function(req, res, next) {
     console.log('Event: deleteTeam');
 
     rospgOps.deleteTeam(req, function(err) {
@@ -63,6 +62,41 @@ var rostersPageEvts = {
         res.send(200);
       }
     });
+  },
+
+  createGroup: function(req, res, next) {
+    console.log('Event: createGroup');
+
+    rospgOps.createGroup(req, function(err, group) {
+      if (err) {
+        if (err.code === 422) {
+          console.error("Invalid Group name\n", err);
+          res.json(200, {error: err});
+        } else if (err.code === 11000) {
+          console.error("duplicate key\n", err);
+          res.json(200, {error: {msg: "Group name already in database", err: err}});
+        } else {
+          console.error("createGroup: Error\n", err);
+          res.json(200, {
+            error: {
+              msg: "Problem saving group",
+              err: err
+            }
+          });
+        }
+      } else {
+        console.log('createGroup: Success\n');
+        res.json(200, {id: group._id, name: group.name});
+      }
+    });
+  },
+
+  updateGroup: function(req, res, next) {
+
+  },
+
+  deleteGroup: function(req, res, next) {
+
   }
 
 }

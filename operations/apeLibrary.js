@@ -1,150 +1,138 @@
 ;"use strict";
 /*
-  OPERATIONS: teamsPage
+  OPERATIONS: apeLIbrary
  */
 
 var APE = require('../models/db/config').apeMods;
 
-var teamsPageOps = {
+var ApeLibOps = {
 
-  getTeamsPage: function(req, evtCallback) {
-    console.log('Operation: getTeamsPage');
-    getTeams(req, getAPElib(evtCallback));
-  },
+  createMetricCat: function(req, team, mtrcat, callback) {
+    console.log('Operation: createMetricCat');
+    var Mods = req.models;
 
-  createTeam: function(req, callback) {
-    console.log('Operation: createTeam');
-    validateInput(req.params.team, insertTeam);
-
-    //NOTE:
-    //  new team propagates to all coaches in same school
-    //  need to figure out which coaches get updated
-    function insertTeam(err, team) {
+    validateInput(mtrcat, function(err, mtrcat) {
       if (err) return callback(err, null);
 
-      var Mods = req.models;
-      var school = req.sess.school;
-      var newTeam = new Mods.Teams();
+      var newMtrcat = new Mods.MetricCats();
+      newMtrcat.createdBy = req.sess.COID;
+      newMtrcat.school = req.sess.school;
+      newMtrcat.name = mtrcat;
 
-      newTeam.createdBy = req.sess.COID;
-      newTeam.coaches.push({_id: req.sess.COID, username: req.sess.username, name: req.sess.name});
-      newTeam.school = school;
-      newTeam.name = team;
-      newTeam.gender = req.params.gender;
+      if (team.name) {
+        newMtrcat.team = team;
+      }
 
-      // console.log(newTeam);
-      newTeam.save(function(err) {
+      // console.log('newMtrcat\n', newMtrcat);
+      newMtrcat.save(function(err) {
         if (err) return callback(err, null);
 
-        insertSchoolTeam(newTeam, function(err, doc) {
-          if (err) return callback(err, null);
+        if (team.name) {
+          propagateNewMtrcat(newMtrcat, callback);
+          return;
+        }
 
-          console.info("Team saved in School\n", doc);
-          insertCoachesTeam(req, newTeam, function(err, doc) {
-            if (err) return callback(err, null);
-
-            console.info("Team saved in coaches\n", doc);
-            callback(null, newTeam);
-          });
-        });
+        callback(null, newMtrcat);
+        return;
       });
-    }
-  },//END createTeam
+    });
 
-  updateTeam: function(req, callback) {
-    console.log('Operation: updateTeam');
-    var team = req.body["team-name"];
-    var gender = req.body["team-gender"];
-    
-    validateInput(team, editTeam);
+    function propagateNewMtrcat(newMtrcat, callback) {
+      var cond = {name: newMtrcat.team.name, gender: newMtrcat.team.gender};
+      var update = {$push: {mtrcats: {_id: newMtrcat._id, name: newMtrcat.name}}};
 
-    function editTeam(err, team) {
-      if (err) return callback(err, null);
+      Mods.Teams.update(cond, update, function(err, numUp, raw) {
+        if (err) return callback(err, null);
 
-      var Mods = req.models;
-      var school = req.sess.school;
-
-      var cond = {name: req.params.team, gender: req.params.gender};
-      var update = {$set: {name: team, gender: gender}};
-      Mods.Teams.findOneAndUpdate(cond, update, {new: true}, function(err, upDoc) {
-        if (err) callback(err);
-
-        console.log('teamUpdated:\n', upDoc.name, upDoc.gender);
-        propagateUpdate(req, upDoc, callback);
+        console.log('Updated: Team', numUp, raw);
+        callback(null, newMtrcat);
         return;
       });
     }
-  },//END updateTeam
+  },//END
 
-  deleteTeam: function(req, callback) {
-    console.log('Operation: deleteTeam');
+  createMetric: function(req, team, metric, callback) {
+    console.log('Operation: createMetric');
+    var Mods = req.models;
 
-    var Mods, school, cond, username;
-    Mods = req.models;
-    school = req.sess.school;
-    username: req.sess.username;
-    cond = {
-      name: req.params.team,
-      gender:req.params.gender,
-      "coaches.username": username
-    };
+    validateInput(metric, function(err, metric) {
+      if (err) return callback(err, null);
 
-    Mods.Teams.findOneAndRemove(cond, function(err, deldoc) {
-      if (err) callback(err);
+      var newMetric = new Mods.Metric();
+      newMetric.createdBy = req.sess.COID;
+      newMetric.school = req.sess.school;
+      newMetric.name = mtrcat;
 
-      console.log('teamDelete:', deldoc);
-      propagateDelete(req, delDoc, callback);
-      callback(null);
+      if (team.name) {
+        newMetric.team = team;
+      }
+
+      // console.log('newMetric\n', newMetric);
+      newMetric.save(function(err) {
+        if (err) return callback(err, null);
+
+        if (team.name) {
+          propagatenewMetric(newMetric, callback);
+          return;
+        }
+
+        callback(null, newMetric);
+        return;
+      });
     });
-  }//END deleteTeam
+
+    function propagateNewMetric(newMetric, callback) {
+      var cond = {name: newMetric.team.name, gender: newMetric.team.gender};
+      var update = {$push: {mtrcats: {_id: newMetric._id, name: newMetric.name}}};
+
+      Mods.Teams.update(cond, update, function(err, numUp, raw) {
+        if (err) return callback(err, null);
+
+        console.log('Updated: Team', numUp, raw);
+        callback(null, newMetric);
+        return;
+      });
+    }
+  },//END
+
+  editMetricCat: function(req, team, mtrcat, callback) {
+
+  },//END
+
+  editMetric: function(req, team, metric, callback) {
+
+  },//END
+
+  deleteMetricCat: function(req, team, mtrcat, callback) {
+
+  },//END
+
+  deleteMetric: function(req, team, metric, callback) {
+
+  }//END
 }
 
 /*
   ------ HELPER FUNCTIONS ------
  */
 
-function insertCoachesTeam(req, team, callback) {
-  var Mods = req.models;
-  var query = {school: team.school};
-  var update = {$push: {teams: {_id: team._id, name: team.name, gender: team.gender}}}
-  Mods.Coaches.update(query, update, {multi:true}, callback);
-}
-
-function insertSchoolTeam(team, callback) {
-  var query = {name: team.school};
-  var update = {$push: {teams: {_id: team._id, name: team.name, gender: team.gender}}}
-  APE.Schools.update(query, update, callback);
-}
-
-function validateInput(input, callback) {
+function validateInput(mtrcatName, callback) {
   console.log('Operations: validateInput\n');
   var maxCharLen = 45;
+  var mtrcat = mtrcatName;
   var rego = /^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$/;
-  if (maxCharLen === input.length) {
-    var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422};
+  if (maxCharLen === mtrcat.length) {
+    console.info("Validation: Error");
+    var err = {name: "ValidationError", msg: 'Metric Category exceeds number of characaters allowed', code: 422};
     return callback(err, null);
   }
-  if (!rego.test(input)) {
+  if (!rego.test(mtrcat)) {
+    console.info("Validation: Error");
     var err = {name: "ValidationError", msg: 'Not valid input', code: 422};
     return callback(err, null);
   }
   console.info("Validation: Success");
-  return callback(null, input);
-}
-
-function getTeams(req, callback) {
-  var dataLoad = {};
-  var Mods = req.models;
-  var school = req.sess.school;
-  var username = req.sess.username;
-  var query = {school: school, 'coaches.username': username};
-  var proj = {name:1, gender:1, mtrcats:1, metrics:1};
-
-  Mods.Teams.find(query, proj, function(err, teams) {
-    if (err) callback(err, null);
-    dataLoad.teams = teams;
-    callback(dataLoad);
-  });
+  return callback(null, mtrcat);
 }
 
 function getAPElib(evtCallback) {
@@ -171,7 +159,7 @@ function getAPElib(evtCallback) {
 
 //NOTE:
 //  Test with multiple coaches, metrics, metriccats, athletes and groups
-function propagateUpdate(req, upTeam, callback) {
+function propagateedit(req, upTeam, callback) {
   var Mods = req.models;
   var conds = {
     school: req.sess.school,
@@ -283,32 +271,19 @@ function propagateDelete(req, delTeam, callback) {
   deleteSchoolTeam(delTeam);
 
   function deleteSchoolTeam(delTeam) {
-    var schCond = {
-      name: req.sess.school,
-      'teams.name': req.params.team,
-      'teams.gender': req.params.gender
-    };
 
-    APE.Schools.update(schCond, function(err, delDoc) {
-    // APE.Schools.findOne(schCond, function(err, schDoc) {
-      if (err) throw new Error(err);
-
-      console.info('Deleted: School\n', delDoc);
-      deleteCoachesTeam(delTeam);
-      return;
-    });
   }//END
 
   function deleteCoachesTeam(delTeam) {
-    Mods.Coaches.update();
+
   }//END
 
   function deleteMetricsTeam(delTeam) {
-    Mods.Metrics.update();
+
   }//END
 
   function deleteMetricCatsTeam(delTeam) {
-    Mods.MetricCats.update()
+
   }//END
 
   function deleteAthletesTeam(delTeam) {
@@ -320,4 +295,4 @@ function propagateDelete(req, delTeam, callback) {
   }//END
 }
 
-module.exports = exports = teamsPageOps;
+module.exports = exports = ApeLibOps;

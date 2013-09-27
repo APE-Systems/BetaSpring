@@ -55,8 +55,9 @@ script.
     var teamNameCopy = teamName;
     var teamGender = $(this).closest('li').find('span').html();
     console.log("teamGender : " + teamGender);
-    var url = '/'+ school + '/' + teamName.html() + '/' + teamGender;
-    
+
+    var url = '/'+ school + '/' + teamName.html() +'-' + teamGender;
+    var name = '"' + teamName.html() + '"';
     console.log(name);
     $(teamName).attr("contenteditable", "true");
     $(teamName).keypress(function(e) {
