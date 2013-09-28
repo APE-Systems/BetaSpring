@@ -9,57 +9,7 @@ var rostersPageOps = {
 
   getRostersPage: function(req, evtCallback) {
     console.log('Operation: getRostersPage');
-
-    var pgload = {}
-    var dataLoad = {};
-
-    pgload.Mods = req.models;
-    pgload.sess = req.sess;
-    pgload.team = {
-      name: req.params.team,
-      gender: req.params.gender
-    };
-
-    getAthletesAndGroups(pgload);
-    return;
-
-    function getAthletesAndGroups(pgload) {
-      var query = {school: pgload.sess.school, name: pgload.team.name, gender: pgload.team.gender};
-      var proj = {athletes:1, groups:1};
-
-      pgload.Mods.Teams.findOne(query, proj, function(err, team) {
-        if (err) return evtCallback(err, null);
-        console.log('team.athletes:', team.athletes.length);
-        console.log('team.groups:', team.groups.length);
-
-        dataLoad.athletes = team.athletes;
-        dataLoad.groups = team.groups;
-        getAPElib(pgload);
-        return;
-      });
-    }
-
-    function getAPElib(pgload) {
-      var apeLibPackage = {};
-      var query = {};
-      var proj = {name:1, metrics:1};
-      APE.MetricCats.find(query, proj, function(err, mcs) {
-        if (err) return evtCallback(err, null);
-
-        apeLibPackage.mtrcats = mcs;
-        APE.Metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
-          if (err) return evtCallback(err, null);
-
-          apeLibPackage.metrics = mtrs;
-          // console.log('apeLibPackage:\n', apeLibPackage);
-          dataLoad.apeLibPackage = apeLibPackage;
-          // console.log('dataLoad\n', dataLoad);
-          
-          evtCallback(null, dataLoad);
-          return;
-        });
-      });
-    };
+    getAthletes(req, getAPElib(evtCallback));
   },
 
   createAthlete: function(req, callback) {
@@ -350,6 +300,48 @@ function validateInput(input, callback) {
   }
   console.info("Validation: Success\n");
   return callback(null, input);
+}
+
+function getAthletes(req, callback) {
+  var dataLoad = {};
+  var Mods = req.models;
+  var school = req.sess.school;
+  var team = {
+    name: req.params.team,
+    gender: req.params.gender
+  };
+  var username = req.sess.username;
+  var query = {school: school, team: team, 'coaches.username': username };
+  var proj = {name:1, positions:1, years:1, metrics:1};
+
+  Mods.Athletes.find(query, proj, function(err, athletes) {
+    if (err) callback(err, null);
+    // console.log('athletes:\n', athletes);
+    dataLoad.athletes = athletes;
+    callback(dataLoad);
+  });
+}
+
+function getAPElib(evtCallback) {
+  return function(dataLoad) {
+    var apeLibPackage = {};
+    var query = {};
+    var proj = {name:1, metrics:1};
+    APE.MetricCats.find(query, proj, function(err, mcs) {
+      if (err) evtCallback(err, null);
+
+      apeLibPackage.mtrcats = mcs;
+      APE.Metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
+        if (err) evtCallback(err, null);
+
+        apeLibPackage.metrics = mtrs;
+        // console.log('apeLibPackage:\n', apeLibPackage);
+        dataLoad.apeLibPackage = apeLibPackage;
+        // console.log('dataLoad\n', dataLoad);
+        return evtCallback(null, dataLoad);
+      });
+    });
+  };
 }
 
 module.exports = exports = rostersPageOps;

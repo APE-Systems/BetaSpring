@@ -30,13 +30,12 @@
     });
     $('#side-nav').dcAccordion({
     eventType: 'click',
-    autoClose: false,
+    autoClose: true,
     saveState: true,
     disableLink: true,
     speed: 'fast',
     autoExpand: true,
     });
-    //- $('#right-menu').trigger("click");
     
     var teamsArray = $('#teams-list h3').map(function() {
       return $(this).text();
@@ -138,7 +137,7 @@
     console.log('clicked!');
     event.preventDefault();
     var groupname = $("#group-name").val();
-    $(".sub-nav").append("<dd><a href='#'>" + groupname + "</a></dd>");
+    $("#teams-list").append("<li class='btn'>" + groupname + "</li>");
     var form = $(this);
     
     $.ajax({

@@ -21,21 +21,6 @@ LIGHT RED:; #9C0012;
 
 }
 
-ul.edit-bar {
-	list-style: none;
-	font-size: 1.2em;
-	margin: 0;
-}
-
-ul.edit-bar li {
-	display:inline-block;
-}
-
-
-.green {
-	color: green;
-}
-
 .athlete-photo button {
 	display: block;
 	width: 100%;
