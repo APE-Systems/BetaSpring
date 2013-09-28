@@ -36,6 +36,7 @@ var AthleteSchema = module.exports = new Schema({
     //year: [{year: , date: }]
   , years: [String]
   , hometown: String
+  , height: String
   , mtrcats: [{
       name: {type: String, required: true}
     , metrics: [{name: {type: String, required: true}}]
