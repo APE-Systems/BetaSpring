@@ -47,7 +47,6 @@ module.exports = function(app) {
   app.get('/:school/:team-:gender/roster', rosEvts.getRostersPage);
 
     //ATHLETES
-  app.get('/:school/:team-:gender/roster/athletes', rosEvts.getRostersPage);
   app.post('/:school/:team-:gender/roster/athlete', rosEvts.createAthlete);
   app.put('/:school/:team-:gender/roster/athlete/:athlete', rosEvts.updateAthlete);
   app.delete('/:school/:team-:gender/roster/athlete/:athlete', rosEvts.deleteAthlete);
