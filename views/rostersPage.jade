@@ -5,62 +5,8 @@ append head
   
 
 block content
-  .row          
-    .large-12.columns.vanity-plate
-      .large-4.small-12.columns.athlete-demographics
-        .row
-          .large-5.columns.athlete-photo
-            img(src='/_imgs/washington-kristopher.jpeg')
-            button Profile
-          .large-7.columns.athlete-info
-            h4 Kristopher Washington
-            dl
-              dt.position Position
-              dd Sprinter
-              dt.group Group
-              dd 400m
-              dt.year Year
-              dd Junior
-              dt.hometown Hometown
-              dd(contenteditable='true') Los Angeles
-              dt.height Height
-              dd 5'8"
-      .large-8.small-12.columns.athlete-metrics
-        .row
-          .large-3.columns
-            h3 Body Weight
-            span.metric-value 175
-            span.metric-measurement lbs
-          .large-3.columns
-            h3 Body Fat
-            span.metric-value 14
-            span.metric-measurement %
-          .large-3.columns
-            h3 Power Clean
-            span.metric-value 114
-            span.metric-measurement kilos
-          .large-3.columns
-            h3 Back Squat
-            span.metric-value 400
-            span.metric-measurement lbs
-  .row
-    .large-12.columns.roster-subnav
-        .large-4.columns
-          .row
-            .large-5.columns
-              ul.button-group.radius
-                li
-                  a.small.button.secondary(href='#') New Athlete
-
-        .large-8.columns
-          ul.button-group.radius.right
-            li
-              a.small.button.secondary.disabled(href='#') Remove
-            li
-              a.small.button.secondary.disabled(href='#') Add to Group
-            li
-              a.small.button.secondary(href='#') Create Group
-
+  include includes/vanity-plate
+  
   //- Display Groups
   .row
     .large-12.columns.groups-nav
