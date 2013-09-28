@@ -13,30 +13,30 @@ script.
   $(document).foundation();
   $(document).ready(function() {
   $('.roster-list').find('tr:first').addClass('highlight-table-row');
-  $('#left-menu').sidr({
-    name: 'sidr-left',
-    side: 'left' // By default
-    });
-    $('#right-menu').sidr({
-    name: 'sidr-right',
-    side: 'right'
-    });
-    $('#ape-nav').dcAccordion({
-    eventType: 'click',
-    autoClose: true,
-    saveState: true,
-    disableLink: true,
-    speed: 'fast',
-    autoExpand: true,
-    });
-    $('#side-nav').dcAccordion({
-    eventType: 'click',
-    autoClose: true,
-    saveState: true,
-    disableLink: true,
-    speed: 'fast',
-    autoExpand: true,
-    });
+  //-$('#left-menu').sidr({
+  //-  name: 'sidr-left',
+  //-  side: 'left' // By default
+  //-  });
+  //-  $('#right-menu').sidr({
+  //-  name: 'sidr-right',
+  //-  side: 'right'
+  //-  });
+  //-  $('#ape-nav').dcAccordion({
+  //-  eventType: 'click',
+  //-  autoClose: true,
+  //-  saveState: true,
+  //-  disableLink: true,
+  //-  speed: 'fast',
+  //-  autoExpand: true,
+  //-  });
+  //-  $('#side-nav').dcAccordion({
+  //-  eventType: 'click',
+  //-  autoClose: true,
+  //-  saveState: true,
+  //-  disableLink: true,
+  //-  speed: 'fast',
+  //-  autoExpand: true,
+  //-  });
 
     var teamsArray = $('#teams-list h3').map(function() {
       return $(this).text();
