@@ -32,13 +32,26 @@ var rostersPageEvts = {
 
     rospgOps.createAthlete(req, function(err, athlete) {
       if (err) {
-        console.error("createAthlete: Error\n", err);
-        res.send(500, "Problem saving athlete");
+        if (err.code === 422) {
+          console.error("Invalid Athlete info\n", err);
+          res.json(200, {error: err});
+        } else if (err.code === 11000) {
+          console.error("duplicate key\n", err);
+          res.json(200, {error: {msg: "Athlete already in database", err: err}});
+        } else {
+          console.error("createAthlete: Error\n", err);
+          res.json(200, {
+            error: {
+              msg: "Problem saving athlete",
+              err: err
+            }
+          });
+        }
       } else {
-        console.log('createAthlete: Success');
-        res.send(200);
+        console.log('createAthlete: Success\n');
+        res.json(200, {id: athlete._id, name: athlete.name});
       }
-    })
+    });
   },
 
   updateAthlete: function(req, res, next) {

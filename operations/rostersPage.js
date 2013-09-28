@@ -62,25 +62,46 @@ var rostersPageOps = {
     };
   },
 
-  createAthlete: function(req, callback) {
+  createAthlete: function(req, evtCallback) {
     console.log('Operation: createAthlete');
+    var athlete = {
+      name: req.body.name,
+      username: req.body.username,
+      height: req.body.height,
+      position: req.body.position,
+      year: req.body.year,
+      city: req.body.city,
+      state: req.body.state
+    };
 
-    var team = {name: req.params.team, gender: req.params.gender};
-    var school = req.school;
-    var Mods = req.models;
-    var newAthlete = new Mods.Athletes();
+    validateAthleteInput(athlete, forgeAthlete);
 
-    newAthlete.createdBy = req.sess.COID;
-    newAthlete.school = school;
-    newAthlete.name = req.body.name;
-    newAthlete.gender = req.body.gender;
+    function forgeAthlete(err, athlete) {
+      if (err) return evtCallback(err, null);
 
-    newAthlete.save(function(err) {
-      callback(err);
-    });
+      var crAthlete = {
+        team: {name: req.params.team, gender: req.params.gender},
+        sess: req.sess,
+        Mods: req.models
+      };
+      var newAthlete = new crAthlete.Mods.Athletes();
+
+      newAthlete.createdBy = req.sess.COID;
+      newAthlete.school = crAthlete.sess.school;
+      newAthlete.team = crAthlete.team;
+      newAthlete.name = req.body.name;
+      newAthlete.username = req.body.username;
+      newAthlete.positions.push(req.body.position);
+      newAthlete.years.push(req.body.year);
+      newAthlete.hometown = req.body.hometown;
+      newAthlete.height = req.body.height;
+
+      console.log('newAthlete:\n', newAthlete);
+      return evtCallback(null, newAthlete);
+    }
   },
 
-  updateAthlete: function(req, callback) {
+  updateAthlete: function(req, evtCallback) {
     console.log('Operation: updateTeam');
     var Mods = req.models;
     var school = req.school;
@@ -91,15 +112,15 @@ var rostersPageOps = {
       gender: req.body.gender
     };
     Mods.Teams.findOneAndUpdate(cond, update, function(err, updated) {
-      if (err) callback(err);
+      if (err) evtCallback(err);
 
       console.log('teamUpdate:', update);
-      callback(null);
+      evtCallback(null);
     });
 
   },
 
-  deleteAthlete: function(req, callback) {
+  deleteAthlete: function(req, evtCallback) {
     console.log('Operation: deleteTeam');
     var Mods = req.models;
     var school = req.school;
@@ -108,20 +129,20 @@ var rostersPageOps = {
     //  check to see if athletes are following this team
     //  if so, then report back before deleting
     Mods.Teams.findOneAndRemove(cond, function(err, deldoc) {
-      if (err) callback(err);
+      if (err) evtCallback(err);
 
       console.log('teamDelete:', deldoc);
-      callback(null);
+      evtCallback(null);
     });
   },
 
-  createGroup: function(req, callback) {
+  createGroup: function(req, evtCallback) {
     console.log('Operation: createGroup');
 
     validateInput(req.params.group, insertGroup);
 
     function insertGroup(err, group) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
 
       var newGroup = {
         name: req.params.group,
@@ -138,23 +159,23 @@ var rostersPageOps = {
 
       console.log('create ', crGroup.name);
       crGroup.save(function(err) {
-        if (err) return callback(err, null);
+        if (err) return evtCallback(err, null);
         console.log("crGroup:", crGroup.name);
 
         newGroup.doc = crGroup;
-        propagateGroupCreate(newGroup, callback);
+        propagateGroupCreate(newGroup, evtCallback);
       });
     }
   },
 
-  updateGroup: function(req, callback) {
+  updateGroup: function(req, evtCallback) {
     console.log('Operation: updateGroup');
     //who follows groups? Teams, Athletes, mtrcats, metrics
 
     validateInput(req.params.oldGroup, updateGroup);
 
     function updateGroup(err, group) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
 
       var upGroup = {
         newGroup: req.body.upName,
@@ -169,22 +190,22 @@ var rostersPageOps = {
       var update = {$set: {name: upGroup.newGroup}};
 
       upGroup.Mods.Groups.findOneAndUpdate(cond, update, function(err, group) {
-        if (err) return callback(err, null);
+        if (err) return evtCallback(err, null);
       console.log('upGroup:\n', group.name);
 
       upGroup.doc = group;
-      propagateGroupUpdate(upGroup, callback);
+      propagateGroupUpdate(upGroup, evtCallback);
       });
     }
   },
 
-  deleteGroup: function(req, callback) {
+  deleteGroup: function(req, evtCallback) {
     console.log('Operation: deleteGroup');
 
     validateInput(req.params.group, deleteGroup);
 
     function deleteGroup(err, group) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
 
       var delGroup = {
         name: req.params.group,
@@ -198,11 +219,11 @@ var rostersPageOps = {
       var cond = {school: delGroup.sess.school, team: delGroup.team, name: delGroup.name};
 
       delGroup.Mods.Groups.findOneAndRemove(cond, function(err, group) {
-        if (err) return callback(err, null);
+        if (err) return evtCallback(err, null);
       console.log('delGroup:\n', group);
 
       delGroup.doc = group;
-      propagateGroupDelete(delGroup, callback);
+      propagateGroupDelete(delGroup, evtCallback);
       });
     }
   }
@@ -212,7 +233,40 @@ var rostersPageOps = {
   ------ HELPER FUNCTIONS ------findOneAndUpdate
  */
 
-function propagateGroupDelete(delGroup, callback) {
+function validateAthleteInput(athlete, callback) {
+  console.log('Operations: validateAthleteInput');
+  var maxCharLen = 45;
+  var names = /^[_]*[A-Z0-9][A-Z0-9 _.-]*$/i;
+  var height = /^[0-9]*['][0-9]*["]$/;
+  var username = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+  var pos = /^[A-Z0-9]+$/i;
+  var year = /^[A-Z0-9]+$/i;
+  var city = /^[A-Z][ A-Z]+$/i;
+  var state = /^[A-Z]{2}$/i;
+
+  if (maxCharLen < athlete.name) {
+    console.info("Validation: Error\n");
+    var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422, value: athlete.name};
+    return callback(err, null);
+  }
+  if (!names.test(athlete.name)) return valError(athlete.name);
+  if (!height.test(athlete.height)) return valError(athlete.height);
+  if (!username.test(athlete.username)) return valError(athlete.username);
+  if (!pos.test(athlete.position)) return valError(athlete.position);
+  if (!year.test(athlete.year)) return valError(athlete.year);
+  if (!city.test(athlete.city)) return valError(athlete.city);
+  if (!state.test(athlete.state)) return valError(athlete.state);
+
+  return callback(null, athlete);
+
+  function valError(input) {
+    console.info("Validation: Error\n");
+    var err = {name: "ValidationError", msg: 'Not valid input', code: 422, value: input};
+    return callback(err, null);
+  }
+}
+
+function propagateGroupDelete(delGroup, evtCallback) {
   console.info('propagating delGroup');
   deleteCoachGroup(delGroup);
 
@@ -223,7 +277,7 @@ function propagateGroupDelete(delGroup, callback) {
     //  delete a single coach group rather all coaches?
     var cond = {school: delGroup.sess.school, "groups.name": delGroup.name};
     delGroup.Mods.Coaches.update(cond, delGroup.update, function(err, numUp) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
       console.log('coach:\n', numUp);
 
       deleteTeamGroup(delGroup);
@@ -236,7 +290,7 @@ function propagateGroupDelete(delGroup, callback) {
 
     var cond = {school: delGroup.sess.school, name: delGroup.team.name, gender: delGroup.team.gender, "groups.name": delGroup.name};
     delGroup.Mods.Teams.update(cond, delGroup.update, function(err, numUp) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
       console.log('team:\n', numUp);
 
       deleteAthleteGroup(delGroup);
@@ -249,15 +303,15 @@ function propagateGroupDelete(delGroup, callback) {
 
     var cond = {school: delGroup.sess.school, team: delGroup.team, "groups.name": delGroup.name};
     delGroup.Mods.Athletes.update(cond, delGroup.update, {multi:true}, function(err, numUp) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
       console.log('athlete:\n', numUp);
 
-      return callback(null, delGroup.doc);
+      return evtCallback(null, delGroup.doc);
     });
   }
 }
 
-function propagateGroupUpdate(upGroup, callback) {
+function propagateGroupUpdate(upGroup, evtCallback) {
   console.info('propagating upGroup');
   updateCoachGroup(upGroup);
 
@@ -267,7 +321,7 @@ function propagateGroupUpdate(upGroup, callback) {
     var cond = {school: upGroup.sess.school, "groups.name": upGroup.oldGroup};
     var update = {$set: {'groups.$.name': upGroup.newGroup}};
     upGroup.Mods.Coaches.findOneAndUpdate(cond, update, function(err, coach) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
       console.log('coaches:\n', coach.groups);
 
       updateTeamGroup(upGroup);
@@ -280,7 +334,7 @@ function propagateGroupUpdate(upGroup, callback) {
     var cond = {school: upGroup.sess.school, name: upGroup.team.name, gender: upGroup.team.gender, "groups.name": upGroup.oldGroup};
     var update = {$set: {'groups.$.name': upGroup.newGroup}};
     upGroup.Mods.Teams.findOneAndUpdate(cond, update, function(err, team) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
       console.log('team:\n', team.groups);
 
       updateAthleteGroup(upGroup);
@@ -293,15 +347,15 @@ function propagateGroupUpdate(upGroup, callback) {
     var cond = {school: upGroup.sess.school, "coaches.username": upGroup.sess.username, "coaches.name": upGroup.sess.name, "groups.name": upGroup.oldGroup};
     var update = {$set: {'groups.$.name': upGroup.newGroup}};
     upGroup.Mods.Athletes.update(cond, update, {multi: true}, function(err, numUp) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
       console.log('athletes:', numUp);
 
-      callback(null, upGroup.doc);
+      evtCallback(null, upGroup.doc);
     });
   }
 }
 
-function propagateGroupCreate(newGroup, callback) {
+function propagateGroupCreate(newGroup, evtCallback) {
   console.info('propagating newGroup');
   return insertCoachGroup(newGroup);
 
@@ -311,7 +365,7 @@ function propagateGroupCreate(newGroup, callback) {
     var cond = {school: newGroup.sess.school, username: newGroup.sess.username, "teams.name": newGroup.team.name, "teams.gender": newGroup.team.gender};
     var update = {$push: {groups: {_id: newGroup.doc._id, name: newGroup.doc.name}}};
     newGroup.Mods.Coaches.findOneAndUpdate(cond, update, function(err, coach) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
       console.log('coach:\n', coach.groups);
 
       return insertTeamGroup(newGroup);
@@ -324,10 +378,10 @@ function propagateGroupCreate(newGroup, callback) {
     var cond = {school: newGroup.sess.school, name: newGroup.team.name, gender: newGroup.team.gender};
     var update = {$push: {groups: {_id: newGroup.doc._id, name: newGroup.doc.name}}};
     newGroup.Mods.Teams.findOneAndUpdate(cond, update, function(err, team) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
       console.log('team:\n', team.groups);
 
-      return callback(null, newGroup.doc);
+      return evtCallback(null, newGroup.doc);
     });
   }
 }
@@ -336,7 +390,7 @@ function validateInput(input, callback) {
   console.log('Operations: validateInput');
   var maxCharLen = 45;
   var rego = /^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$/;
-  if (maxCharLen === input.length) {
+  if (maxCharLen < input.length) {
     console.info("Validation: Error\n");
     var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422};
     return callback(err, null);
