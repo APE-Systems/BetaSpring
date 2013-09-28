@@ -44,6 +44,7 @@ module.exports = function(app) {
   // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:metric/:teamTgt-:genderTgt', apeLibEvts.metricToTeam)
 
   // Rosters Page
+
   app.get('/:school/:team/:gender/roster', function(req, res) {
     var payload = {
     "athletes": [
@@ -460,9 +461,6 @@ module.exports = function(app) {
   // app.put();
   // app.delete();
 
-  app.get('/:school/:team-:gender/roster', rosEvts.getRostersPage);
-
-
     //ATHLETES
   app.get('/:school/:team-:gender/roster/athletes', rosEvts.getRostersPage);
   app.post('/:school/:team-:gender/roster/athlete', rosEvts.createAthlete);
@@ -481,6 +479,7 @@ module.exports = function(app) {
 //  APE LIBRARY URI TO SUPPORT CRUD
 // -------------------------------------------------------------------------- //
 /*
+    
 
   app.post('/:school/apelibrary/metriccategory-:mtrcat', apeLibEvts.createMetricCat);
   app.put('/:school/apelibrary/metriccateogry-:mtrcat', apeLibEvts.editMetricCat);

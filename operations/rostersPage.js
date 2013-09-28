@@ -140,8 +140,7 @@ var rostersPageOps = {
         name: req.params.group,
         team: {name: req.params.team, gender: req.params.gender},
         sess: req.sess,
-        Mods: req.models,
-        update: {$pull: {groups: {name: group}}}
+        Mods: req.models
       };
 
       console.log('delete ' + delGroup.name);
@@ -172,7 +171,8 @@ function propagateGroupDelete(delGroup, callback) {
     //TODO:
     //  delete a single coach group rather all coaches?
     var cond = {school: delGroup.sess.school, "groups.name": delGroup.name};
-    delGroup.Mods.Coaches.update(cond, delGroup.update, function(err, numUp) {
+    var update = {$pull: {groups: {name: delGroup.name}}};
+    delGroup.Mods.Coaches.update(cond, update, function(err, numUp) {
       if (err) return callback(err, null);
       console.log('coach:\n', numUp);
 
@@ -185,7 +185,8 @@ function propagateGroupDelete(delGroup, callback) {
     console.log('deleteTeamGroup');
 
     var cond = {school: delGroup.sess.school, name: delGroup.team.name, gender: delGroup.team.gender, "groups.name": delGroup.name};
-    delGroup.Mods.Teams.update(cond, delGroup.update, function(err, numUp) {
+    var update = {$pull: {groups: {name: delGroup.name}}};
+    delGroup.Mods.Teams.update(cond, update, function(err, numUp) {
       if (err) return callback(err, null);
       console.log('team:\n', numUp);
 
@@ -198,7 +199,8 @@ function propagateGroupDelete(delGroup, callback) {
     console.log('deleteAthleteGroup');
 
     var cond = {school: delGroup.sess.school, team: delGroup.team, "groups.name": delGroup.name};
-    delGroup.Mods.Athletes.update(cond, delGroup.update, {multi:true}, function(err, numUp) {
+    var update = {$pull: {groups: {name: delGroup.name}}};
+    delGroup.Mods.Athletes.update(cond, update, {multi:true}, function(err, numUp) {
       if (err) return callback(err, null);
       console.log('athlete:\n', numUp);
 

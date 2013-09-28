@@ -3,7 +3,7 @@ node_modules/
 npm-debug.log
 notes.txt
 public/_imgs
-
+middleware/sessions.js
 
 cm
 README2.md
