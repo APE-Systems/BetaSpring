@@ -10,15 +10,20 @@ var rostersPageEvts = {
   getRostersPage: function(req, res, next) {
     console.log('Event: getRostersPage');
 
-    rospgOps.getRostersPage(req, function(err, payLoad) {
-      if (err) throw new Error(err);
-
-      // console.log('payLoad:', payLoad);
-      res.render('rostersPage', {
-        nav: req.school,
-        athletes: payLoad.athletes,
-        apeLib: payLoad.apeLibPackage
-      });
+    rospgOps.getRostersPage(req, function(err, payload) {
+      if (err) {
+        console.error("getRostersPage: Error\n", err);
+        res.send(500, "Problem getting rosters page.");
+      } else {
+        // res.json(payload);
+        console.log('getRostersPage: Success');
+        res.json({
+          nav: req.sess.school,
+          athletes: payload.athletes,
+          groups: payload.groups,
+          apeLib: payload.apeLibPackage
+        });
+      }
     });
   },
 
