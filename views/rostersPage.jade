@@ -6,7 +6,8 @@ append head
 
 block content
   include includes/vanity-plate
-  
+  include includes/mixins/rosters
+
   //- Display Groups
   .row
     .large-12.columns.groups-nav
@@ -25,49 +26,12 @@ block content
           th Position
           th Group
       tbody.roster-list
-        tr
-          td
-            input(type='checkbox')
-          td Kristopher
-          td Washington
-          td Sprinter
-          td Junior
-        tr
-          td
-            input(type='checkbox')
-          td J'Dinklage
-          td Morgoone
-          td Runningback
-          td Senior
-        tr
-          td
-            input(type='checkbox')
-          td Hingle
-          td McCringleberry
-          td Special Teams
-          td Senior
-        tr
-          td
-            input(type='checkbox')
-          td NyQuillus
-          td Dillwad
-          td Runningback
-          td Junior
-        tr
-          td
-            input(type='checkbox')
-          td Bismo
-          td Funyuns
-          td Runningback
-          td Senior
-        tr
-          td
-            input(type='checkbox')
-          td Mergatroid
-          td Skittle
-          td Quarterback
-          td Senior
-  
+        +roster-row('Kristopher', 'Washington', 'Sprinter', 'Junior')
+        +roster-row('Ozamataz', 'Buckshank', 'Runninback', 'Freshman')
+        +roster-row('Bismo', 'Funyuns', 'Runningback', 'Senior')
+        +roster-row('Hingle', 'McCringleberry', 'Special Teams', 'Senior')
+        +roster-row("J'Dinklage", "Morgoone", "Runningback", "Senior")
+        +roster-row('Ozamataz', 'Buckshank', 'Runninback', 'Freshman')
 
   #create-group-modal.reveal-modal.small
     h4 Create Group
