@@ -65,8 +65,8 @@ var rostersPageOps = {
   createAthlete: function(req, evtCallback) {
     console.log('Operation: createAthlete');
     var athlete = {
-      name: req.body.name,
-      username: req.body.username,
+      fname: req.body.fname,
+      lname: req.body.lname,
       height: req.body.height,
       position: req.body.position,
       year: req.body.year,
@@ -89,15 +89,28 @@ var rostersPageOps = {
       newAthlete.createdBy = req.sess.COID;
       newAthlete.school = crAthlete.sess.school;
       newAthlete.team = crAthlete.team;
-      newAthlete.name = req.body.name;
-      newAthlete.username = req.body.username;
-      newAthlete.positions.push(req.body.position);
-      newAthlete.years.push(req.body.year);
-      newAthlete.hometown = req.body.hometown;
-      newAthlete.height = req.body.height;
 
-      console.log('newAthlete:\n', newAthlete);
-      return evtCallback(null, newAthlete);
+      newAthlete.name = athlete.fname + ' ' + athlete.lname;
+      newAthlete.username = athlete.username + crAthlete.sess.webdom;
+      newAthlete.positions.push(athlete.position);
+      newAthlete.years.push(athlete.year);
+      newAthlete.hometown = athlete.city + ', ' + athlete.state;
+      newAthlete.height = athlete.height;
+      newAthlete.coaches.push({
+        username: crAthlete.sess.username,
+        name: crAthlete.sess.name,
+        _id: crAthlete.sess.COID
+      });
+
+      // console.log('newAthlete:\n', newAthlete);
+      // return evtCallback(null, newAthlete);
+      newAthlete.save(function(err) {
+        if (err) return evtCallback(err, null);
+        console.log('Athlete saved:', newAthlete.name);
+
+        crAthlete.athlete = newAthlete;
+        return propagateAthleteCreate(crAthlete, evtCallback);
+      });
     }
   },
 
@@ -160,7 +173,7 @@ var rostersPageOps = {
       console.log('create ', crGroup.name);
       crGroup.save(function(err) {
         if (err) return evtCallback(err, null);
-        console.log("crGroup:", crGroup.name);
+        console.log("Group saved:", crGroup.name);
 
         newGroup.doc = crGroup;
         propagateGroupCreate(newGroup, evtCallback);
@@ -230,8 +243,60 @@ var rostersPageOps = {
 };
 
 /*
-  ------ HELPER FUNCTIONS ------findOneAndUpdate
+  ------ HELPER FUNCTIONS ------
  */
+
+// ---- ATHLETE ---- //
+
+function propagateAthleteCreate(crAthlete, evtCallback) {
+  console.info('propagating crAthlete');
+  return insertSchoolAthlete(crAthlete);
+
+  function insertSchoolAthlete(crAthlete) {
+    console.log('insertSchoolAthlete');
+
+    var cond = {name: crAthlete.sess.school, "coaches.username": crAthlete.sess.username, "teams.name": crAthlete.team.name, "teams.gender": crAthlete.team.gender};
+    var update = {$push: {athletes: {_id: crAthlete.athlete._id, name: crAthlete.athlete.name}}};
+    // APE.Schools.findOne(cond, function(err, numUp) {
+    APE.Schools.update(cond, update, function(err, numUp) {
+      if (err) return evtCallback(err, null);
+      console.log('school:\n', numUp);
+
+      // return evtCallback(null, crAthlete.athlete);
+      return insertCoachAthlete(crAthlete);
+    });
+  }
+
+  function insertCoachAthlete(crAthlete) {
+    console.log('insertCoachAthlete');
+    //TODO:
+    //  a single coach or all coaches?
+    var cond = {school: crAthlete.sess.school, 'teams.name': crAthlete.team.name, 'teams.gender': crAthlete.team.gender};
+    var update = {$push: {athletes: {_id: crAthlete.athlete._id, name: crAthlete.athlete.name}}};
+    // crAthlete.Mods.Coaches.findOne(cond, function(err, numUp) {
+    crAthlete.Mods.Coaches.update(cond, update, function(err, numUp) {
+      if (err) evtCallback(err, null);
+      console.log('coach:\n', numUp);
+
+      // return evtCallback(null, crAthlete.athlete);
+      return insertTeamAthlete(crAthlete);
+    });
+  }
+
+  function insertTeamAthlete(crAthlete) {
+    console.log('insertTeamAthlete');
+
+    var cond = {school: crAthlete.sess.school, name: crAthlete.team.name, gender: crAthlete.team.gender};
+    var update = {$push: {athletes: {_id: crAthlete.athlete._id, name: crAthlete.athlete.name}}};
+    // crAthlete.Mods.Teams.findOne(cond, function(err, numUp) {
+    crAthlete.Mods.Teams.update(cond, update, function(err, numUp) {
+      if (err) evtCallback(err, null);
+      console.log('team:\n', numUp);
+
+      return evtCallback(null, crAthlete.athlete);
+    });
+  }
+}
 
 function validateAthleteInput(athlete, callback) {
   console.log('Operations: validateAthleteInput');
@@ -239,7 +304,7 @@ function validateAthleteInput(athlete, callback) {
   var names = /^[_]*[A-Z0-9][A-Z0-9 _.-]*$/i;
   var height = /^[0-9]*['][0-9]*["]$/;
   var username = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-  var pos = /^[A-Z0-9]+$/i;
+  var pos = /^[A-Z0-9-/]+$/i;
   var year = /^[A-Z0-9]+$/i;
   var city = /^[A-Z][ A-Z-]+$/i;
   var state = /^[A-Z]{2}$/i;
@@ -249,15 +314,30 @@ function validateAthleteInput(athlete, callback) {
     var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422, value: athlete.name};
     return callback(err, null);
   }
-  if (!names.test(athlete.name)) return valError(athlete.name);
+  if (!names.test(athlete.fname)) return valError(athlete.fname);
+  if (!names.test(athlete.lname)) return valError(athlete.lname);
   if (!height.test(athlete.height)) return valError(athlete.height);
-  if (!username.test(athlete.username)) return valError(athlete.username);
   if (!pos.test(athlete.position)) return valError(athlete.position);
   if (!year.test(athlete.year)) return valError(athlete.year);
   if (!city.test(athlete.city)) return valError(athlete.city);
   if (!state.test(athlete.state)) return valError(athlete.state);
 
-  return callback(null, athlete);
+  return crUsername(athlete);
+
+  function crUsername(athlete) {
+      var username = '';
+      for (var i in athlete)
+      {
+        if (i === 'height') {
+          username += athlete[i].split('\'')[0];
+        } else {
+          username += athlete[i].slice(0,2).toLowerCase();
+        }
+      }
+      // console.log('username:', username);
+      athlete.username = username;
+      return callback(null, athlete);
+  }
 
   function valError(input) {
     console.info("Validation: Error\n");
@@ -265,6 +345,10 @@ function validateAthleteInput(athlete, callback) {
     return callback(err, null);
   }
 }
+
+
+
+// ---- GROUP ---- //
 
 function propagateGroupDelete(delGroup, evtCallback) {
   console.info('propagating delGroup');
