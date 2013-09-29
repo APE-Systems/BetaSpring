@@ -48,8 +48,8 @@ module.exports = function(app) {
 
     //ATHLETES
   app.post('/:school/:team-:gender/roster/athlete', rosEvts.createAthlete);
-  app.put('/:school/:team-:gender/roster/athlete/:athlete', rosEvts.updateAthlete);
-  app.delete('/:school/:team-:gender/roster/athlete/:athlete', rosEvts.deleteAthlete);
+  app.put('/:school/:team-:gender/roster/athlete/:id', rosEvts.updateAthlete);
+  app.delete('/:school/:team-:gender/roster/athlete/:id', rosEvts.deleteAthlete);
 
     //GROUPS
   app.post('/:school/:team-:gender/roster/group/:group', rosEvts.createGroup);
