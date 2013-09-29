@@ -241,7 +241,7 @@ function validateAthleteInput(athlete, callback) {
   var username = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   var pos = /^[A-Z0-9]+$/i;
   var year = /^[A-Z0-9]+$/i;
-  var city = /^[A-Z][ A-Z]+$/i;
+  var city = /^[A-Z][ A-Z-]+$/i;
   var state = /^[A-Z]{2}$/i;
 
   if (maxCharLen < athlete.name) {
