@@ -1,0 +1,16 @@
+extends layout
+
+append head
+  //-link(rel='stylesheet', href='/_css/roster.css')
+block content
+  include includes/vanity-plate
+
+  .row
+    .large-12.columns.metrics-nav
+    dl.sub-nav
+      dt Filter:
+        dd.active
+          a(href='#') All
+        dd: a(href='#') Strength
+        dd: a(href='#') Biometrics
+        dd: a(href='#') Speed

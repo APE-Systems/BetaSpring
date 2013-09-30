@@ -458,6 +458,10 @@ module.exports = function(app) {
     res.send(200, req.body.params);
     req.flash('info', 'Group created');
   });
+
+  app.get('/athleteProfile', function(req, res) {
+    res.render('athleteProfile');
+  });
   // app.put();
   // app.delete();
 

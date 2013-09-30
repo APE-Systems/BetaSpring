@@ -5962,10 +5962,136 @@ li p {
   .red-button:hover, .red-button:focus {
     color: white; }
 
-/* line 13, ../_scss/screen.scss */
+/* THE STUFF BELOW IS FROM THE OLD _CSS/ROSTER.CSS PAGE. REFACTOR*/
+/* line 14, ../_scss/screen.scss */
 .roster-table {
   width: 100%; }
 
-/* line 20, ../_scss/screen.scss */
+/* line 21, ../_scss/screen.scss */
 .all-teams ul li button {
   display: block; }
+
+/* ROSTERS PAGE COLORS 
+
+LIGHT GRAY: #F2F2F2;
+MEDIUM GRAY: #CCCCCC;
+DARK GRAY: 
+
+DARK RED: #83000F;
+LIGHT RED:; #9C0012;
+
+*/
+/* TYPOGRAPHY */
+/* line 42, ../_scss/screen.scss */
+.athlete-photo img {
+  display: block;
+  width: 100%; }
+
+/* line 46, ../_scss/screen.scss */
+.vanity-plate {
+  background-color: #F2F2F2;
+  padding-top: 0.5em; }
+
+/* line 52, ../_scss/screen.scss */
+.athlete-photo button {
+  display: block;
+  width: 100%; }
+
+/* line 57, ../_scss/screen.scss */
+.athlete-metrics {
+  text-align: center; }
+
+/* line 60, ../_scss/screen.scss */
+.athlete-metrics h3 {
+  font-family: 'helvetica neue', helvetica, arial;
+  font-size: 1.5em;
+  font-weight: 100;
+  letter-spacing: 1px;
+  text-shadow: #262729 0 -1px 0; }
+
+/* line 68, ../_scss/screen.scss */
+.athlete-metrics span {
+  display: block; }
+
+/* line 71, ../_scss/screen.scss */
+span.metric-value {
+  font-size: 4.5em;
+  font-weight: normal;
+  line-height: 1; }
+
+/* line 78, ../_scss/screen.scss */
+span.metric-measurement {
+  padding-top: 0.5em;
+  font-size: 1.5em;
+  line-height: 1;
+  font-weight: 100; }
+
+/* line 86, ../_scss/screen.scss */
+.athlete-info dl {
+  line-height: .75em; }
+
+/* line 89, ../_scss/screen.scss */
+.athlete-info dl dt {
+  float: left;
+  font-weight: bold;
+  margin-right: 10px; }
+
+/* line 95, ../_scss/screen.scss */
+.roster-subnav {
+  background-color: #F2F2F2; }
+
+/* line 101, ../_scss/screen.scss */
+.name-style {
+  font-family: 'helvetica neue', helvetica, arial;
+  font-size: 20px;
+  font-weight: 100;
+  letter-spacing: 1px;
+  text-shadow: #262729 0 -1px 0; }
+
+/* line 109, ../_scss/screen.scss */
+.bold {
+  font-weight: bolder; }
+
+/* line 113, ../_scss/screen.scss */
+.sub-nav {
+  margin-bottom: 0em;
+  margin-top: 1em;
+  margin-left: 0em; }
+
+/* line 119, ../_scss/screen.scss */
+.sub-nav dd.active a {
+  background: #9C0012; }
+
+/* line 127, ../_scss/screen.scss */
+input[type=submit] {
+  background-color: #9c0012;
+  padding: 10px;
+  color: white; }
+
+/* line 133, ../_scss/screen.scss */
+input[type=submit]:hover {
+  background-color: #69000c; }
+
+/* line 142, ../_scss/screen.scss */
+h5 {
+  text-transform: uppercase; }
+
+/* line 150, ../_scss/screen.scss */
+[contenteditable]:hover:after {
+  content: ' click to edit';
+  font-style: italic;
+  font-size: 12px;
+  font-family: sans-serif;
+  color: #ccc; }
+
+/* line 158, ../_scss/screen.scss */
+[contenteditable]:hover, [contenteditable]:focus {
+  background: #D1D0CE; }
+
+/* line 162, ../_scss/screen.scss */
+[contenteditable]:focus {
+  padding: 5px; }
+
+/* line 166, ../_scss/screen.scss */
+[contenteditable]:focus:after {
+  content: ''; }
