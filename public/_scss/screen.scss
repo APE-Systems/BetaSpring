@@ -10,6 +10,8 @@
   @include button($button-med, #9C0012, false, false, false, false);
 }
 
+
+
 /* THE STUFF BELOW IS FROM THE OLD _CSS/ROSTER.CSS PAGE. REFACTOR*/
 .roster-table {
 	width: 100%;
@@ -37,6 +39,9 @@ LIGHT RED:; #9C0012;
 
 */
 
+$light-gray: #f2f2f2;
+$green: #458B00;
+
 /* TYPOGRAPHY */
 
 .athlete-photo img {
@@ -44,7 +49,7 @@ LIGHT RED:; #9C0012;
 	width: 100%;
 }
 .vanity-plate {
-	background-color:#F2F2F2;
+	background-color: $light-gray;
 	padding-top: 0.5em;
 
 }
@@ -167,5 +172,39 @@ h5 {
 	content: '';
 }
 
+/* ****************************************** */
+.athlete-canvas {
+	background: $light-gray;
+}
 
+.display {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
 
+.athlete-canvas-metrics {
+
+	.large-2.columns {
+		width: 20%;
+		text-transform:uppercase;
+		text-align: center;
+	}
+
+	h2 {
+		margin-bottom: 0.2em;
+		font-size: 3em;
+		position: relative;
+		top: -0.3em;
+		font-weight: 400;
+	}
+
+	i {
+		margin-bottom: 0;
+		display:block;
+		font-size: 3.9em;
+		font-weight: 100;
+	}
+	.positive {
+		color: $green;
+	}
+}

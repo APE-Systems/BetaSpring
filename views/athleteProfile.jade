@@ -4,17 +4,50 @@ extends layout
   //-link(rel='stylesheet', href='/_css/roster.css')
 block content
   include includes/vanity-plate
-
   .row
+
+  .row.display
     .large-12.columns.athlete-canvas
-      .section-container.tabs(data-section='tabs') 
-        section.active
-          p.title(data-section-title)
-            a(href='#panel1')Section 1
-            .content(data-section-content)
-              p Content of section 1.
-        section
-          p.title(data-section-title)
-            a(href='#panel2')Section 2.
-            .content(data-section-content)
-              p Content of section 2.
+      .large-6.columns
+        h4 Bench Press (lbs)
+      .large-6.columns
+        h4.right Last Record: Aug 8, 2013
+      .large-12.spacer
+        hr
+      .row
+        .large-10.large-centered.columns.athlete-canvas-metrics
+          .row
+            .large-2.columns
+              h2 275
+
+            .large-2.columns
+              h2 245
+
+            .large-2.columns
+              h2.positive +10
+ 
+            .large-2.columns
+              i.foundicon-graph
+
+            .large-2.columns
+              i.foundicon-edit
+
+          .row
+            .large-2.columns
+              span Latest Record
+            .large-2.columns
+
+              span Latest Team Avg.
+            .large-2.columns
+
+              span Delta Since Last
+            .large-2.columns
+
+              span View Graph
+            .large-2.columns
+
+              span Edit Data
+
+
+      
+
