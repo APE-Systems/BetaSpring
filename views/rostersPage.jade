@@ -6,6 +6,7 @@ append head
 
 block content
   include includes/vanity-plate
+  include includes/rosters-subnav
   include includes/mixins/rosters
 
   //- Display Groups
@@ -37,6 +38,20 @@ block content
           +roster-row('', '', '', '')
           +roster-row('', '', '', '')
           +roster-row('', '', '', '')
+
+  .row
+    .large-12.columns.athlete-canvas
+      .section-container.tabs(data-section='tabs') 
+        section.active
+          p.title(data-section-title)
+            a(href='#panel1')Section 1
+            .content(data-section-content)
+              p Content of section 1.
+        section
+          p.title(data-section-title)
+            a(href='#panel2')Section 2.
+            .content(data-section-content)
+              p Content of section 2.
 
   include includes/rosters-page-modals
 
