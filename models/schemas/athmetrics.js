@@ -52,6 +52,7 @@ var AthMetricSchema = module.exports = new Schema({
     , dt: {type: Date, required: true}
     , units: {type: String, required: true}
     , note: String
+    , grp: {type: String, default: 'all'}
     }]
   },
   {
