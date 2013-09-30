@@ -1,15 +1,14 @@
-script(type='text/javascript', src='/_js/vendor/custom.modernizr.js')
-script(type='text/javascript', src='/_js/vendor/jquery/jquery-1.10.1.js')
-script(type='text/javascript', src='/_js/vendor/foundation/foundation.min.js')
-script(type='text/javascript', src='/_js/vendor/sidr/jquery.sidr.js')
-script(type='text/javascript', src='/_js/vendor/accordion/jquery.cookie.js')
-script(type='text/javascript', src='/_js/vendor/accordion/jquery.hoverIntent.minified.js')
-script(type='text/javascript', src='/_js/vendor/accordion/jquery.dcjqaccordion.2.7.min.js')
-script(type='text/javascript', src='/_js/vendor/list.min.js')
-script(type='text/javascript', src='/_js/vendor/underscore-min.js')
-//-script(type='text/javascript', src='../_js/fetchAthlete.js')
-//-script(type='text/javascript', src='../_js/createTeams.js')
-script.
+
+<script type="text/javascript" src="/_js/vendor/custom.modernizr.js"></script>
+<script type="text/javascript" src="/_js/vendor/jquery/jquery-1.10.1.js"></script>
+<script type="text/javascript" src="/_js/vendor/foundation/foundation.min.js"></script>
+<script type="text/javascript" src="/_js/vendor/sidr/jquery.sidr.js"></script>
+<script type="text/javascript" src="/_js/vendor/accordion/jquery.cookie.js"></script>
+<script type="text/javascript" src="/_js/vendor/accordion/jquery.hoverIntent.minified.js"></script>
+<script type="text/javascript" src="/_js/vendor/accordion/jquery.dcjqaccordion.2.7.min.js"></script>
+<script type="text/javascript" src="/_js/vendor/list.min.js"></script>
+<script type="text/javascript" src="/_js/vendor/underscore-min.js"></script>
+<script>
   $(document).foundation();
   $(document).ready(function() {
   $('.roster-list').find('tr:first').addClass('highlight-table-row');
@@ -37,17 +36,17 @@ script.
     speed: 'fast',
     autoExpand: true,
     });
-
+    
     var teamsArray = $('#teams-list h3').map(function() {
       return $(this).text();
     }).get();
     var school = $('#school-name').text();
-
+    
   $('.delete-team').on("click", function(event) {
     event.preventDefault();
     prompt("Are you sure you want to delete this team?");
     });
-
+    
   //- EDIT TEAM FUNCTION BELOW
   $('.edit-team').on("click", function(event) {
     $(this).find('.foundicon-edit').addClass('white');
@@ -55,7 +54,7 @@ script.
     var teamNameCopy = teamName;
     var teamGender = $(this).closest('li').find('span').html();
     console.log("teamGender : " + teamGender);
-
+    
     var url = '/'+ school + '/' + teamName.html() +'-' + teamGender;
     var name = '"' + teamName.html() + '"';
     console.log(name);
@@ -89,7 +88,7 @@ script.
       });
   });  
   //- END EDIT TEAM FUNCTION
-
+  
   $('#create-team-form').on("submit", function(event) { 
     console.log("clicked from " + this );
     var form = $(this);
@@ -104,10 +103,10 @@ script.
     var url = '/'+ school + '/' + teamName + '/' + teamGender;
     //- var url = '/'+ school + '/baseball/men';
     //- var url = '/'+ school + '/hardball/women';
-
+    
     console.log("teamsArray:" + teamsArray);
     console.log($.inArray(teamName, teamsArray));
-
+    
     //- if ( $.inArray(teamName,teamsArray) === -1)  {
       console.log('sending PUT ajax', url);
       $.ajax({
@@ -133,7 +132,7 @@ script.
     //- }
     event.preventDefault();
   }); // create form on subsmit
-
+  
   $('#create-group-form').on("submit", function(event) {
     console.log('clicked!');
     event.preventDefault();
@@ -152,9 +151,10 @@ script.
       console.log(msg);
     }).done(function(msg) {
       alert("data saved: " + msg);
-  
+      
     }).always(function() {
       $('a.close-reveal-modal').trigger('click');
     }); 
   }); //on submit - create group form
   }); // document ready
+</script>

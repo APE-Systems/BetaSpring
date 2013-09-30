@@ -7,16 +7,18 @@ html
     meta(name='viewport', content='width=device-width')
     title= title
     block head
-      link(href='/_css/foundation.min.css', rel='stylesheet', type='text/css', media='all')
+      //-link(href='/_css/foundation.min.css', rel='stylesheet', type='text/css', media='all')
       link(href='/_css/normalize.min.css', rel='stylesheet', type='text/css', media='all')
-      link(href='/_css/app.css', rel='stylesheet', type='text/css', media='all')
+      link(href='/_css/screen.css', rel='stylesheet', type='text/css', media='all')
       link(rel='stylesheet', href='/_icons/stylesheets/general_foundicons.css')
       link(rel='stylesheet', href='/_js/vendor/sidr/stylesheets/jquery.sidr.dark.css')
   body
     include includes/nav
-    include includes/side-nav
+    
 
     block content
 
+    include includes/side-nav
+    
     block scripts
       include includes/scripts

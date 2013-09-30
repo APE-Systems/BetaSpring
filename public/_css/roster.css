@@ -108,10 +108,8 @@ input[type=submit]:hover {
 
 
 
-/* Table Formatting */
-tr th {
-	background-color: #ccc !important;
-}
+
+
 
 h5 {
 	text-transform: uppercase;

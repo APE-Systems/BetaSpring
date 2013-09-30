@@ -17,21 +17,26 @@ block content
             a(href='#') All
           dd: a(href='#') Injured
           dd: a(href='#') Ninnies
-    table
-      thead
-        tr
-          th &nbsp;
-          th First Name
-          th Last Name
-          th Position
-          th Group
-      tbody.roster-list
-        +roster-row('Kristopher', 'Washington', 'Sprinter', 'Junior')
-        +roster-row('Ozamataz', 'Buckshank', 'Runninback', 'Freshman')
-        +roster-row('Bismo', 'Funyuns', 'Runningback', 'Senior')
-        +roster-row('Hingle', 'McCringleberry', 'Special Teams', 'Senior')
-        +roster-row("J'Dinklage", "Morgoone", "Runningback", "Senior")
-        +roster-row('Ozamataz', 'Buckshank', 'Runninback', 'Freshman')
+    .large-12.columns
+      table.roster-table
+        thead
+          tr
+            th &nbsp;
+            th First Name
+            th Last Name
+            th Position
+            th Group
+        tbody.roster-list
+          +roster-row('Kristopher', 'Washington', 'Sprinter', 'Junior')
+          +roster-row('Ozamataz', 'Buckshank', 'Runninback', 'Freshman')
+          +roster-row('Bismo', 'Funyuns', 'Runningback', 'Senior')
+          +roster-row('Hingle', 'McCringleberry', 'Special Teams', 'Senior')
+          +roster-row("J'Dinklage", "Morgoone", "Runningback", "Senior")
+          +roster-row('Ozamataz', 'Buckshank', 'Runninback', 'Freshman')
+          +roster-row('', '', '', '')
+          +roster-row('', '', '', '')
+          +roster-row('', '', '', '')
+          +roster-row('', '', '', '')
 
   #create-group-modal.reveal-modal.small
     h4 Create Group

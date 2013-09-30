@@ -15,7 +15,7 @@
               dt.year Year
               dd Junior
               dt.hometown Hometown
-              dd(contenteditable='true') Los Angeles
+              dd Los Angeles
               dt.height Height
               dd 5'8"
       .large-8.small-12.columns.athlete-metrics
@@ -43,7 +43,7 @@
           .large-5.columns
             ul.button-group.radius
               li
-                a.small.button.secondary(href='#') New Athlete
+                a.small.button.secondary(href='#', data-reveal-id='create-athlete-modal') New Athlete
 
       .large-8.columns
         ul.button-group.radius.right
@@ -52,4 +52,4 @@
           li
             a.small.button.secondary.disabled(href='#') Add to Group
           li
-            a.small.button.secondary(href='#') Create Group
+            a.small.button.secondary(href='#', data-reveal-id='create-group-modal') Create Group

@@ -3,5 +3,23 @@
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
 
-@import "compass/reset";
+
 @import "foundation";
+@import "partials/teams-page";
+.red-button {
+  @include button($button-med, #9C0012, false, false, false, false);
+}
+
+.roster-table {
+	width: 100%;
+}
+
+.all-teams {
+	ul {
+		li {
+			button {
+				display:block;
+			}
+		}
+	}
+}

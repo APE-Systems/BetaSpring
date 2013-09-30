@@ -3,62 +3,6 @@
  * In this file you should write your main styles. (or centralize your imports)
  * Import this file using the following HTML or equivalent:
  * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
-/* line 17, ../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font: inherit;
-  font-size: 100%;
-  vertical-align: baseline; }
-
-/* line 22, ../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-html {
-  line-height: 1; }
-
-/* line 24, ../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-ol, ul {
-  list-style: none; }
-
-/* line 26, ../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-table {
-  border-collapse: collapse;
-  border-spacing: 0; }
-
-/* line 28, ../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-caption, th, td {
-  text-align: left;
-  font-weight: normal;
-  vertical-align: middle; }
-
-/* line 30, ../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-q, blockquote {
-  quotes: none; }
-  /* line 103, ../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-  q:before, q:after, blockquote:before, blockquote:after {
-    content: "";
-    content: none; }
-
-/* line 32, ../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-a img {
-  border: none; }
-
-/* line 116, ../../../../../../../Applications/CodeKit.app/Contents/Resources/engines/compass/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
-  display: block; }
-
 /* line 264, ../_scss/foundation/components/_global.scss */
 meta.foundation-mq-small {
   font-family: "only screen and (min-width: 768px)";
@@ -183,7 +127,7 @@ select {
   margin-right: auto;
   margin-top: 0;
   margin-bottom: 0;
-  max-width: 62.5em;
+  max-width: 68.75em;
   *zoom: 1; }
   /* line 121, ../_scss/foundation/components/_global.scss */
   .row:before, .row:after {
@@ -1386,12 +1330,12 @@ td {
 /* Default Link Styles */
 /* line 152, ../_scss/foundation/components/_type.scss */
 a {
-  color: #2ba6cb;
+  color: #9c0012;
   text-decoration: none;
   line-height: inherit; }
   /* line 158, ../_scss/foundation/components/_type.scss */
   a:hover, a:focus {
-    color: #2795b6; }
+    color: #83000f; }
   /* line 160, ../_scss/foundation/components/_type.scss */
   a img {
     border: none; }
@@ -1734,12 +1678,12 @@ button, .button {
   padding-bottom: 0.8125em;
   padding-left: 1.5em;
   font-size: 1em;
-  background-color: #2ba6cb;
-  border-color: #2284a1;
+  background-color: #9c0012;
+  border-color: #69000c;
   color: white; }
   /* line 122, ../_scss/foundation/components/_buttons.scss */
   button:hover, button:focus, .button:hover, .button:focus {
-    background-color: #2284a1; }
+    background-color: #69000c; }
   /* line 133, ../_scss/foundation/components/_buttons.scss */
   button:hover, button:focus, .button:hover, .button:focus {
     color: white; }
@@ -1812,8 +1756,8 @@ button, .button {
     padding-right: 0.75em; }
   /* line 188, ../_scss/foundation/components/_buttons.scss */
   button.disabled, button[disabled], .button.disabled, .button[disabled] {
-    background-color: #2ba6cb;
-    border-color: #2284a1;
+    background-color: #9c0012;
+    border-color: #69000c;
     color: white;
     cursor: default;
     opacity: 0.6;
@@ -1821,13 +1765,13 @@ button, .button {
     box-shadow: none; }
     /* line 122, ../_scss/foundation/components/_buttons.scss */
     button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
-      background-color: #2284a1; }
+      background-color: #69000c; }
     /* line 133, ../_scss/foundation/components/_buttons.scss */
     button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
       color: white; }
     /* line 146, ../_scss/foundation/components/_buttons.scss */
     button.disabled:hover, button.disabled:focus, button[disabled]:hover, button[disabled]:focus, .button.disabled:hover, .button.disabled:focus, .button[disabled]:hover, .button[disabled]:focus {
-      background-color: #2ba6cb; }
+      background-color: #9c0012; }
     /* line 189, ../_scss/foundation/components/_buttons.scss */
     button.disabled.secondary, button[disabled].secondary, .button.disabled.secondary, .button[disabled].secondary {
       background-color: #e9e9e9;
@@ -2535,7 +2479,7 @@ label.error {
       background-color: rgba(0, 0, 0, 0.1); }
   /* line 79, ../_scss/foundation/components/_split-buttons.scss */
   .split.button span {
-    border-left-color: #1e728c; }
+    border-left-color: #500009; }
   /* line 116, ../_scss/foundation/components/_split-buttons.scss */
   .split.button span {
     width: 3em; }
@@ -3541,7 +3485,7 @@ label.error {
 /* line 72, ../_scss/foundation/components/_top-bar.scss */
 .contain-to-grid {
   width: 100%;
-  background: #111111; }
+  background: #383c3a; }
   /* line 76, ../_scss/foundation/components/_top-bar.scss */
   .contain-to-grid .top-bar {
     margin-bottom: 0; }
@@ -3575,7 +3519,7 @@ label.error {
   height: 45px;
   line-height: 45px;
   position: relative;
-  background: #111111;
+  background: #383c3a;
   margin-bottom: 0; }
   /* line 115, ../_scss/foundation/components/_top-bar.scss */
   .top-bar ul {
@@ -3662,7 +3606,7 @@ label.error {
     background: transparent; }
     /* line 212, ../_scss/foundation/components/_top-bar.scss */
     .top-bar.expanded .title-area {
-      background: #111111; }
+      background: #383c3a; }
     /* line 215, ../_scss/foundation/components/_top-bar.scss */
     .top-bar.expanded .toggle-topbar a {
       color: #888888; }
@@ -3690,8 +3634,8 @@ label.error {
   /* line 250, ../_scss/foundation/components/_top-bar.scss */
   .top-bar-section .divider,
   .top-bar-section [role="separator"] {
-    border-bottom: solid 1px #2b2b2b;
-    border-top: solid 1px black;
+    border-bottom: solid 1px #515654;
+    border-top: solid 1px #1f2221;
     clear: both;
     height: 1px;
     width: 100%; }
@@ -3707,13 +3651,13 @@ label.error {
     background: #222222; }
     /* line 269, ../_scss/foundation/components/_top-bar.scss */
     .top-bar-section ul li > a.button {
-      background: #2ba6cb;
+      background: #9c0012;
       font-size: 0.8125em;
       padding-right: 15px;
       padding-left: 15px; }
       /* line 274, ../_scss/foundation/components/_top-bar.scss */
       .top-bar-section ul li > a.button:hover {
-        background: #2284a1; }
+        background: #69000c; }
     /* line 278, ../_scss/foundation/components/_top-bar.scss */
     .top-bar-section ul li > a.button.secondary {
       background: #e9e9e9; }
@@ -3734,11 +3678,11 @@ label.error {
         background: #970b0e; }
   /* line 300, ../_scss/foundation/components/_top-bar.scss */
   .top-bar-section ul li:hover > a {
-    background: black;
+    background: #313432;
     color: white; }
   /* line 306, ../_scss/foundation/components/_top-bar.scss */
   .top-bar-section ul li.active > a {
-    background: #090909;
+    background: #313432;
     color: white; }
   /* line 313, ../_scss/foundation/components/_top-bar.scss */
   .top-bar-section .has-form {
@@ -3813,7 +3757,7 @@ label.error {
 @media only screen and (min-width: 940px) {
   /* line 389, ../_scss/foundation/components/_top-bar.scss */
   .top-bar {
-    background: #111111;
+    background: #383c3a;
     *zoom: 1;
     overflow: visible; }
     /* line 121, ../_scss/foundation/components/_global.scss */
@@ -3843,11 +3787,11 @@ label.error {
       top: 8px; }
     /* line 409, ../_scss/foundation/components/_top-bar.scss */
     .top-bar.expanded {
-      background: #111111; }
+      background: #383c3a; }
 
   /* line 412, ../_scss/foundation/components/_top-bar.scss */
   .contain-to-grid .top-bar {
-    max-width: 62.5em;
+    max-width: 68.75em;
     margin: 0 auto;
     margin-bottom: 0; }
 
@@ -3870,16 +3814,16 @@ label.error {
           display: none; }
     /* line 435, ../_scss/foundation/components/_top-bar.scss */
     .top-bar-section li.hover > a:not(.button) {
-      background: black;
+      background: #313432;
       color: white; }
     /* line 440, ../_scss/foundation/components/_top-bar.scss */
     .top-bar-section li a:not(.button) {
       padding: 0 15px;
       line-height: 45px;
-      background: #111111; }
+      background: #383c3a; }
       /* line 444, ../_scss/foundation/components/_top-bar.scss */
       .top-bar-section li a:not(.button):hover {
-        background: black; }
+        background: #313432; }
     /* line 452, ../_scss/foundation/components/_top-bar.scss */
     .top-bar-section .has-dropdown > a {
       padding-right: 35px !important; }
@@ -3922,11 +3866,11 @@ label.error {
         line-height: 1;
         white-space: nowrap;
         padding: 7px 15px;
-        background: #1e1e1e; }
+        background: #444947; }
       /* line 502, ../_scss/foundation/components/_top-bar.scss */
       .top-bar-section .dropdown li label {
         white-space: nowrap;
-        background: #1e1e1e; }
+        background: #444947; }
       /* line 508, ../_scss/foundation/components/_top-bar.scss */
       .top-bar-section .dropdown li .dropdown {
         left: 100%;
@@ -3935,14 +3879,14 @@ label.error {
     .top-bar-section > ul > .divider, .top-bar-section > ul > [role="separator"] {
       border-bottom: none;
       border-top: none;
-      border-right: solid 1px #2b2b2b;
-      border-left: solid 1px black;
+      border-right: solid 1px #515654;
+      border-left: solid 1px #1f2221;
       clear: none;
       height: 45px;
       width: 0; }
     /* line 526, ../_scss/foundation/components/_top-bar.scss */
     .top-bar-section .has-form {
-      background: #111111;
+      background: #383c3a;
       padding: 0 15px;
       height: 45px; }
     /* line 534, ../_scss/foundation/components/_top-bar.scss */
@@ -3955,11 +3899,11 @@ label.error {
 
   /* line 548, ../_scss/foundation/components/_top-bar.scss */
   .no-js .top-bar-section ul li:hover > a {
-    background: black;
+    background: #313432;
     color: white; }
   /* line 554, ../_scss/foundation/components/_top-bar.scss */
   .no-js .top-bar-section ul li:active > a {
-    background: #090909;
+    background: #313432;
     color: white; }
   /* line 562, ../_scss/foundation/components/_top-bar.scss */
   .no-js .top-bar-section .has-dropdown:hover > .dropdown {
@@ -4702,8 +4646,8 @@ label.error {
   position: relative;
   padding: 0.6875em 1.3125em 0.75em 0.6875em;
   font-size: 0.875em;
-  background-color: #2ba6cb;
-  border-color: #2284a1;
+  background-color: #9c0012;
+  border-color: #69000c;
   color: white; }
   /* line 97, ../_scss/foundation/components/_alert-boxes.scss */
   .alert-box .close {
@@ -4769,7 +4713,7 @@ label.error {
     .breadcrumbs > * a,
     .breadcrumbs > * span {
       text-transform: uppercase;
-      color: #2ba6cb; }
+      color: #9c0012; }
     /* line 69, ../_scss/foundation/components/_breadcrumbs.scss */
     .breadcrumbs > *.current {
       cursor: default;
@@ -5066,7 +5010,7 @@ kbd {
   position: relative;
   padding: 0.1875em 0.625em 0.25em;
   font-size: 0.875em;
-  background-color: #2ba6cb;
+  background-color: #9c0012;
   color: white; }
   /* line 77, ../_scss/foundation/components/_labels.scss */
   .label.radius {
@@ -5138,13 +5082,13 @@ ul.pagination {
       background: transparent; }
     /* line 57, ../_scss/foundation/components/_pagination.scss */
     ul.pagination li.current a {
-      background: #2ba6cb;
+      background: #9c0012;
       color: white;
       font-weight: bold;
       cursor: default; }
       /* line 64, ../_scss/foundation/components/_pagination.scss */
       ul.pagination li.current a:hover, ul.pagination li.current a:focus {
-        background: #2ba6cb; }
+        background: #9c0012; }
   /* line 110, ../_scss/foundation/components/_pagination.scss */
   ul.pagination li {
     float: left;
@@ -5188,10 +5132,10 @@ ul.pagination {
   .panel.callout {
     border-style: solid;
     border-width: 1px;
-    border-color: #2284a1;
+    border-color: #69000c;
     margin-bottom: 1.25em;
     padding: 1.25em;
-    background: #2ba6cb;
+    background: #9c0012;
     -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset; }
     /* line 44, ../_scss/foundation/components/_panels.scss */
@@ -5279,7 +5223,7 @@ ul.pagination {
   margin-bottom: 0.625em; }
   /* line 54, ../_scss/foundation/components/_progress-bars.scss */
   .progress .meter {
-    background: #2ba6cb;
+    background: #9c0012;
     height: 100%;
     display: block; }
   /* line 57, ../_scss/foundation/components/_progress-bars.scss */
@@ -5329,7 +5273,7 @@ ul.pagination {
     /* line 43, ../_scss/foundation/components/_side-nav.scss */
     .side-nav li a {
       display: block;
-      color: #2ba6cb; }
+      color: #9c0012; }
     /* line 48, ../_scss/foundation/components/_side-nav.scss */
     .side-nav li.active > a:first-child {
       color: #4d4d4d;
@@ -5375,7 +5319,7 @@ ul.pagination {
       -webkit-border-radius: 1000px;
       border-radius: 1000px;
       font-weight: bold;
-      background: #2ba6cb;
+      background: #9c0012;
       padding: 0.1875em 0.5625em;
       cursor: default;
       color: white; }
@@ -5648,8 +5592,8 @@ table {
   transition: all 200ms ease-out; }
   /* line 32, ../_scss/foundation/components/_thumbs.scss */
   .th:hover, .th:focus {
-    -webkit-box-shadow: 0 0 6px 1px rgba(43, 166, 203, 0.5);
-    box-shadow: 0 0 6px 1px rgba(43, 166, 203, 0.5); }
+    -webkit-box-shadow: 0 0 6px 1px rgba(156, 0, 18, 0.5);
+    box-shadow: 0 0 6px 1px rgba(156, 0, 18, 0.5); }
   /* line 49, ../_scss/foundation/components/_thumbs.scss */
   .th.radius {
     -webkit-border-radius: 3px;
@@ -5669,8 +5613,8 @@ a.th {
   color: #333333; }
   /* line 36, ../_scss/foundation/components/_tooltips.scss */
   .has-tip:hover, .has-tip:focus {
-    border-bottom: dotted 1px #196177;
-    color: #2ba6cb; }
+    border-bottom: dotted 1px #360006;
+    color: #9c0012; }
   /* line 42, ../_scss/foundation/components/_tooltips.scss */
   .has-tip.tip-left, .has-tip.tip-right {
     float: none !important; }
@@ -5703,8 +5647,8 @@ a.th {
     top: -10px; }
   /* line 71, ../_scss/foundation/components/_tooltips.scss */
   .tooltip.opened {
-    color: #2ba6cb !important;
-    border-bottom: dotted 1px #196177 !important; }
+    color: #9c0012 !important;
+    border-bottom: dotted 1px #360006 !important; }
 
 /* line 77, ../_scss/foundation/components/_tooltips.scss */
 .tap-to-close {
@@ -5848,3 +5792,180 @@ a.th {
   /* line 148, ../_scss/foundation/components/_dropdown.scss */
   .f-dropdown.large {
     max-width: 800px; }
+
+/* line 1, ../_scss/partials/_teams-page.scss */
+.white {
+  color: white; }
+
+/* line 4, ../_scss/partials/_teams-page.scss */
+#all-teams ul {
+  list-style-type: none; }
+
+/* line 8, ../_scss/partials/_teams-page.scss */
+#all-teams li {
+  list-style: none;
+  background: #383c3a;
+  float: left;
+  padding: 0.5em;
+  margin: 0.5em;
+  max-width: 20%;
+  min-width: 20%; }
+
+/* line 18, ../_scss/partials/_teams-page.scss */
+#all-teams span {
+  display: block;
+  font-weight: bold;
+  left: 0.5em;
+  bottom: 0.5em;
+  padding: 3px 0;
+  color: white; }
+
+/* line 27, ../_scss/partials/_teams-page.scss */
+#all-teams ul li button {
+  font-size: 0.77778em;
+  line-height: 1.28571em;
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+  border: 1px solid #081f09;
+  display: block;
+  width: 100%; }
+
+/* line 37, ../_scss/partials/_teams-page.scss */
+#teams-list > li h3 {
+  margin-bottom: 0.1em;
+  color: white;
+  text-transform: capitalize; }
+
+/* line 43, ../_scss/partials/_teams-page.scss */
+a > i {
+  color: gray; }
+
+/* line 47, ../_scss/partials/_teams-page.scss */
+a > i:hover {
+  color: white; }
+
+/* line 52, ../_scss/partials/_teams-page.scss */
+input[type=submit] {
+  margin-top: 0.6em;
+  background-color: #9c0012;
+  padding: 10px;
+  color: white; }
+
+/* line 59, ../_scss/partials/_teams-page.scss */
+input[type=submit]:hover {
+  background-color: #69000c; }
+
+/* line 63, ../_scss/partials/_teams-page.scss */
+.box {
+  width: 360px;
+  height: 175px;
+  margin: 20px;
+  margin-left: 10px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: gray;
+  background-color: #9c0012;
+  position: relative; }
+
+/* line 77, ../_scss/partials/_teams-page.scss */
+.box:hover {
+  background-color: #69000c; }
+
+/* line 81, ../_scss/partials/_teams-page.scss */
+.add-team-box {
+  width: 190px;
+  height: 170px; }
+
+/* line 86, ../_scss/partials/_teams-page.scss */
+.gray {
+  background-color: #cccccc; }
+
+/* line 90, ../_scss/partials/_teams-page.scss */
+a#add-team {
+  font-size: 150px; }
+
+/* line 95, ../_scss/partials/_teams-page.scss */
+.caption {
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  left: 50%;
+  margin-left: -75px;
+  top: 50%;
+  margin-top: -25px;
+  /*z-index: 100; */ }
+
+/* line 107, ../_scss/partials/_teams-page.scss */
+li p {
+  color: white;
+  font-size: 2.5em; }
+
+/* line 112, ../_scss/partials/_teams-page.scss */
+.centered {
+  text-align: center; }
+
+/* line 116, ../_scss/partials/_teams-page.scss */
+.centered-div {
+  position: fixed;
+  /*z-index: 100;  */
+  top: 50%;
+  left: 50%;
+  margin: -100px 0 0 -100px;
+  width: 200px;
+  height: 200px; }
+
+/* line 126, ../_scss/partials/_teams-page.scss */
+#gender {
+  margin-bottom: 40px; }
+
+/* line 129, ../_scss/partials/_teams-page.scss */
+#myModal {
+  background-color: #efefef; }
+
+/* line 133, ../_scss/partials/_teams-page.scss */
+.upimage {
+  max-width: 150px; }
+
+/* line 137, ../_scss/partials/_teams-page.scss */
+#ape-nav li ul {
+  display: none; }
+
+/* line 140, ../_scss/partials/_teams-page.scss */
+#side-nav li ul {
+  display: none; }
+
+/* line 9, ../_scss/screen.scss */
+.red-button {
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: bold;
+  line-height: normal;
+  margin: 0 0 1.25em;
+  position: relative;
+  text-decoration: none;
+  text-align: center;
+  display: inline-block;
+  padding-top: 0.75em;
+  padding-right: 1.5em;
+  padding-bottom: 0.8125em;
+  padding-left: 1.5em;
+  font-size: 1em;
+  background-color: #9c0012;
+  border-color: #69000c;
+  color: white; }
+  /* line 122, ../_scss/foundation/components/_buttons.scss */
+  .red-button:hover, .red-button:focus {
+    background-color: #69000c; }
+  /* line 133, ../_scss/foundation/components/_buttons.scss */
+  .red-button:hover, .red-button:focus {
+    color: white; }
+
+/* line 13, ../_scss/screen.scss */
+.roster-table {
+  width: 100%; }
+
+/* line 20, ../_scss/screen.scss */
+.all-teams ul li button {
+  display: block; }
