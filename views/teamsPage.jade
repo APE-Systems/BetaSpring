@@ -20,7 +20,7 @@ block content
             li(class=team.name + " " + team.gender)
               h3.capitalize=team.name
               span.capitalize= team.gender
-              button View team
+              a(href='/:school/:team/:gender/roster'): button View team
               a#delete-team(href='#')
                 i.foundicon-trash.right
               a.edit-team(href='#')

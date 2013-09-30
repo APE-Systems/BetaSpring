@@ -38,42 +38,7 @@ block content
           +roster-row('', '', '', '')
           +roster-row('', '', '', '')
 
-  #create-group-modal.reveal-modal.small
-    h4 Create Group
-    a.close-reveal-modal &#215;
-    form#create-group-form(action='/roster', method='/post', enctype='multipart/form-data')
-      input#group-name(type='text', name='group-name', placeholder='Group Name')
-      //- a.button#create-group-submit Save
-      input#create-group-submit(type='submit', value='Create Team')
-
-  #create-athlete-modal.reveal-modal.xlarge
-    h4 Create Athlete
-    a.close-reveal-modal &#215;
-    form(action='/athlete', method='/post', enctype='multipart/form-data')
-      .row
-        .large-2.columns
-          span Photo
-        .large-5.columns
-          label First Name
-          input(type='text', name='first-name', placeholder='John')
-
-          label Last Name
-          input(type='text', name='last-name', placeholder='Doe')
-
-          label Height
-          input(type='text', name='height', placeholder="6'1")
-
-        .large-5.columns
-          label Position
-          input(type='text', name='position', placeholder='Quarterback')
-
-          label Year
-          input(type='text', name='year', placeholder='Junior')
-
-          label Hometown
-          input(type='text', name='hometown', placeholder='Providence, RI')
-      .row
-        input(type='submit', id='create-athlete-submit', value='Create Athlete')
+  include includes/rosters-page-modals
 
 
 
