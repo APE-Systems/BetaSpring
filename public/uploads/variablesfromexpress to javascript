@@ -1,0 +1,10 @@
+var tmp = '#{teamsPage.apeLibrary';
+
+JSON.stringify
+
+ https://github.com/visionmedia/jade/blob/master/jade-language.md
+https://github.com/visionmedia/jade/blob/master/jade.md
+
+var tmpg = '!{JSON.stringify(teamsPage.apeLibrary.teams)}';
+       tmpg = JSON.parse(tmpg);
+       console.log('here', tmpg[0]);

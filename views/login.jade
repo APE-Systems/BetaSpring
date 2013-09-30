@@ -1,5 +1,6 @@
-include includes/head
-body
+extends layout
+
+block content
   .login
     .row
       .large-6.large-centered.columns
@@ -13,7 +14,7 @@ body
             .row
               .large-10.large-offset-1.columns
                 label.inline(for='username') Username
-                input#username(type='text', name="username", placeholder='Username', value="roberto@apesystem.com", required)
+                input#username(type='text', name="username", placeholder='Username', value="danlourenco@gmail.com", required)
             .row
               .large-10.large-offset-1.columns
                 label.inline(for='password') Password
@@ -21,4 +22,3 @@ body
             .row
               .large-10.large-offset-1.columns
                 button(type='submit') Login
-    include includes/footer

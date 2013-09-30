@@ -1,71 +1,89 @@
+;"use strict";
 var mid = require('../middleware').middle
   , gbl = require('../middleware').globals
   , controllers = require('../controllers')
   , user = controllers.User
   , athlete = controllers.Athlete
   , metrics = controllers.Metrics
-  , teams = controllers.Teams;
+  , teams = controllers.Teams
+
+  , fs = require('fs')
+  , tmEvts = require('../events').TeamsPageEvts
+  , rosEvts = require('../events').RostersPageEvts
+  , apeLibEvts = require('../events').ApeLibEvts;
+
+
 
 module.exports = function(app) {
-
-  // Home
+  //Home
   app.get('/', function(req, res) {
-    res.redirect('/login');
+    res.redirect('/teams'); // should redirect to login
   });
 
-  // Sign up
-  app.get('/signup', function(req, res) {
-    res.render('signup');
-  });
-  app.post('/signup', function(req, res) {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.write('Under Construction');
-    res.end();
-  });
+  //Login
+  // app.get('/login', loginEvts.displayLogin);
+  // app.post('/login', sanitize, authenticate, authorize, redirect);
 
-  // Login
-  app.get('/login', mid.checkCookie, mid.checkSession, mid.redirect);
-  app.post('/login', mid.validate, mid.authenticate, mid.setSession, user.dashboard);
+  //Logout
+  // app.get('/logout', mid.checkCookie, mid.checkSession, user.logout);
 
-  // Logout
-  app.get('/logout', mid.checkCookie, mid.checkSession, user.logout);
+  //Teams Page
+  app.get('/:school/teams', tmEvts.getTeamsPage);
+  app.post('/:school/:team-:gender', tmEvts.createTeam);
+  app.put('/:school/:team-:gender', tmEvts.updateTeam);
+  app.delete('/:school/:team-:gender', tmEvts.deleteTeam);
 
-  // Dashboard
-  app.get('/:school/dashboard', mid.checkCookie, mid.checkSession, user.dashboard);
+  //APE Library
+    //Drag'N Drop
+  app.post('/:school/apelibrary/:mtrcat/:metric/:teamTgt-:genderTgt', apeLibEvts.metricCatMetricToTeam);
+  app.post('/:school/apelibrary/:mtrcat/:teamTgt-:genderTgt', apeLibEvts.metricCatToTeam);
+  app.post('/:school/apelibrary/:metric/:teamTgt-:genderTgt', apeLibEvts.metricToTeam);
 
-  // Training
-  app.get('/:school/training', mid.checkCookie, mid.checkSession, gbl.loadModels, user.training);
+  // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:mtrcat/:metric/:teamTgt-:genderTgt', apeLibEvts.metricCatMetricToTeam);
+  // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:mtrcat/:teamTgt-:genderTgt', apeLibEvts.metricCatToTeam)
+  // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:metric/:teamTgt-:genderTgt', apeLibEvts.metricToTeam)
 
-  // Rosters
-  app.get('/:school/rosters', mid.checkCookie, mid.checkSession, gbl.loadModels, user.rosters);
-    // athlete profile
+  // Rosters Page
+  app.get('/:school/:team-:gender/roster', rosEvts.getRostersPage);
 
-  // Profile
-  app.get('/:school/rosters/athlete/:id', mid.checkCookie, mid.checkSession, gbl.loadModels, athlete.profile);
+    //ATHLETES
+  app.post('/:school/:team-:gender/roster/athlete', rosEvts.createAthlete);
+  app.put('/:school/:team-:gender/roster/athlete/:id', rosEvts.updateAthlete);
+  app.delete('/:school/:team-:gender/roster/athlete/:id', rosEvts.deleteAthlete);
 
-  // AJAX
-    // select an athlete
-  app.get('/:school/athlete/:id', mid.checkCookie, mid.checkSession, gbl.loadModels, athlete.get);
-    // fetch Chart
-  app.get('/:school/rosters/athlete/:id/:metric/:el', mid.checkCookie, mid.checkSession, gbl.loadModels, athlete.getChart);
+    //GROUPS
+  app.post('/:school/:team-:gender/roster/group/:group', rosEvts.createGroup);
+  app.put('/:school/:team-:gender/roster/group/:oldGroup', rosEvts.updateGroup);
+  app.delete('/:school/:team-:gender/roster/group/:group', rosEvts.deleteGroup);
 
-  // Routes required for training page
-  app.get('/categories/:category/metrics', mid.checkCookie, mid.checkSession, gbl.loadModels, metrics.index);
-  app.post('/athletes/:id/metrics', mid.checkCookie, mid.checkSession, gbl.loadModels, metrics.create);
-  app.delete('/athletes/:id/metrics/latest', mid.checkCookie, mid.checkSession, gbl.loadModels, metrics.destroy);
-  app.get('/teams/:team/metrics/latest', mid.checkCookie, mid.checkSession, gbl.loadModels, teams.index);
 
-  // 404
-  app.get('/whoops', function(req, res) {
-    res.render('whoops');
-  });
+}
 
-  // Internal Errors
-  app.get('/internal_error/:where/:errCode/', function(req, res) {
-    res.render('errors/internalError', {
-      where: req.params.where,
-      error: req.params.errCode
-    });
-  });
+// -------------------------------------------------------------------------- //
+//  APE LIBRARY URI TO SUPPORT CRUD
+// -------------------------------------------------------------------------- //
+/*
 
-};
+  app.post('/:school/apelibrary/metriccategory-:mtrcat', apeLibEvts.createMetricCat);
+  app.put('/:school/apelibrary/metriccateogry-:mtrcat', apeLibEvts.editMetricCat);
+  app.delete('/:school/apelibrary/metriccateogry-:mtrcat', apeLibEvts.deleteMetricCat);
+
+  app.post('/:school/apelibrary/metric-:metric', apeLibEvts.createMetric);
+  app.put('/:school/apelibrary/metric-:metric', apeLibEvts.editMetric);
+  app.delete('/:school/apelibrary/metric-:metric', apeLibEvts.deleteMetric);
+
+// -------------------------------------------------------------------------- //
+
+  app.post('/:school/apelibrary/:team-:gender/:mtrcat/:metric', apeLibEvts.createMetric);
+  app.post('/:school/apelibrary/:team-:gender/metriccategory-:mtrcat', apeLibEvts.createMetricCat);
+  app.put('/:school/apelibrary/:team-:gender/metriccategory-:mtrcat', apeLibEvts.editMetricCat);
+  app.put('/:school/apelibrary/:team-:gender/metriccategory-:mtrcat/metric-:metric', apeLibEvts.editMetric);
+  app.put('/:school/apelibrary/:team-:gender/metric-:metric', apeLibEvts.editMetric);
+  app.post('/:school/apelibrary/:team-:gender/:metric', apeLibEvts.createMetric);\
+  app.put('/:school/apelibrary/:team-:gender/:mtrcat/:metric', apeLibEvts.editMetric);
+  app.delete('/:school/apelibrary/:team-:gender/:mtrcat/:metric', apeLibEvts.deleteMetric);
+  app.delete('/:school/apelibrary/:team-:gender/:mtrcat', apeLibEvts.deleteMetricCat);
+  app.delete('/:school/apelibrary/:team-:gender/:metric', apeLibEvts.deleteMetric);
+  */
+// -------------------------------------------------------------------------- //
+// -------------------------------------------------------------------------- //

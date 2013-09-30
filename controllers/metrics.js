@@ -1,4 +1,4 @@
-var athlete = require('../models').Athletes;
+// var athlete = require('../models').Athletes;
 var labels = {
       "bioHT": "Body Height (in)",
       "bioBW": "Body Weight (lbs)",

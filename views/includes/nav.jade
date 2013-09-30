@@ -1,4 +1,4 @@
-.fixed.noReally.contain-to-grid
+.contain-to-grid
   nav.top-bar
     ul.title-area
       li.companyName
@@ -9,16 +9,21 @@
           span Menu
     section.top-bar-section
       ul.left
-        li.dashboard
-          a(href='/#{school}/dashboard') Dashboard
-        li.rosters
-          a(href='/#{school}/rosters') Rosters
-        li.training
-          a(href='/#{school}/training') Training
-        li(data-tooltip,class="comingSoon has-tip tip-bottom",title="Coming Soon!").reporting
-          a(href='#') Reporting
-        li(data-tooltip,class="comingSoon has-tip tip-bottom",title="Coming Soon!").admin
-          a(href='#') Admin
+        li.has-form
+          form
+            .row.collapse
+              .large-12.columns
+                li
+                  a(href='#') #{nav}
+
       ul.right
         li
-          a(href='/logout') logout
+          a.white.hide-for-medium-down(href='#', id="school-name") #{nav}
+        li
+          a#left-menu(href='#left-menu') Side Nav
+        li
+          a#right-menu(href='#right-menu') Ape Library
+        li
+          a(href='/settings') Settings
+        li
+          a(href='/logout') Logout

@@ -1,0 +1,70 @@
+extends layout
+
+append head
+  link(rel='stylesheet', href='../_css/teams.css')
+
+block content
+  - if(typeof flash != 'undefined')
+    include includes/mixins/flash-messages
+    mixin flash-messages(flash)
+
+  - if (typeof(teams) !== "undefined")
+    .large-12.large-centered.columns.centered
+      a.button(href='#', data-reveal-id='teamModal') Create Team
+    hr
+
+    .row
+      .large-centered.columns#all-teams
+        ul#teams-list
+          for team in teams
+            li(class=team.name + " " + team.gender)
+              h3.capitalize=team.name
+              span.capitalize= team.gender
+              button View team
+              a#delete-team(href='#')
+                i.foundicon-trash.right
+              a.edit-team(href='#')
+                i.foundicon-edit.right
+  - else
+    .small-6.large-centered.columns
+      .centered-div
+        .add-team-box.gray
+          .centered
+            a#add-team(href='#', data-reveal-id='teamModal') +
+        span Welcome to the APE System! 
+        br 
+        span Get started by creating teams.
+
+prepend scripts
+  #teamModal.reveal-modal.small
+    a.close-reveal-modal &#215;
+    form#create-team-form(action='#', method='post')
+      .row
+        .large-12.columns
+          h4 Create Team
+          div
+            label Sport
+            input#team-name(type='text', name='team-name', required='required', pattern='^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$', placeholder='Ex: Baseball, Football')
+          div
+            label Gender
+            select#team-gender(name='team-gender')
+              option(value='men') Men
+              option(value='women') Women
+          div
+            input(type='submit', id='create-team-submit', value='Create Team')
+  #edit-team-modal.reveal-modal.small
+    a.close-reveal-modal &#215;
+    form#edit-team-form(action='#', method='put')
+      .row
+        .large-12.columns
+          h4 Edit Team
+          div
+            label Sport
+            input#edit-team-name(type='text', name='edit-team-name', required='required', pattern='^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$', placeholder='::FORMER NAME::')
+          div
+            label Gender
+            select#edit-team-gender(name='edit-team-gender')
+              option(value='men') Men
+              option(value='women') Women
+          div
+            input(type='submit', id='edit-team-submit', value='Edit Team')

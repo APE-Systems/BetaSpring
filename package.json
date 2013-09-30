@@ -1,10 +1,10 @@
 {
-  "name": "ApeSystem",
+  "name": "ApeSystems",
   "version": "0.0.1",
   "private": true,
   "author": {
-    "name": "bahtou",
-    "email": "bahtou@nym.hush.com"
+    "name": "APE Systems, Inc",
+    "email": "rbfuentes@ape-system.com"
     },
   "scripts": {
     "start": "node app.js"
@@ -12,19 +12,19 @@
   "dependencies": {
     "express": "3.1.0",
     "jade": "0.29.0",
-    "mongoose": "3.6.9",
+    "mongoose": "3.6.19",
     "moment": "2.0.0",
-    "express-validator": "0.3.2"
+    "express-validator": "0.3.2",
+    "connect-redis": "1.4.5"
   },
   "repository" : {
     "type": "git",
-    "url": "https://github.com/bahtou/apeSystem"
+    "url": "https://github.com/APE-Systems/BetaSpring"
   },
   "engines": {
     "node": "0.10.0"
   },
   "bugs": {
-    "mail": "bahtou@nym.hush.com",
-    "url": "https://github.com/bahtou/apeSystem/issues"
+    "url": "https://github.com/APE-Systems/BetaSpring/issues"
     }
 }

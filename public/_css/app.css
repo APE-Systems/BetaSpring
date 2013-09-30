@@ -54,25 +54,27 @@ TESTING CRAP */
 
 /*==================
       BASE RULES    
-  ==================*/
+  ==================
 @font-face {
   font-family: 'alte_din_1451';
   src: url("fonts/din1451alt.eot");
   src: url("fonts/din1451alt.eot?#iefix") format("embedded-opentype"), url("fonts/din1451alt.woff") format("woff"), url("fonts/din1451alt.ttf") format("truetype"), url("fonts/din1451alt.svg#alte_din_1451_mittelschriftRg") format("svg");
   font-weight: 400;
   font-style: normal;
-}
+} */
+
 html {
   overflow-y: scroll;
-  margin-top: 1.5em; /* Shitty Nav fix */
+ /* margin-top: 1.5em; /* Shitty Nav fix */
 }
 body {
-  background: #fff;
+  /*background: #fff;
   color: #222;
   font-family: "alte_din_1451", Helvetica, Arial, sans-serif;
   font-weight: 400;
   font-style: normal;
   line-height: 1;
+  */
 }
 /* Link Styles */
 a {
@@ -474,71 +476,6 @@ table tbody tr.active:hover td {color: white;}
 .panel.dark.graphIcon:hover p {
     color:black;
 }
-
-/*Profile Page DUO*/
-.profile .info h4 {
-  margin-top: 0; }
-.profile .info p {
-  margin-bottom: 0; }
-.profile .profile-metrics .metric-name {
-  font-size: 1.25em;
-  text-transform: uppercase;
-  margin-bottom: 0; }
-.profile .profile-metrics .metric {
-  font-size: 3.5em; }
-.profile .section-container.tabs section {
-  margin: 0 auto; }
-  .profile .section-container.tabs section .title a {
-    padding-left: 1em;
-    padding-right: 1em; }
-  .profile .section-container.tabs section .title {
-    border: 0;
-    font-size: 1.375em;
-    background-color: #f5f5f5;
-    text-transform: uppercase; }
-    .profile .section-container.tabs section .title:hover {
-      background: rgba(156, 0, 18, 0.4); }
-  .profile .section-container.tabs section.active .title {
-    background-color: #9c0012;
-    border: 0; }
-    .profile .section-container.tabs section.active .title a {
-      color: #fff; }
-  .profile .section-container.tabs section .content {
-    border: 0;
-    height: 445px;
-    overflow-y: scroll;
-    background-color: #fff; }
-    .profile .section-container.tabs section .content .metrics .measure {
-      margin-top: -1.6em; }
-    .profile .section-container.tabs section .content .metrics hr {
-      margin: 0; }
-    .profile .section-container.tabs section .content .metrics .row {
-      margin-top: 1em;
-      margin-left: 1em;
-      margin-right: 1em; }
-    .profile .section-container.tabs section .content .metrics:last-child {
-      margin-bottom: 1em; }
-    .profile .section-container.tabs section .content .metrics img {
-      height: 85px; }
-    .profile .section-container.tabs section .content .metrics p {
-      margin-bottom: 0; }
-    .profile .section-container.tabs section .content .metrics .metric {
-      font-size: 4em; }
-    .profile .section-container.tabs section .content .graph {
-      cursor: pointer; }
-      .profile .section-container.tabs section .content .graph .graph-icon {
-        background: url(../_imgs/graph.png) no-repeat center;
-        height: 65px;
-        width: 100px;
-        display: block;
-        margin: 0 auto;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
-        opacity: 0.6; }
-      .profile .section-container.tabs section .content .graph:hover .graph-icon {
-        opacity: 1; }
 
 /*Training Page*/
 .training .athletes {
@@ -1031,7 +968,7 @@ div.clickable a {
 
 /* Not sure why this is an empty media query. Will look into */
 @media only screen {
-    html {margin-top: 4em;} /* Shitty Nav Fix */
+    /*html {margin-top: 4em;} /* Shitty Nav Fix */
     .button {
     -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset;
@@ -1051,12 +988,16 @@ div.clickable a {
         -webkit-border-radius: 1000px;
         border-radius: 1000px;
     }
+
+    .highlight-table-row {
+      background-color: rgba(156, 0, 18, .3);
+    }
 }
 
 /* 768px & larger - Revist this Media Query, does it make sense?*/
 @media only screen and (min-width:48em) {
   html {/* Shitty Nav Fix */
-    margin-top: 1.5em;
+   /* margin-top: 1.5em; */
   } 
   .button {
     display: inline-block;
@@ -1094,10 +1035,7 @@ div.clickable a {
   .top-bar.expanded {
     background: #383c3a;
   }
-  .contain-to-grid .top-bar {
-    max-width: 62.5em;
-    margin: 0 auto;
-  }
+
   .top-bar-section {
     -webkit-transition: none 0 0;
     -moz-transition: none 0 0;
@@ -1207,6 +1145,10 @@ div.clickable a {
       color: #fff;
   }
 
+  .top-bar-section #school-name {
+    color: white;
+  }
+
   /* Roster stuff. research if you can remove */
   .roster-name .date {
     text-align: right;
@@ -1254,7 +1196,7 @@ h5.name {
 
 /* 786px & below */
 @media only screen and (max-width:48em) {
-    html {margin-top: 1.5em;} /* Shitty Nav Fix */
+    html /*{margin-top: 1.5em;} /* Shitty Nav Fix */
     .whoops h1 { /* Well that's just like, your opinion, man. */
         font-size: 10rem;
     }

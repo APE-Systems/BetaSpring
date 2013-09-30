@@ -1,0 +1,165 @@
+extends layout
+  
+append head
+  link(rel='stylesheet', href='/_css/roster.css')       
+  
+
+block content
+  .row          
+    .large-12.columns.vanity-plate
+      .large-4.small-12.columns.athlete-demographics
+        .row
+          .large-5.columns.athlete-photo
+            img(src='/_imgs/washington-kristopher.jpeg')
+            button Profile
+          .large-7.columns.athlete-info
+            h4 Kristopher Washington
+            dl
+              dt.position Position
+              dd Sprinter
+              dt.group Group
+              dd 400m
+              dt.year Year
+              dd Junior
+              dt.hometown Hometown
+              dd(contenteditable='true') Los Angeles
+              dt.height Height
+              dd 5'8"
+      .large-8.small-12.columns.athlete-metrics
+        .row
+          .large-3.columns
+            h3 Body Weight
+            span.metric-value 175
+            span.metric-measurement lbs
+          .large-3.columns
+            h3 Body Fat
+            span.metric-value 14
+            span.metric-measurement %
+          .large-3.columns
+            h3 Power Clean
+            span.metric-value 114
+            span.metric-measurement kilos
+          .large-3.columns
+            h3 Back Squat
+            span.metric-value 400
+            span.metric-measurement lbs
+  .row
+    .large-12.columns.roster-subnav
+        .large-4.columns
+          .row
+            .large-5.columns
+              ul.button-group.radius
+                li
+                  a.small.button.secondary(href='#') New Athlete
+
+        .large-8.columns
+          ul.button-group.radius.right
+            li
+              a.small.button.secondary.disabled(href='#') Remove
+            li
+              a.small.button.secondary.disabled(href='#') Add to Group
+            li
+              a.small.button.secondary(href='#') Create Group
+
+  //- Display Groups
+  .row
+    .large-12.columns.groups-nav
+      dl.sub-nav
+        dt Filter:
+          dd.active 
+            a(href='#') All
+          dd: a(href='#') Injured
+          dd: a(href='#') Ninnies
+    table
+      thead
+        tr
+          th &nbsp;
+          th First Name
+          th Last Name
+          th Position
+          th Group
+      tbody.roster-list
+        tr
+          td
+            input(type='checkbox')
+          td Kristopher
+          td Washington
+          td Sprinter
+          td Junior
+        tr
+          td
+            input(type='checkbox')
+          td J'Dinklage
+          td Morgoone
+          td Runningback
+          td Senior
+        tr
+          td
+            input(type='checkbox')
+          td Hingle
+          td McCringleberry
+          td Special Teams
+          td Senior
+        tr
+          td
+            input(type='checkbox')
+          td NyQuillus
+          td Dillwad
+          td Runningback
+          td Junior
+        tr
+          td
+            input(type='checkbox')
+          td Bismo
+          td Funyuns
+          td Runningback
+          td Senior
+        tr
+          td
+            input(type='checkbox')
+          td Mergatroid
+          td Skittle
+          td Quarterback
+          td Senior
+  
+
+  #create-group-modal.reveal-modal.small
+    h4 Create Group
+    a.close-reveal-modal &#215;
+    form#create-group-form(action='/roster', method='/post', enctype='multipart/form-data')
+      input#group-name(type='text', name='group-name', placeholder='Group Name')
+      //- a.button#create-group-submit Save
+      input#create-group-submit(type='submit', value='Create Team')
+
+  #create-athlete-modal.reveal-modal.xlarge
+    h4 Create Athlete
+    a.close-reveal-modal &#215;
+    form(action='/athlete', method='/post', enctype='multipart/form-data')
+      .row
+        .large-2.columns
+          span Photo
+        .large-5.columns
+          label First Name
+          input(type='text', name='first-name', placeholder='John')
+
+          label Last Name
+          input(type='text', name='last-name', placeholder='Doe')
+
+          label Height
+          input(type='text', name='height', placeholder="6'1")
+
+        .large-5.columns
+          label Position
+          input(type='text', name='position', placeholder='Quarterback')
+
+          label Year
+          input(type='text', name='year', placeholder='Junior')
+
+          label Hometown
+          input(type='text', name='hometown', placeholder='Providence, RI')
+      .row
+        input(type='submit', id='create-athlete-submit', value='Create Athlete')
+
+
+
+

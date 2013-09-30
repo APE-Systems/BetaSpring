@@ -3,6 +3,20 @@ html {
     overflow-y: scroll;
     margin-top: 1.5em; /* Shitty Nav fix */
 }
+
+.box {
+  background: red;
+  width:250px;
+  margin: 30px;
+  min-height:250px;
+  border-style:solid;
+  border-width:1px;
+}
+
+
+
+
+
 /*.rightAlign {
     text-align: right;
 }
