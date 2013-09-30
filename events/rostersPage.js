@@ -66,7 +66,7 @@ var rostersPageEvts = {
           console.error("duplicate key\n", err);
           res.json(200, {error: {msg: "Athlete already in database", err: err}});
         } else {
-          console.error("createAthlete: Error\n", err);
+          console.error("updateAthlete: Error\n", err);
           res.json(200, {
             error: {
               msg: "Problem updating athlete",
@@ -76,7 +76,7 @@ var rostersPageEvts = {
         }
       } else {
         console.log('updateAthlete: Success\n');
-        res.json(200, {id: athlete._id, name: athlete.fname+" "+athlete.lname});
+        res.json(200, {id: athlete._id, name: athlete.name});
       }
     });
   },

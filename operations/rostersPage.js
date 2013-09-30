@@ -156,13 +156,13 @@ var rostersPageOps = {
 
     function checkForAttributeDiff(query, athlete) {
       console.log('checking for attribute changes');
-
-      //if athlete found, then do not propagate change
+      //NOTE:
+      //  if athlete found, then do not propagate change
       req.models.Athletes.findOne(query, function(err, ath) {
         if (err) return evtCallback(err, null);
 
         if (ath) {
-          console.log('athlete found: no edits\n', ath);
+          console.log('athlete found: no edits\n', ath.name);
           return evtCallback(null, ath);
         }
 
@@ -174,7 +174,8 @@ var rostersPageOps = {
       console.log('adding athletes edits without propagating');
       delete update['_id'];
 
-      req.models.Athletes.update({_id: athlete._id}, update, function(err, numUp) {
+      // req.models.Athletes.findOne({_id: athlete._id}, function(err, numUp) {
+      req.models.Athletes.findOneAndUpdate({_id: athlete._id}, update, function(err, numUp) {
         if (err) return evtCallback(err, null);
         console.log('athlete updated:\n', numUp);
 
@@ -183,7 +184,7 @@ var rostersPageOps = {
     }
 
     function addEditsAndPropagate(update, athlete) {
-      console.log('adding athletes edits');
+      console.log('adding athletes and propagating edits');
       var upAthlete = {
         team: {name: req.params.team, gender: req.params.gender},
         sess: req.sess,
@@ -191,11 +192,11 @@ var rostersPageOps = {
       };
       delete update['_id'];
 
-      upAthlete.Mods.Athletes.update({_id: athlete._id}, update, function(err, numUp) {
+      upAthlete.Mods.Athletes.findOneAndUpdate({_id: athlete._id}, update, function(err, ath) {
         if (err) return evtCallback(err, null);
-        console.log('athlete updated:\n', numUp);
+        console.log('athlete updated:\n', ath);
 
-        upAthlete.athlete = athlete;
+        upAthlete.athlete = ath;
         return propagateAthleteUpdate(upAthlete, evtCallback);
       });
     }
@@ -318,6 +319,115 @@ var rostersPageOps = {
 
 function propagateAthleteUpdate(upAthlete, evtCallback) {
   console.info('propagating upAthlete');
+  return upsertSchoolAthlete(upAthlete);
+
+  function upsertSchoolAthlete(upAthlete) {
+    console.log('updating school');
+    var cond = {name: upAthlete.sess.school, "athletes._id": upAthlete.athlete._id};
+    var update = {$set: {"athletes.$.name": upAthlete.athlete.name}};
+
+    APE.Schools.findOneAndUpdate(cond, update, function(err, numUp) {
+      if (err) return evtCallback(err, null);
+      console.log('school:\n', numUp.athletes);
+
+      return upsertCoachAthlete(upAthlete);
+    });
+  }
+
+  function upsertCoachAthlete(upAthlete) {
+    console.log('updating coach');
+    var cond = {school: upAthlete.sess.school, "athletes._id": upAthlete.athlete._id};
+    var update = {$set: {"athletes.$.name": upAthlete.athlete.name}};
+
+    upAthlete.Mods.Coaches.update(cond, update, {multi:true}, function(err, numUp) {
+      if (err) return evtCallback(err, null);
+      console.log('coach:\n', numUp);
+
+      return upsertTeamAthlete(upAthlete);
+    });
+  }
+
+  function upsertTeamAthlete(upAthlete) {
+    console.log('updating team');
+    var cond = {school: upAthlete.sess.school, name: upAthlete.team.name, gender: upAthlete.team.gender, "athletes._id": upAthlete.athlete._id};
+    var update = {$set: {"athletes.$.name": upAthlete.athlete.name}};
+
+    upAthlete.Mods.Teams.findOneAndUpdate(cond, update, function(err, numUp) {
+      if (err) return evtCallback(err, null);
+      console.log('team:\n', numUp.athletes);
+
+      return upsertGroupAthlete(upAthlete);
+    });
+  }
+
+  function upsertGroupAthlete(upAthlete) {
+    console.log('updating group');
+    //NOTE:
+    //  could potentially use .apply here on the array
+    var grp = upAthlete.athlete.groups;
+    if (grp) {
+      for (var i=0; i<grp.length;i++) {
+        console.log('group:\n', grp[i]);
+        applyGroupUpdate(grp[i]);
+      }
+      return upsertMetricCatAthlete(upAthlete);
+    } else {
+      console.info('no group to update');
+      return upsertMetricCatAthlete(upAthlete);
+    }
+
+    function applyGroupUpdate(group) {
+      var cond = {school: upAthlete.sess.school, team: upAthlete.team, name: group.name, "athletes._id": upAthlete.athlete._id};
+      var update = {$set: {"athletes.$.name": upAthlete.athlete.name}};
+
+      upAthlete.Mods.Groups.update(cond, update, {multi: true}, function(err, numUp) {
+        if (err) return evtCallback(err, null);
+        console.log('group:\n', numUp);
+        return;
+      });
+    }
+  }
+
+  function upsertMetricCatAthlete(upAthlete) {
+    //NOTE:
+    //  index the conditional search
+    console.log('updating metric category');
+    var cond = {school: upAthlete.sess.school, team: upAthlete.team, "athletes._id": upAthlete.athlete._id};
+    var update = {$set: {"athletes.$.name": upAthlete.athlete.name}};
+
+    upAthlete.Mods.MetricCats.update(cond, update, {multi:true}, function(err, numUp) {
+      if (err) return evtCallback(err, null);
+      console.log('MetricCats:\n', numUp);
+
+      return upsertMetricAthlete(upAthlete);
+    });
+  }
+
+  function upsertMetricAthlete(upAthlete) {
+    console.log('updating metrics');
+    var cond = {school: upAthlete.sess.school, "athletes._id": upAthlete.athlete._id};
+    var update = {$set: {"athletes.$.name": upAthlete.athlete.name}};
+
+    upAthlete.Mods.Metrics.update(cond, update, {multi:true}, function(err, numUp) {
+      if (err) return evtCallback(err, null);
+      console.log('Metrics:\n', numUp);
+
+      return upsertAthmetricAthlete(upAthlete);
+    });
+  }
+
+  function upsertAthmetricAthlete(upAthlete) {
+    console.log('updating athmetrics');
+    var cond = {school: upAthlete.sess.school, team: upAthlete.team, "athlete._id": upAthlete.athlete._id};
+    var update = {$set: {'athlete.name': upAthlete.athlete.name}};
+
+    upAthlete.Mods.Athmetrics.update(cond, update, {multi:true}, function(err, numUp) {
+      if (err) return evtCallback(err, null);
+      console.log('Athmetrics:\n', numUp);
+
+      return evtCallback(null, upAthlete.athlete);
+    });
+  }
 }
 
 function propagateAthleteCreate(crAthlete, evtCallback) {
