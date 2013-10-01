@@ -127,78 +127,92 @@ var rostersPageOps = {
       state: req.body.state
     };
 
-    return validateUpdateAthleteInput(athlete, checkForNameDiff);
+    return validateUpdateAthleteInput(athlete, validateExistence);
 
-    function checkForNameDiff(err, athlete) {
-      if (err) return evtCallback(err, null);
-      console.log('checking for name changes');
+    function validateExistence(err, athlete) {
+      if (err) evtCallback(err, null);
+      console.log("validating athlete id");
 
-      var query = {
-        _id: athlete._id,
-        name: athlete.fname + ' ' + athlete.lname,
-        position: athlete.position,
-        year: athlete.year,
-        hometown: athlete.city + ", " + athlete.state,
-        height: athlete.height
-      };
+      var query = {_id: athlete._id};
+      req.models.Athletes.findOne(query, checkForNameDiff(athlete));
+    }
 
-      req.models.Athletes.findOne({_id: query._id, name: query.name}, function(err, ath) {
+    function checkForNameDiff(athlete) {
+      return function(err, ath) {
         if (err) return evtCallback(err, null);
-
-        if (ath) {
-        console.log('no name change');
-        return checkForAttributeDiff(query, athlete);
+        console.log('checking for name changes');
+        if (!ath) {
+          var err = {name: "ValidationError", msg: 'Athlete ID does not exist', code: 404};
+          return evtCallback(err, null);
         }
 
-        return addEditsAndPropagate(query, athlete);
-      });
-    }
+        var query = {
+          _id: athlete._id,
+          name: athlete.fname + ' ' + athlete.lname,
+          position: athlete.position,
+          year: athlete.year,
+          hometown: athlete.city + ", " + athlete.state,
+          height: athlete.height
+        };
 
-    function checkForAttributeDiff(query, athlete) {
-      console.log('checking for attribute changes');
-      //NOTE:
-      //  if athlete found, then do not propagate change
-      req.models.Athletes.findOne(query, function(err, ath) {
-        if (err) return evtCallback(err, null);
+        req.models.Athletes.findOne({_id: query._id, name: query.name}, function(err, ath) {
+          if (err) return evtCallback(err, null);
 
-        if (ath) {
-          console.log('athlete found: no edits\n', ath.name);
-          return evtCallback(null, ath);
-        }
+          if (ath) {
+          console.log('no name change');
+          return checkForAttributeDiff(query, athlete);
+          }
 
-        return addEdits(query, athlete);
-      });
-    }
+          return addEditsAndPropagate(query, athlete);
+        });
+      }
 
-    function addEdits(update, athlete) {
-      console.log('adding athletes edits without propagating');
-      delete update['_id'];
+      function checkForAttributeDiff(query, athlete) {
+        console.log('checking for attribute changes');
+        //NOTE:
+        //  if athlete found, then do not propagate change
+        req.models.Athletes.findOne(query, function(err, ath) {
+          if (err) return evtCallback(err, null);
 
-      // req.models.Athletes.findOne({_id: athlete._id}, function(err, numUp) {
-      req.models.Athletes.findOneAndUpdate({_id: athlete._id}, update, function(err, numUp) {
-        if (err) return evtCallback(err, null);
-        console.log('athlete updated:\n', numUp);
+          if (ath) {
+            console.log('athlete found: no edits\n', ath.name);
+            return evtCallback(null, ath);
+          }
 
-        return evtCallback(null, athlete);
-      });
-    }
+          return addEdits(query, athlete);
+        });
+      }
 
-    function addEditsAndPropagate(update, athlete) {
-      console.log('adding athletes and propagating edits');
-      var upAthlete = {
-        team: {name: req.params.team, gender: req.params.gender},
-        sess: req.sess,
-        Mods: req.models
-      };
-      delete update['_id'];
+      function addEdits(update, athlete) {
+        console.log('adding athletes edits without propagating');
+        delete update['_id'];
 
-      upAthlete.Mods.Athletes.findOneAndUpdate({_id: athlete._id}, update, function(err, ath) {
-        if (err) return evtCallback(err, null);
-        console.log('athlete updated:\n', ath);
+        // req.models.Athletes.findOne({_id: athlete._id}, function(err, numUp) {
+        req.models.Athletes.findOneAndUpdate({_id: athlete._id}, update, function(err, numUp) {
+          if (err) return evtCallback(err, null);
+          console.log('athlete updated:\n', numUp);
 
-        upAthlete.athlete = ath;
-        return propagateAthleteUpdate(upAthlete, evtCallback);
-      });
+          return evtCallback(null, athlete);
+        });
+      }
+
+      function addEditsAndPropagate(update, athlete) {
+        console.log('adding athletes and propagating edits');
+        var upAthlete = {
+          team: {name: req.params.team, gender: req.params.gender},
+          sess: req.sess,
+          Mods: req.models
+        };
+        delete update['_id'];
+
+        upAthlete.Mods.Athletes.findOneAndUpdate({_id: athlete._id}, update, function(err, ath) {
+          if (err) return evtCallback(err, null);
+          console.log('athlete updated:\n', ath);
+
+          upAthlete.athlete = ath;
+          return propagateAthleteUpdate(upAthlete, evtCallback);
+        });
+      }
     }
   },
 
