@@ -61,13 +61,13 @@ var rostersPageEvts = {
       if (err) {
         if (err.code === 422) {
           console.error("Invalid Athlete info\n", err);
-          res.json(200, {error: err});
+          res.json(422, {error: err});
         } else if (err.code === 11000) {
           console.error("duplicate key\n", err);
-          res.json(200, {error: {msg: "Athlete already in database", err: err}});
+          res.json(422, {error: {msg: "Athlete already in database", err: err}});
         } else {
           console.error("updateAthlete: Error\n", err);
-          res.json(200, {
+          res.json(err.code, {
             error: {
               msg: "Problem updating athlete",
               err: err
