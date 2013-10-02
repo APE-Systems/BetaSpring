@@ -9,7 +9,48 @@ var teamsPageOps = {
 
   getTeamsPage: function(req, evtCallback) {
     console.log('Operation: getTeamsPage');
-    getTeams(req, getAPElib(evtCallback));
+
+    var pgload = {
+      sess: req.sess,
+      Mods: req.models
+    }
+    var dataLoad = {};
+
+    return getTeams(pgload);
+
+    function getTeams(pgload) {
+      var query = {school: pgload.sess.school, 'coaches.username': pgload.sess.username};
+      var proj = {name:1, gender:1, mtrcats:1, metrics:1};
+
+      pgload.Mods.Teams.find(query, proj, function(err, teams) {
+        if (err) evtCallback(err, null);
+
+        dataLoad.teams = teams;
+        return getAPElib(pgload);
+      });
+    }
+
+    function getAPElib(pgload) {
+      var apeLibPackage = {};
+      var query = {};
+      var proj = {name:1, metrics:1};
+      APE.MetricCats.find(query, proj, function(err, mcs) {
+        if (err) evtCallback(err, null);
+
+        apeLibPackage.mtrcats = mcs;
+        APE.Metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
+          if (err) evtCallback(err, null);
+
+          apeLibPackage.metrics = mtrs;
+          // console.log('apeLibPackage:\n', apeLibPackage);
+          dataLoad.apeLibPackage = apeLibPackage;
+          // console.log('dataLoad\n', dataLoad);
+          
+          evtCallback(null, dataLoad);
+          return;
+        });
+      });
+    }
   },
 
   createTeam: function(req, callback) {
@@ -130,43 +171,6 @@ function validateInput(input, callback) {
   }
   console.info("Validation: Success");
   return callback(null, input);
-}
-
-function getTeams(req, callback) {
-  var dataLoad = {};
-  var Mods = req.models;
-  var school = req.sess.school;
-  var username = req.sess.username;
-  var query = {school: school, 'coaches.username': username};
-  var proj = {name:1, gender:1, mtrcats:1, metrics:1};
-
-  Mods.Teams.find(query, proj, function(err, teams) {
-    if (err) callback(err, null);
-    dataLoad.teams = teams;
-    callback(dataLoad);
-  });
-}
-
-function getAPElib(evtCallback) {
-  return function(dataLoad) {
-    var apeLibPackage = {};
-    var query = {};
-    var proj = {name:1, metrics:1};
-    APE.MetricCats.find(query, proj, function(err, mcs) {
-      if (err) evtCallback(err, null);
-
-      apeLibPackage.mtrcats = mcs;
-      APE.Metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
-        if (err) evtCallback(err, null);
-
-        apeLibPackage.metrics = mtrs;
-        // console.log('apeLibPackage:\n', apeLibPackage);
-        dataLoad.apeLibPackage = apeLibPackage;
-        // console.log('dataLoad\n', dataLoad);
-        return evtCallback(null, dataLoad);
-      });
-    });
-  };
 }
 
 //NOTE:

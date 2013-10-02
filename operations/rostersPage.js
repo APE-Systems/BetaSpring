@@ -10,18 +10,17 @@ var rostersPageOps = {
   getRostersPage: function(req, evtCallback) {
     console.log('Operation: getRostersPage');
 
-    var pgload = {}
+    var pgload = {
+      team: {
+        name: req.params.team,
+        gender: req.params.gender
+      },
+      sess: req.sess,
+      Mods: req.models
+    };
     var dataLoad = {};
 
-    pgload.Mods = req.models;
-    pgload.sess = req.sess;
-    pgload.team = {
-      name: req.params.team,
-      gender: req.params.gender
-    };
-
-    getAthletesAndGroups(pgload);
-    return;
+    return getAthletesAndGroups(pgload);
 
     function getAthletesAndGroups(pgload) {
       var query = {school: pgload.sess.school, name: pgload.team.name, gender: pgload.team.gender};
@@ -34,8 +33,7 @@ var rostersPageOps = {
 
         dataLoad.athletes = team.athletes;
         dataLoad.groups = team.groups;
-        getAPElib(pgload);
-        return;
+        return getAPElib(pgload);
       });
     }
 
@@ -336,6 +334,8 @@ var rostersPageOps = {
 /*
   ------ HELPER FUNCTIONS ------
  */
+
+
 
 // ---- ATHLETE ---- //
 
