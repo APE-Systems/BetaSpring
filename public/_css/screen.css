@@ -2874,7 +2874,7 @@ label.error {
   .section-container.accordion > section > .content,
   .section-container.accordion > .section > .content {
     padding: 0.9375em;
-    background-color: white;
+    background-color: #f2f2f2;
     border: solid 1px #cccccc; }
     /* line 225, ../_scss/foundation/components/_section.scss */
     .section-container.auto > section > .content > *:last-child, .section-container.auto > .section > .content > *:last-child,
@@ -2962,7 +2962,7 @@ label.error {
   margin-bottom: 1.25em; }
   /* line 49, ../_scss/foundation/components/_section.scss */
   [data-section='tabs']:not([data-section-resized]):not([data-section-small-style]), .section-container.tabs:not([data-section-resized]):not([data-section-small-style]) {
-    visibility: hidden; }
+    /*visibility: hidden; */ }
   /* line 102, ../_scss/foundation/components/_section.scss */
   [data-section='tabs'] > section > [data-section-title], [data-section='tabs'] > section > .title, [data-section='tabs'] > .section > [data-section-title], [data-section='tabs'] > .section > .title, [data-section='tabs'] > [data-section-region] > [data-section-title], [data-section='tabs'] > [data-section-region] > .title, .section-container.tabs > section > [data-section-title], .section-container.tabs > section > .title, .section-container.tabs > .section > [data-section-title], .section-container.tabs > .section > .title, .section-container.tabs > [data-section-region] > [data-section-title], .section-container.tabs > [data-section-region] > .title {
     margin-bottom: 0; }
@@ -3007,7 +3007,7 @@ label.error {
   /* line 220, ../_scss/foundation/components/_section.scss */
   .section-container.tabs > section > .content, .section-container.tabs > .section > .content {
     padding: 0.9375em;
-    background-color: white;
+    background-color: #f2f2f2;
     border: solid 1px #cccccc; }
     /* line 225, ../_scss/foundation/components/_section.scss */
     .section-container.tabs > section > .content > *:last-child, .section-container.tabs > .section > .content > *:last-child {
@@ -3040,7 +3040,7 @@ label.error {
     margin-bottom: 1.25em; }
     /* line 49, ../_scss/foundation/components/_section.scss */
     [data-section='']:not([data-section-resized]):not([data-section-small-style]), [data-section='auto']:not([data-section-resized]):not([data-section-small-style]), .section-container.auto:not([data-section-resized]):not([data-section-small-style]) {
-      visibility: hidden; }
+      /*visibility: hidden; */ }
     /* line 102, ../_scss/foundation/components/_section.scss */
     [data-section=''] > section > [data-section-title], [data-section=''] > section > .title, [data-section=''] > .section > [data-section-title], [data-section=''] > .section > .title, [data-section=''] > [data-section-region] > [data-section-title], [data-section=''] > [data-section-region] > .title, [data-section='auto'] > section > [data-section-title], [data-section='auto'] > section > .title, [data-section='auto'] > .section > [data-section-title], [data-section='auto'] > .section > .title, [data-section='auto'] > [data-section-region] > [data-section-title], [data-section='auto'] > [data-section-region] > .title, .section-container.auto > section > [data-section-title], .section-container.auto > section > .title, .section-container.auto > .section > [data-section-title], .section-container.auto > .section > .title, .section-container.auto > [data-section-region] > [data-section-title], .section-container.auto > [data-section-region] > .title {
       margin-bottom: 0; }
@@ -3085,7 +3085,7 @@ label.error {
     /* line 220, ../_scss/foundation/components/_section.scss */
     .section-container.auto > section > .content, .section-container.auto > .section > .content {
       padding: 0.9375em;
-      background-color: white;
+      background-color: #f2f2f2;
       border: solid 1px #cccccc; }
       /* line 225, ../_scss/foundation/components/_section.scss */
       .section-container.auto > section > .content > *:last-child, .section-container.auto > .section > .content > *:last-child {
@@ -3117,7 +3117,7 @@ label.error {
     margin-bottom: 1.25em; }
     /* line 49, ../_scss/foundation/components/_section.scss */
     [data-section='vertical-tabs']:not([data-section-resized]):not([data-section-small-style]), .section-container.vertical-tabs:not([data-section-resized]):not([data-section-small-style]) {
-      visibility: hidden; }
+      /*visibility: hidden; */ }
     /* line 55, ../_scss/foundation/components/_section.scss */
     [data-section='vertical-tabs'][data-section-small-style], .section-container.vertical-tabs[data-section-small-style] {
       width: 100% !important; }
@@ -3178,7 +3178,7 @@ label.error {
     /* line 220, ../_scss/foundation/components/_section.scss */
     .section-container.vertical-tabs > section > .content, .section-container.vertical-tabs > .section > .content {
       padding: 0.9375em;
-      background-color: white;
+      background-color: #f2f2f2;
       border: solid 1px #cccccc; }
       /* line 225, ../_scss/foundation/components/_section.scss */
       .section-container.vertical-tabs > section > .content > *:last-child, .section-container.vertical-tabs > .section > .content > *:last-child {
@@ -3213,7 +3213,7 @@ label.error {
     margin-bottom: 1.25em; }
     /* line 49, ../_scss/foundation/components/_section.scss */
     [data-section='vertical-nav']:not([data-section-resized]):not([data-section-small-style]), .section-container.vertical-nav:not([data-section-resized]):not([data-section-small-style]) {
-      visibility: hidden; }
+      /*visibility: hidden; */ }
     /* line 55, ../_scss/foundation/components/_section.scss */
     [data-section='vertical-nav'][data-section-small-style], .section-container.vertical-nav[data-section-small-style] {
       width: 100% !important; }
@@ -3280,7 +3280,7 @@ label.error {
     /* line 220, ../_scss/foundation/components/_section.scss */
     .section-container.vertical-nav > section > .content, .section-container.vertical-nav > .section > .content {
       padding: 0.9375em;
-      background-color: white;
+      background-color: #f2f2f2;
       border: solid 1px #cccccc; }
       /* line 225, ../_scss/foundation/components/_section.scss */
       .section-container.vertical-nav > section > .content > *:last-child, .section-container.vertical-nav > .section > .content > *:last-child {
@@ -3309,7 +3309,7 @@ label.error {
     margin-bottom: 1.25em; }
     /* line 49, ../_scss/foundation/components/_section.scss */
     [data-section='horizontal-nav']:not([data-section-resized]):not([data-section-small-style]), .section-container.horizontal-nav:not([data-section-resized]):not([data-section-small-style]) {
-      visibility: hidden; }
+      /*visibility: hidden; */ }
     /* line 55, ../_scss/foundation/components/_section.scss */
     [data-section='horizontal-nav'][data-section-small-style], .section-container.horizontal-nav[data-section-small-style] {
       width: 100% !important; }
@@ -3378,7 +3378,7 @@ label.error {
     /* line 220, ../_scss/foundation/components/_section.scss */
     .section-container.horizontal-nav > section > .content, .section-container.horizontal-nav > .section > .content {
       padding: 0.9375em;
-      background-color: white;
+      background-color: #f2f2f2;
       border: solid 1px #cccccc; }
       /* line 225, ../_scss/foundation/components/_section.scss */
       .section-container.horizontal-nav > section > .content > *:last-child, .section-container.horizontal-nav > .section > .content > *:last-child {
@@ -3457,7 +3457,7 @@ label.error {
   /* line 220, ../_scss/foundation/components/_section.scss */
   .no-js .section-container > section > .content, .no-js .section-container > .section > .content {
     padding: 0.9375em;
-    background-color: white;
+    background-color: #f2f2f2;
     border: solid 1px #cccccc; }
     /* line 225, ../_scss/foundation/components/_section.scss */
     .no-js .section-container > section > .content > *:last-child, .no-js .section-container > .section > .content > *:last-child {
@@ -5807,11 +5807,11 @@ a.th {
   background: #383c3a;
   float: left;
   padding: 0.5em;
-  margin: 0.5em;
-  max-width: 20%;
-  min-width: 20%; }
+  margin: 1.3em;
+  min-width: 190px;
+  max-width: 28%; }
 
-/* line 18, ../_scss/partials/_teams-page.scss */
+/* line 19, ../_scss/partials/_teams-page.scss */
 #all-teams span {
   display: block;
   font-weight: bold;
@@ -5820,7 +5820,7 @@ a.th {
   padding: 3px 0;
   color: white; }
 
-/* line 27, ../_scss/partials/_teams-page.scss */
+/* line 28, ../_scss/partials/_teams-page.scss */
 #all-teams ul li button {
   font-size: 0.77778em;
   line-height: 1.28571em;
@@ -5830,32 +5830,32 @@ a.th {
   display: block;
   width: 100%; }
 
-/* line 37, ../_scss/partials/_teams-page.scss */
+/* line 38, ../_scss/partials/_teams-page.scss */
 #teams-list > li h3 {
   margin-bottom: 0.1em;
   color: white;
   text-transform: capitalize; }
 
-/* line 43, ../_scss/partials/_teams-page.scss */
+/* line 44, ../_scss/partials/_teams-page.scss */
 a > i {
   color: gray; }
 
-/* line 47, ../_scss/partials/_teams-page.scss */
+/* line 48, ../_scss/partials/_teams-page.scss */
 a > i:hover {
   color: white; }
 
-/* line 52, ../_scss/partials/_teams-page.scss */
+/* line 53, ../_scss/partials/_teams-page.scss */
 input[type=submit] {
   margin-top: 0.6em;
   background-color: #9c0012;
   padding: 10px;
   color: white; }
 
-/* line 59, ../_scss/partials/_teams-page.scss */
+/* line 60, ../_scss/partials/_teams-page.scss */
 input[type=submit]:hover {
   background-color: #69000c; }
 
-/* line 63, ../_scss/partials/_teams-page.scss */
+/* line 64, ../_scss/partials/_teams-page.scss */
 .box {
   width: 360px;
   height: 175px;
@@ -5867,24 +5867,24 @@ input[type=submit]:hover {
   background-color: #9c0012;
   position: relative; }
 
-/* line 77, ../_scss/partials/_teams-page.scss */
+/* line 78, ../_scss/partials/_teams-page.scss */
 .box:hover {
   background-color: #69000c; }
 
-/* line 81, ../_scss/partials/_teams-page.scss */
+/* line 82, ../_scss/partials/_teams-page.scss */
 .add-team-box {
   width: 190px;
   height: 170px; }
 
-/* line 86, ../_scss/partials/_teams-page.scss */
+/* line 87, ../_scss/partials/_teams-page.scss */
 .gray {
   background-color: #cccccc; }
 
-/* line 90, ../_scss/partials/_teams-page.scss */
+/* line 91, ../_scss/partials/_teams-page.scss */
 a#add-team {
   font-size: 150px; }
 
-/* line 95, ../_scss/partials/_teams-page.scss */
+/* line 96, ../_scss/partials/_teams-page.scss */
 .caption {
   position: absolute;
   width: 150px;
@@ -5895,16 +5895,16 @@ a#add-team {
   margin-top: -25px;
   /*z-index: 100; */ }
 
-/* line 107, ../_scss/partials/_teams-page.scss */
+/* line 108, ../_scss/partials/_teams-page.scss */
 li p {
   color: white;
   font-size: 2.5em; }
 
-/* line 112, ../_scss/partials/_teams-page.scss */
+/* line 113, ../_scss/partials/_teams-page.scss */
 .centered {
   text-align: center; }
 
-/* line 116, ../_scss/partials/_teams-page.scss */
+/* line 117, ../_scss/partials/_teams-page.scss */
 .centered-div {
   position: fixed;
   /*z-index: 100;  */
@@ -5914,23 +5914,23 @@ li p {
   width: 200px;
   height: 200px; }
 
-/* line 126, ../_scss/partials/_teams-page.scss */
+/* line 127, ../_scss/partials/_teams-page.scss */
 #gender {
   margin-bottom: 40px; }
 
-/* line 129, ../_scss/partials/_teams-page.scss */
+/* line 130, ../_scss/partials/_teams-page.scss */
 #myModal {
   background-color: #efefef; }
 
-/* line 133, ../_scss/partials/_teams-page.scss */
+/* line 134, ../_scss/partials/_teams-page.scss */
 .upimage {
   max-width: 150px; }
 
-/* line 137, ../_scss/partials/_teams-page.scss */
+/* line 138, ../_scss/partials/_teams-page.scss */
 #ape-nav li ul {
   display: none; }
 
-/* line 140, ../_scss/partials/_teams-page.scss */
+/* line 141, ../_scss/partials/_teams-page.scss */
 #side-nav li ul {
   display: none; }
 
@@ -5962,12 +5962,25 @@ li p {
   .red-button:hover, .red-button:focus {
     color: white; }
 
+/* line 13, ../_scss/screen.scss */
+hr {
+  border: solid #9c0012;
+  border-width: 4px 0 0;
+  clear: both;
+  margin: 1.25em 0 1.1875em;
+  height: 0; }
+
+/* line 22, ../_scss/screen.scss */
+.large-centered {
+  margin-bottom: 2.25em; }
+
 /* THE STUFF BELOW IS FROM THE OLD _CSS/ROSTER.CSS PAGE. REFACTOR*/
-/* line 16, ../_scss/screen.scss */
+/* line 27, ../_scss/screen.scss */
 .roster-table {
   width: 100%; }
 
-/* line 23, ../_scss/screen.scss */
+/* TEAMS PAGE */
+/* line 35, ../_scss/screen.scss */
 .all-teams ul li button {
   display: block; }
 
@@ -5982,26 +5995,26 @@ LIGHT RED:; #9C0012;
 
 */
 /* TYPOGRAPHY */
-/* line 47, ../_scss/screen.scss */
+/* line 59, ../_scss/screen.scss */
 .athlete-photo img {
   display: block;
   width: 100%; }
 
-/* line 51, ../_scss/screen.scss */
+/* line 63, ../_scss/screen.scss */
 .vanity-plate {
   background-color: #f2f2f2;
   padding-top: 0.5em; }
 
-/* line 57, ../_scss/screen.scss */
+/* line 69, ../_scss/screen.scss */
 .athlete-photo button {
   display: block;
   width: 100%; }
 
-/* line 62, ../_scss/screen.scss */
+/* line 74, ../_scss/screen.scss */
 .athlete-metrics {
   text-align: center; }
 
-/* line 65, ../_scss/screen.scss */
+/* line 77, ../_scss/screen.scss */
 .athlete-metrics h3 {
   font-family: 'helvetica neue', helvetica, arial;
   font-size: 1.5em;
@@ -6009,38 +6022,38 @@ LIGHT RED:; #9C0012;
   letter-spacing: 1px;
   text-shadow: #262729 0 -1px 0; }
 
-/* line 73, ../_scss/screen.scss */
+/* line 85, ../_scss/screen.scss */
 .athlete-metrics span {
   display: block; }
 
-/* line 76, ../_scss/screen.scss */
+/* line 88, ../_scss/screen.scss */
 span.metric-value {
   font-size: 4.5em;
   font-weight: normal;
   line-height: 1; }
 
-/* line 83, ../_scss/screen.scss */
+/* line 95, ../_scss/screen.scss */
 span.metric-measurement {
   padding-top: 0.5em;
   font-size: 1.5em;
   line-height: 1;
   font-weight: 100; }
 
-/* line 91, ../_scss/screen.scss */
+/* line 103, ../_scss/screen.scss */
 .athlete-info dl {
   line-height: .75em; }
 
-/* line 94, ../_scss/screen.scss */
+/* line 106, ../_scss/screen.scss */
 .athlete-info dl dt {
   float: left;
   font-weight: bold;
   margin-right: 10px; }
 
-/* line 100, ../_scss/screen.scss */
+/* line 112, ../_scss/screen.scss */
 .roster-subnav {
   background-color: #F2F2F2; }
 
-/* line 106, ../_scss/screen.scss */
+/* line 118, ../_scss/screen.scss */
 .name-style {
   font-family: 'helvetica neue', helvetica, arial;
   font-size: 20px;
@@ -6048,35 +6061,35 @@ span.metric-measurement {
   letter-spacing: 1px;
   text-shadow: #262729 0 -1px 0; }
 
-/* line 114, ../_scss/screen.scss */
+/* line 126, ../_scss/screen.scss */
 .bold {
   font-weight: bolder; }
 
-/* line 118, ../_scss/screen.scss */
+/* line 130, ../_scss/screen.scss */
 .sub-nav {
   margin-bottom: 0em;
   margin-top: 1em;
   margin-left: 0em; }
 
-/* line 124, ../_scss/screen.scss */
+/* line 136, ../_scss/screen.scss */
 .sub-nav dd.active a {
   background: #9C0012; }
 
-/* line 132, ../_scss/screen.scss */
+/* line 144, ../_scss/screen.scss */
 input[type=submit] {
   background-color: #9c0012;
   padding: 10px;
   color: white; }
 
-/* line 138, ../_scss/screen.scss */
+/* line 150, ../_scss/screen.scss */
 input[type=submit]:hover {
   background-color: #69000c; }
 
-/* line 147, ../_scss/screen.scss */
+/* line 159, ../_scss/screen.scss */
 h5 {
   text-transform: uppercase; }
 
-/* line 155, ../_scss/screen.scss */
+/* line 167, ../_scss/screen.scss */
 [contenteditable]:hover:after {
   content: ' click to edit';
   font-style: italic;
@@ -6084,46 +6097,51 @@ h5 {
   font-family: sans-serif;
   color: #ccc; }
 
-/* line 163, ../_scss/screen.scss */
+/* line 175, ../_scss/screen.scss */
 [contenteditable]:hover, [contenteditable]:focus {
   background: #D1D0CE; }
 
-/* line 167, ../_scss/screen.scss */
+/* line 179, ../_scss/screen.scss */
 [contenteditable]:focus {
   padding: 5px; }
 
-/* line 171, ../_scss/screen.scss */
+/* line 183, ../_scss/screen.scss */
 [contenteditable]:focus:after {
   content: ''; }
 
 /* ****************************************** */
-/* line 176, ../_scss/screen.scss */
+/* line 188, ../_scss/screen.scss */
 .athlete-canvas {
   background: #f2f2f2; }
 
-/* line 180, ../_scss/screen.scss */
+/* line 192, ../_scss/screen.scss */
 .display {
   margin-top: 20px;
   margin-bottom: 20px; }
 
-/* line 187, ../_scss/screen.scss */
+/* line 198, ../_scss/screen.scss */
+.row.athlete-canvas h4 {
+  font-size: 1.2375em;
+  font-weight: 500; }
+
+/* line 206, ../_scss/screen.scss */
 .athlete-canvas-metrics .large-2.columns {
   width: 20%;
   text-transform: uppercase;
   text-align: center; }
-/* line 193, ../_scss/screen.scss */
+/* line 212, ../_scss/screen.scss */
 .athlete-canvas-metrics h2 {
   margin-bottom: 0.2em;
   font-size: 3em;
   position: relative;
   top: -0.3em;
   font-weight: 400; }
-/* line 201, ../_scss/screen.scss */
+/* line 220, ../_scss/screen.scss */
 .athlete-canvas-metrics i {
   margin-bottom: 0;
   display: block;
   font-size: 3.9em;
   font-weight: 100; }
-/* line 207, ../_scss/screen.scss */
+/* line 226, ../_scss/screen.scss */
 .athlete-canvas-metrics .positive {
   color: #458b00; }

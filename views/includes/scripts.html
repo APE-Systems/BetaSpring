@@ -80,12 +80,31 @@
             console.dir(msg);
           }).always(function() {
             console.log("always function");
+            $(this).attr("contenteditable", "false");
             })
+      } else if (e.which == 27) {
+        console.log("escape key pressed");
         $(this).attr("contenteditable", "false");
-      }
-      });
+        $('.foundicon-edit').removeClass('white');
+      }   
+    });
   });  
   //- END EDIT TEAM FUNCTION
+  
+  //- DELETE TEAM FUNCTION
+  
+  $('.foundicon-trash').on("click", function(event) {
+      console.log('clicked the trash can, invoked delete method');
+      
+      if (window.confirm("Are you sure you want to delete this team?")) {
+        console.log("user selected yes!");
+        //- ajax call to delete ROUTE
+      } else {
+        console.log("user cancelled delete team action");
+      }
+      
+  });
+  //- END DELETE TEAM FUNCTION
   
   $('#create-team-form').on("submit", function(event) { 
     console.log("clicked from " + this );

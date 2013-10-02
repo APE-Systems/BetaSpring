@@ -10,13 +10,25 @@
   @include button($button-med, #9C0012, false, false, false, false);
 }
 
+hr {
+  border: solid #9c0012;
+  border-width: 4px 0 0;
+  clear: both;
+  margin: 1.25em 0 1.1875em;
+  height: 0;
+}
 
+
+.large-centered {
+	margin-bottom: 2.25em;
+}
 
 /* THE STUFF BELOW IS FROM THE OLD _CSS/ROSTER.CSS PAGE. REFACTOR*/
 .roster-table {
 	width: 100%;
 }
 
+/* TEAMS PAGE */
 .all-teams {
 	ul {
 		li {
@@ -182,6 +194,13 @@ h5 {
 	margin-bottom: 20px;
 }
 
+.row.athlete-canvas {
+	h4 {
+		font-size: 1.2375em;
+		font-weight: 500;
+	}
+}
+
 .athlete-canvas-metrics {
 
 	.large-2.columns {
@@ -208,3 +227,5 @@ h5 {
 		color: $green;
 	}
 }
+
+

@@ -25,7 +25,7 @@ $section-border-color: #ccc !default;
 $section-font-size: em-calc(14) !default;
 
 // Control the color of the background and some size options
-$section-content-bg: #fff !default;
+$section-content-bg: #F2F2F2 !default;
 $section-vertical-nav-min-width: em-calc(200) !default;
 $section-vertical-tabs-title-width: em-calc(200) !default;
 $section-bottom-margin: em-calc(20) !default;
@@ -47,7 +47,7 @@ $active-region-selector: ".active" !default;
 
   @if $section-type != accordion {
     &:not([data-section-resized]):not([data-section-small-style]) {
-      visibility: hidden;
+      /*visibility: hidden; */
     }
   }
 

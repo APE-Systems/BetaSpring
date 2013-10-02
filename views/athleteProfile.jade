@@ -4,50 +4,104 @@ extends layout
   //-link(rel='stylesheet', href='/_css/roster.css')
 block content
   include includes/vanity-plate
-  .row
 
   .row.display
-    .large-12.columns.athlete-canvas
-      .large-6.columns
-        h4 Bench Press (lbs)
-      .large-6.columns
-        h4.right Last Record: Aug 8, 2013
-      .large-12.spacer
-        hr
-      .row
-        .large-10.large-centered.columns.athlete-canvas-metrics
-          .row
-            .large-2.columns
-              h2 275
+    .section-container.tabs(data-section='tabs')
+      section.active
+        p.title(data-section-title='')
+          a(href='#') All
+        .content(data-section-content='')
+          .row.athlete-canvas
+            .large-6.columns
+              h4 Bench Press (lbs)
+            .large-6.columns
+              h4.right Last Record: Aug 8, 2013
+            .large-12.spacer
+              hr
+            .row
+              .large-10.large-centered.columns.athlete-canvas-metrics
+                .row
+                  .large-2.columns
+                    h2 275
 
-            .large-2.columns
-              h2 245
+                  .large-2.columns
+                    h2 245
 
-            .large-2.columns
-              h2.positive +10
- 
-            .large-2.columns
-              i.foundicon-graph
+                  .large-2.columns
+                    h2.positive +10
+       
+                  .large-2.columns
+                    i.foundicon-graph
 
-            .large-2.columns
-              i.foundicon-edit
+                  .large-2.columns
+                    i.foundicon-edit
+                .row.athlete-canvas-metric-labels
+                  .large-2.columns
+                    span Latest Record
+                  .large-2.columns
 
-          .row
-            .large-2.columns
-              span Latest Record
-            .large-2.columns
+                    span Latest Team Avg.
+                  .large-2.columns
 
-              span Latest Team Avg.
-            .large-2.columns
+                    span Delta Since Last
+                  .large-2.columns
 
-              span Delta Since Last
-            .large-2.columns
+                    span View Graph
+                  .large-2.columns
 
-              span View Graph
-            .large-2.columns
+                    span Edit Data
+          .row.athlete-canvas
+            .large-6.columns
+              h4 Back Squat (lbs)
+            .large-6.columns
+              h4.right Last Record: Aug 8, 2013
+            .large-12.spacer
+              hr
+            .row
+              .large-10.large-centered.columns.athlete-canvas-metrics
+                .row
+                  .large-2.columns
+                    h2 450
 
-              span Edit Data
+                  .large-2.columns
+                    h2 400
 
+                  .large-2.columns
+                    h2 0
+       
+                  .large-2.columns
+                    i.foundicon-graph
 
-      
+                  .large-2.columns
+                    i.foundicon-edit
+                .row
+                  .large-2.columns
+                    span Latest Record
+                  .large-2.columns
 
+                    span Latest Team Avg.
+                  .large-2.columns
+
+                    span Delta Since Last
+                  .large-2.columns
+
+                    span View Graph
+                  .large-2.columns
+
+                    span Edit Data
+          
+      section(style='')
+        p.title(data-section-title='')
+          a(href='#') Strength
+        .content(data-section-content='')
+          p Content of section 2&period;
+      section(style='')
+        p.title(data-section-title='')
+          a(href='#') Biometrics
+        .content(data-section-content='')
+          p Content of section 2&period;
+      section(style='')
+        p.title(data-section-title='')
+          a(href='#') Speed
+        .content(data-section-content='')
+          p Content of section 2&period;
