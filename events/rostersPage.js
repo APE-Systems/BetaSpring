@@ -82,15 +82,25 @@ var rostersPageEvts = {
   },
 
   deleteAthlete: function(req, res, next) {
-    console.log('Event: deleteTeam');
+    console.log('Event: deleteAthlete');
 
-    rospgOps.deleteTeam(req, function(err) {
-      if (err) {
-        console.error("deleteTeam: Error:\n", err);
-        res.send(500, "Problem deleteing team");
+    rospgOps.deleteAthlete(req, function(msg) {
+      if (msg) {
+        if (msg.code === 404) {
+          console.info("Athlete not found\n", msg);
+          res.json(msg.code, {msg: msg});
+        } else {
+          console.info("deleteAthlete: Error\n", msg);
+          res.json(msg.code, {
+            error: {
+              msg: "Problem deleting athlete",
+              err: msg
+            }
+          });
+        }
       } else {
-        console.log('deleteTeam: Success');
-        res.send(200);
+        console.log('deleteAthlete: Success');
+        res.send(204);
       }
     });
   },

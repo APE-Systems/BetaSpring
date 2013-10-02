@@ -187,7 +187,6 @@ var rostersPageOps = {
         console.log('adding athletes edits without propagating');
         delete update['_id'];
 
-        // req.models.Athletes.findOne({_id: athlete._id}, function(err, numUp) {
         req.models.Athletes.findOneAndUpdate({_id: athlete._id}, update, function(err, numUp) {
           if (err) return evtCallback(err, null);
           console.log('athlete updated:\n', numUp);
@@ -217,18 +216,27 @@ var rostersPageOps = {
   },
 
   deleteAthlete: function(req, evtCallback) {
-    console.log('Operation: deleteTeam');
-    var Mods = req.models;
-    var school = req.school;
+    console.log('Operation: deleteAthlete');
+    var delAthlete = {
+          _id: req.params.id,
+          team: {name: req.params.team, gender: req.params.gender},
+          sess: req.sess,
+          Mods: req.models
+        };
+    var cond = {_id: delAthlete._id};
 
-    //TODO:
-    //  check to see if athletes are following this team
-    //  if so, then report back before deleting
-    Mods.Teams.findOneAndRemove(cond, function(err, deldoc) {
-      if (err) evtCallback(err);
+    // delAthlete.Mods.Athletes.findOne(cond, function(err, deldoc) {
+    delAthlete.Mods.Athletes.findOneAndRemove(cond, function(err, deldoc) {
+      if (err) return evtCallback(err);
 
-      console.log('teamDelete:', deldoc);
-      evtCallback(null);
+      if (!deldoc) {
+        console.log("Athlete not found for deletion");
+        var msg = {name:"DeleteAthlete" , msg:"Athlete not found", code: 404};
+        return evtCallback(msg);
+      }
+      console.log('deleted athlete:', deldoc);
+      delAthlete.athlete = deldoc;
+      return propagateAthleteDelete(delAthlete, evtCallback);
     });
   },
 
@@ -330,6 +338,118 @@ var rostersPageOps = {
  */
 
 // ---- ATHLETE ---- //
+
+function propagateAthleteDelete(delAthlete, evtCallback) {
+  console.info('propagating delAthlete');
+  return removeSchoolAthlete();
+
+  function removeSchoolAthlete() {
+    console.log('deleting from school');
+    var cond = {name: delAthlete.sess.school, "athletes._id": delAthlete.athlete._id};
+    var update = {$pull: {athletes: {_id: delAthlete.athlete._id}}};
+
+    // APE.Schools.findOne(cond, function(err, numUp) {
+    APE.Schools.update(cond, update, function(err, numUp) {
+      if (err) return evtCallback(err);
+      console.log('school:\n', numUp);
+
+      // return evtCallback(null);
+      return removeCoachAthlete(delAthlete);
+    });
+  }
+
+  function removeCoachAthlete(delAthlete) {
+    console.log('deleting from coach');
+    var cond = {school: delAthlete.sess.school, "athletes._id": delAthlete.athlete._id};
+    var update = {$pull: {athletes: {_id: delAthlete.athlete._id}}};
+
+    // delAthlete.Mods.Coaches.findOne(cond, function(err, numUp) {
+    delAthlete.Mods.Coaches.update(cond, update, {multi:true}, function(err, numUp) {
+      if (err) return evtCallback(err);
+      console.log('coach:\n', numUp);
+
+      // return evtCallback(null);
+      return removeTeamAthlete(delAthlete);
+    });
+  }
+
+  function removeTeamAthlete(delAthlete) {
+    console.log('deleting from team');
+    var cond = {school: delAthlete.sess.school, name: delAthlete.team.name, gender: delAthlete.team.gender, "athletes._id": delAthlete.athlete._id};
+    var update = {$pull: {athletes: {_id: delAthlete.athlete._id}}};
+
+    // delAthlete.Mods.Teams.findOne(cond, function(err, numUp) {
+    delAthlete.Mods.Teams.findOneAndUpdate(cond, update, function(err, numUp) {
+      if (err) return evtCallback(err);
+      console.log('team:\n', numUp);
+
+      // return evtCallback(null);
+      return removeGroupAthlete(delAthlete);
+    });
+  }
+
+  function removeGroupAthlete(delAthlete) {
+    console.log('deleting from group');
+    var cond = {school: delAthlete.sess.school, team: delAthlete.team, "athletes._id": delAthlete.athlete._id};
+    var update = {$pull: {athltes: {_id: delAthlete.athlete._id}}};
+
+    // delAthlete.Mods.Groups.find(cond, function(err, numUp) {
+    delAthlete.Mods.Groups.update(cond, update, {multi: true}, function(err, numUp) {
+      if (err) return evtCallback(err);
+      console.log('group:\n', numUp);
+
+      // return evtCallback(null);
+      return removeMetricCatAthlete(delAthlete);
+    });
+
+  }
+
+  function removeMetricCatAthlete(delAthlete) {
+    //NOTE:
+    //  index the conditional search
+    console.log('deleting from metric category');
+    var cond = {school: delAthlete.sess.school, team: delAthlete.team, "athletes._id": delAthlete.athlete._id};
+    var update = {$pull: {athltes: {_id: delAthlete.athlete._id}}};
+
+    // delAthlete.Mods.MetricCats.find(cond, function(err, numUp) {
+    delAthlete.Mods.MetricCats.update(cond, update, {multi:true}, function(err, numUp) {
+      if (err) return evtCallback(err);
+      console.log('MetricCats:\n', numUp);
+
+      // return evtCallback(null);
+      return removeMetricAthlete(delAthlete);
+    });
+  }
+
+  function removeMetricAthlete(delAthlete) {
+    console.log('deleting from metrics');
+    var cond = {school: delAthlete.sess.school, "athletes._id": delAthlete.athlete._id};
+    var update = {$pull: {athltes: {_id: delAthlete.athlete._id}}};
+
+    // delAthlete.Mods.Metrics.find(cond, function(err, numUp) {
+    delAthlete.Mods.Metrics.update(cond, update, {multi:true}, function(err, numUp) {
+      if (err) return evtCallback(err);
+      console.log('Metrics:\n', numUp);
+
+      // return evtCallback(null);
+      return removeAthmetricAthlete(delAthlete);
+    });
+  }
+
+  function removeAthmetricAthlete(delAthlete) {
+    console.log('deleting from athmetrics');
+    var cond = {school: delAthlete.sess.school, team: delAthlete.team, "athlete._id": delAthlete.athlete._id};
+    var update = {$pull: {athltes: {_id: delAthlete.athlete._id}}};
+
+    // delAthlete.Mods.Athmetrics.find(cond, function(err, numUp) {
+    delAthlete.Mods.Athmetrics.update(cond, update, {multi:true}, function(err, numUp) {
+      if (err) return evtCallback(err);
+      console.log('Athmetrics:\n', numUp);
+
+      return evtCallback(null);
+    });
+  }
+}
 
 function propagateAthleteUpdate(upAthlete, evtCallback) {
   console.info('propagating upAthlete');
