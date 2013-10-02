@@ -17,7 +17,7 @@ var rostersPageEvts = {
       } else {
         // res.json(payload);
         console.log('getRostersPage: Success');
-        res.json({
+        res.json(200, {
           nav: req.sess.school,
           athletes: payload.athletes,
           groups: payload.groups,
@@ -34,13 +34,13 @@ var rostersPageEvts = {
       if (err) {
         if (err.code === 422) {
           console.error("Invalid Athlete info\n", err);
-          res.json(200, {error: err});
+          res.json(422, {error: err});
         } else if (err.code === 11000) {
           console.error("duplicate key\n", err);
-          res.json(200, {error: {msg: "Athlete already in database", err: err}});
+          res.json(409, {error: {msg: "Athlete already in database", err: err}});
         } else {
           console.error("createAthlete: Error\n", err);
-          res.json(200, {
+          res.json(500, {
             error: {
               msg: "Problem saving athlete",
               err: err
@@ -49,7 +49,7 @@ var rostersPageEvts = {
         }
       } else {
         console.log('createAthlete: Success\n');
-        res.json(200, {id: athlete._id, name: athlete.name});
+        res.json(201, {id: athlete._id, name: athlete.name});
       }
     });
   },
@@ -64,10 +64,10 @@ var rostersPageEvts = {
           res.json(422, {error: err});
         } else if (err.code === 11000) {
           console.error("duplicate key\n", err);
-          res.json(422, {error: {msg: "Athlete already in database", err: err}});
+          res.json(409, {error: {msg: "Athlete already in database", err: err}});
         } else {
           console.error("updateAthlete: Error\n", err);
-          res.json(err.code, {
+          res.json(500, err.code, {
             error: {
               msg: "Problem updating athlete",
               err: err
@@ -88,10 +88,10 @@ var rostersPageEvts = {
       if (msg) {
         if (msg.code === 404) {
           console.info("Athlete not found\n", msg);
-          res.json(msg.code, {msg: msg});
+          res.json(404, {msg: msg});
         } else {
           console.info("deleteAthlete: Error\n", msg);
-          res.json(msg.code, {
+          res.json(500, {
             error: {
               msg: "Problem deleting athlete",
               err: msg
@@ -112,13 +112,13 @@ var rostersPageEvts = {
       if (err) {
         if (err.code === 422) {
           console.error("Invalid Group name\n", err);
-          res.json(200, {error: err});
+          res.json(422, {error: err});
         } else if (err.code === 11000) {
           console.error("duplicate key\n", err);
-          res.json(200, {error: {msg: "Group name already in database", err: err}});
+          res.json(409, {error: {msg: "Group name already in database", err: err}});
         } else {
           console.error("createGroup: Error\n", err);
-          res.json(200, {
+          res.json(500, {
             error: {
               msg: "Problem saving group",
               err: err
@@ -127,7 +127,7 @@ var rostersPageEvts = {
         }
       } else {
         console.log('createGroup: Success\n');
-        res.json(200, {id: group._id, name: group.name});
+        res.json(201, {id: group._id, name: group.name});
       }
     });
   },
@@ -139,13 +139,13 @@ var rostersPageEvts = {
       if (err) {
         if (err.code === 422) {
           console.error("Invalid Group name\n", err);
-          res.json(200, {error: err});
+          res.json(422, {error: err});
         } else if (err.code === 11000) {
           console.error("duplicate key\n", err);
-          res.json(200, {error: {msg: "Group name already in database", err: err}});
+          res.json(409, {error: {msg: "Group name already in database", err: err}});
         } else {
           console.error("updateGroup: Error\n", err);
-          res.json(200, {
+          res.json(500, {
             error: {
               msg: "Problem saving group",
               err: err
@@ -153,7 +153,7 @@ var rostersPageEvts = {
           });
         }
       } else {
-        console.log('createGroup: Success\n');
+        console.log('updateGroup: Success\n');
         res.json(200, {id: group._id, name: group.name});
       }
     });
@@ -166,10 +166,10 @@ var rostersPageEvts = {
       if (err) {
         if (err.code === 422) {
           console.error("Invalid Group name\n", err);
-          res.json(200, {error: err});
+          res.json(422, {error: err});
         } else {
           console.error("deleteGroup: Error\n", err);
-          res.json(200, {
+          res.json(500, {
             error: {
               msg: "Problem deleting group",
               err: err
@@ -178,7 +178,7 @@ var rostersPageEvts = {
         }
       } else {
         console.log('deleteGroup: Success\n');
-        res.json(200, {id: group._id, name: group.name});
+        res.send(204);
       }
     });
   }
