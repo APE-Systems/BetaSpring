@@ -27,25 +27,51 @@ var rostersPageEvts = {
 
     rospgOps.createAthlete(req, function(err, athlete) {
       if (err) {
-        console.error("createAthlete: Error\n", err);
-        res.send(500, "Problem saving athlete");
+        if (err.code === 422) {
+          console.error("Invalid Athlete info\n", err);
+          res.json(200, {error: err});
+        } else if (err.code === 11000) {
+          console.error("duplicate key\n", err);
+          res.json(200, {error: {msg: "Athlete already in database", err: err}});
+        } else {
+          console.error("createAthlete: Error\n", err);
+          res.json(200, {
+            error: {
+              msg: "Problem saving athlete",
+              err: err
+            }
+          });
+        }
       } else {
-        console.log('createAthlete: Success');
-        res.send(200);
+        console.log('createAthlete: Success\n');
+        res.json(200, {id: athlete._id, name: athlete.name});
       }
-    })
+    });
   },
 
   updateAthlete: function(req, res, next) {
-    console.log('Event: updateTeam');
+    console.log('Event: updateAthlete');
 
-    rospgOps.updateTeam(req, function(err) {
+    rospgOps.updateAthlete(req, function(err, athlete) {
       if (err) {
-        console.error("updateTeam: Error:\n", err);
-        res.send(500, "Problem updating team");
+        if (err.code === 422) {
+          console.error("Invalid Athlete info\n", err);
+          res.json(200, {error: err});
+        } else if (err.code === 11000) {
+          console.error("duplicate key\n", err);
+          res.json(200, {error: {msg: "Athlete already in database", err: err}});
+        } else {
+          console.error("createAthlete: Error\n", err);
+          res.json(200, {
+            error: {
+              msg: "Problem updating athlete",
+              err: err
+            }
+          });
+        }
       } else {
-        console.log('updateTeam: Success');
-        res.send(200);
+        console.log('updateAthlete: Success\n');
+        res.json(200, {id: athlete._id, name: athlete.fname+" "+athlete.lname});
       }
     });
   },
