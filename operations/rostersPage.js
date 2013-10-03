@@ -328,8 +328,55 @@ var rostersPageOps = {
       propagateGroupDelete(delGroup, evtCallback);
       });
     }
+  },
+
+  pushAthletesToGroups: function(req, evtCallback) {
+    console.log("Operation: pushAthletesToGroups");
+
+    var info = {
+      grpId: req.params.id,
+      athIds: req.body.athletes,
+      Mods: req.models
+    };
+    console.log('info:\n', info.athIds.replace('[','').replace(']',''));
+
+    return validateIds(req.params.id, function(err, ids) {
+      if (err) return evtCallback(err);
+      validateIds(req.body.athletes, addAthletesToGroup)
+    });
+
+    function addAthletesToGroup(err, input) {
+      if (err) return evtCallback(err);
+
+      var query = {_id: info.grpId};
+      var proj = {name:1};
+      info.Mods.Groups.findOne(query, proj, function(err, grp) {
+        if (err) return evtCallback(dbErrors(err));
+
+        return evtCallback(null);
+      });
+    }
+
+    function addGroupToAthlete() {
+
+    }
+  },
+
+  pullAthletesFromGroups: function(req, evtCallback) {
+    console.log("Operation: pullAthletesFromGroups");
+
+    return validateInput(req.params.id, removeAthleteFromGroup);
+
+    function removeAthleteFromGroup(err, id) {
+      if (err) return evtCallback(err, null);
+
+
+    }
+
+
   }
 };
+
 
 /*
   ------ HELPER FUNCTIONS ------
@@ -820,17 +867,39 @@ function propagateGroupCreate(newGroup, evtCallback) {
 function validateInput(input, callback) {
   console.log('Operations: validateInput');
   var maxCharLen = 45;
-  var rego = /^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$/;
+  var regString = /^[_]*[A-Z0-9][A-Z0-9 _.-]*$/i;
+
   if (maxCharLen < input.length) {
     console.info("Validation: Error\n");
-    // var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422};
     return callback(cliErrors("maxCharacters"), null);
   }
-  if (!rego.test(input)) {
+  if (!regString.test(input)) {
     console.info("Validation: Error\n");
-    // var err = {name: "ValidationError", msg: 'Not valid input', code: 422};
     return callback(cliErrors("invalidInput"), null);
   }
+
+  console.info("Validation: Success\n");
+  return callback(null, input);
+}
+
+function validateIds(input, callback) {
+  console.log("Operations: validateIds");
+
+  var input = input.replace(/[\["\]]/g, '').split(',');
+  var maxCharLen = 35;
+  var regId= /^[A-Z0-9][A-Z0-9]*$/i;
+
+  for (var i=0; i<input.length; i++) {
+    if (maxCharLen < input[i].length) {
+      console.info("Validation: Error\n");
+      return callback(cliErrors("maxCharacters"), null);
+    }
+    if (!regId.test(input[i])) {
+      console.info("Validation: Error\n", input[i]);
+      return callback(cliErrors("invalidIDinput"), null);
+    }
+  }
+
   console.info("Validation: Success\n");
   return callback(null, input);
 }

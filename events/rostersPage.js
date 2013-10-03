@@ -145,7 +145,48 @@ var rostersPageEvts = {
         res.send(204);
       }
     });
+  },
+
+  pushAthletesToGroups: function(req, res, next) {
+    console.log('EVENT: pushAthletesToGroups');
+
+    rospgOps.pushAthletesToGroups(req, function(err) {
+      if (err) {
+        console.log("pushAthletesToGroups: Error\n", err.name);
+        res.json(err.rescode, {
+          error: {
+            id: err.id,
+            msg: err.msg,
+            value: req.params.id
+          }
+        });
+      } else {
+        console.log('pushAthletesToGroups: Success\n');
+        res.send(204);
+      }
+    });
+  },
+
+  pullAthletesFromGroups: function(req, res, next) {
+    console.log('EVENT: pullAthletesFromGroups');
+
+    rospgOps.pullAthletesFromGroups(req, function(err) {
+      if (err) {
+        console.log("pullAthletesFromGroups: Error\n", err.name);
+        res.json(err.rescode, {
+          error: {
+            id: err.id,
+            msg: err.msg,
+            value: req.params.id
+          }
+        });
+      } else {
+        console.log('pullAthletesFromGroups: Success\n');
+        res.send(204);
+      }
+    });
   }
+
 
 }
 
