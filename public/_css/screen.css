@@ -5934,6 +5934,14 @@ li p {
 #side-nav li ul {
   display: none; }
 
+/* line 145, ../_scss/partials/_teams-page.scss */
+[contenteditable="true"] {
+  outline: 3px dashed #CCC; }
+
+/* line 149, ../_scss/partials/_teams-page.scss */
+[contenteditable="false"] {
+  outline: none; }
+
 /* line 9, ../_scss/screen.scss */
 .red-button {
   border-style: solid;
@@ -6089,59 +6097,39 @@ input[type=submit]:hover {
 h5 {
   text-transform: uppercase; }
 
-/* line 167, ../_scss/screen.scss */
-[contenteditable]:hover:after {
-  content: ' click to edit';
-  font-style: italic;
-  font-size: 12px;
-  font-family: sans-serif;
-  color: #ccc; }
-
-/* line 175, ../_scss/screen.scss */
-[contenteditable]:hover, [contenteditable]:focus {
-  background: #D1D0CE; }
-
-/* line 179, ../_scss/screen.scss */
-[contenteditable]:focus {
-  padding: 5px; }
-
-/* line 183, ../_scss/screen.scss */
-[contenteditable]:focus:after {
-  content: ''; }
-
 /* ****************************************** */
-/* line 188, ../_scss/screen.scss */
+/* line 167, ../_scss/screen.scss */
 .athlete-canvas {
   background: #f2f2f2; }
 
-/* line 192, ../_scss/screen.scss */
+/* line 171, ../_scss/screen.scss */
 .display {
   margin-top: 20px;
   margin-bottom: 20px; }
 
-/* line 198, ../_scss/screen.scss */
+/* line 177, ../_scss/screen.scss */
 .row.athlete-canvas h4 {
   font-size: 1.2375em;
   font-weight: 500; }
 
-/* line 206, ../_scss/screen.scss */
+/* line 185, ../_scss/screen.scss */
 .athlete-canvas-metrics .large-2.columns {
   width: 20%;
   text-transform: uppercase;
   text-align: center; }
-/* line 212, ../_scss/screen.scss */
+/* line 191, ../_scss/screen.scss */
 .athlete-canvas-metrics h2 {
   margin-bottom: 0.2em;
   font-size: 3em;
   position: relative;
   top: -0.3em;
   font-weight: 400; }
-/* line 220, ../_scss/screen.scss */
+/* line 199, ../_scss/screen.scss */
 .athlete-canvas-metrics i {
   margin-bottom: 0;
   display: block;
   font-size: 3.9em;
   font-weight: 100; }
-/* line 226, ../_scss/screen.scss */
+/* line 205, ../_scss/screen.scss */
 .athlete-canvas-metrics .positive {
   color: #458b00; }

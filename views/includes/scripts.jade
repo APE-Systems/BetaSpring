@@ -48,50 +48,66 @@ script.
     });
 
   //- EDIT TEAM FUNCTION BELOW
+  var editMode = false;
   $('.edit-team').on("click", function(event) {
     $(this).find('.foundicon-edit').addClass('white');
     var teamName = $(this).closest('li').find('h3');
-    var teamNameCopy = teamName;
-    var teamGender = $(this).closest('li').find('span').html();
-    console.log("teamGender : " + teamGender);
-
-    var url = '/'+ school + '/' + teamName.html() +'-' + teamGender;
-    var name = '"' + teamName.html() + '"';
-    console.log(name);
+    editMode = true;
     $(teamName).attr("contenteditable", "true");
-    $(teamName).keypress(function(e) {
-      if(e.which == 13) {
-        console.log("user pressed Enter key");
-        $('.foundicon-edit').removeClass('white');
-        console.log(teamName);
-        console.log(teamGender);
-        var name = '"' + teamName.html() + '"';
-        console.log("name: " + name);
-        $.ajax({
-          url: url,
-          type: 'PUT',
-          contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-          dataType: 'json',
-          data: {"teamName": name},
-          }).done(function(msg) {
-            console.log("data saved " + msg);
-          }).fail(function(msg) {
-            alert("Sorry, couldn't save to the database.");
-            console.log(teamName);
-            console.log("failure");
-            console.dir(msg);
-          }).always(function() {
-            console.log("always function");
-            $(this).attr("contenteditable", "false");
-            })
-      } else if (e.which == 27) {
-        console.log("escape key pressed");
-        $(this).attr("contenteditable", "false");
-        $('.foundicon-edit').removeClass('white');
-      }   
-    });
+    console.log(editMode);
   });  
+
+
+
+
+  document.addEventListener('keydown', function (event) {
+    var esc = event.which == 27,
+    nl = event.which == 13,
+    el = event.target,
+    input = el.nodeName != 'INPUT' && el.nodeName != 'TEXTAREA',
+    data = {};
+
+    if (input && editMode) {
+      console.log('input entered');
+      if (esc) {
+        console.log("user hit escape, don't save data");
+        editMode = false;
+        // restore state
+        document.execCommand('undo');
+        $('.foundicon-edit').removeClass('white');
+        var teamName = $(this).closest('li').find('h3');
+        $(teamName).attr("contenteditable", "false");
+        el.blur();
+      } else if (nl) {
+        // save
+        data[el.getAttribute('data-name')] = el.innerHTML;
+
+        //- we could send an ajax request to update the field
+        //-$.ajax({
+        //-  url: window.location.toString(),
+        //-  data: data,
+        //-  type: 'post'
+        //-});
+      
+      log(JSON.stringify(data));
+
+      el.blur();
+      event.preventDefault();
+      editMode = false;
+      var teamName = $(this).closest('li').find('h3');
+      $(teamName).attr("contenteditable", "false");
+      
+      }
+    }
+  }, true);
+
+  function log(s) {
+    console.log = 'value changed to: ' + s;
+  }
   //- END EDIT TEAM FUNCTION
+
+  //- Revised Edit Function
+
 
   //- DELETE TEAM FUNCTION
 

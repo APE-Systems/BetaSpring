@@ -141,3 +141,11 @@ li p {
 #side-nav li ul {
   display: none; // used to hide sub-menus
 }
+
+[contenteditable="true"] {
+  outline: 3px dashed #CCC;
+}
+
+[contenteditable="false"] {
+  outline: none;
+}

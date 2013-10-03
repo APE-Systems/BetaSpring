@@ -18,7 +18,7 @@ block content
         ul#teams-list
           for team in teams
             li(class=team.name + " " + team.gender)
-              h3.capitalize=team.name
+              h3(data-name=team.name).capitalize=team.name
               span.capitalize= team.gender
               a(href='/:school/:team/:gender/roster'): button View team
               a#delete-team(href='#')

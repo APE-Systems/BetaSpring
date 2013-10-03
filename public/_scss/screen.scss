@@ -163,27 +163,6 @@ h5 {
 
 
 
-
-[contenteditable]:hover:after {
-	content: ' click to edit';
-	font-style: italic;
-	font-size: 12px;
-	font-family: sans-serif;
-	color: #ccc;
-}
-
-[contenteditable]:hover, [contenteditable]:focus {
-	background: #D1D0CE;
-}
-
-[contenteditable]:focus {
-	padding:5px;
-}
-
-[contenteditable]:focus:after {
-	content: '';
-}
-
 /* ****************************************** */
 .athlete-canvas {
 	background: $light-gray;
