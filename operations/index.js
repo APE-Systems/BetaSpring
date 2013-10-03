@@ -4,7 +4,7 @@ module.exports.Sessions = require('./sessions');
 module.exports.TeamsPageOps = require('./teamsPage');
 module.exports.RostersPageOps = require('./rostersPage');
 module.exports.ApeLibOps = require('./apeLibrary');
-
+module.exports.Errors = require('./errors');
 
 // module.exports.Coaches = require('./users/coaches');
 // module.exports.Schools = require('./users/schools');

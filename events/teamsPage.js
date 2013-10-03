@@ -20,7 +20,8 @@ var teamsPageEvts = {
           nav: req.sess.school,
           teams: payLoad.teams,
           apeLib: payLoad.apeLibPackage
-      });
+        });
+      }
     });
   },
 

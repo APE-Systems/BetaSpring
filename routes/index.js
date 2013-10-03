@@ -33,16 +33,6 @@ module.exports = function(app) {
   app.put('/:school/:team-:gender', tmEvts.updateTeam);
   app.delete('/:school/:team-:gender', tmEvts.deleteTeam);
 
-  //APE Library
-    //Drag'N Drop
-  app.post('/:school/apelibrary/:mtrcat/:metric/:teamTgt-:genderTgt', apeLibEvts.metricCatMetricToTeam);
-  app.post('/:school/apelibrary/:mtrcat/:teamTgt-:genderTgt', apeLibEvts.metricCatToTeam);
-  app.post('/:school/apelibrary/:metric/:teamTgt-:genderTgt', apeLibEvts.metricToTeam);
-
-  // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:mtrcat/:metric/:teamTgt-:genderTgt', apeLibEvts.metricCatMetricToTeam);
-  // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:mtrcat/:teamTgt-:genderTgt', apeLibEvts.metricCatToTeam)
-  // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:metric/:teamTgt-:genderTgt', apeLibEvts.metricToTeam)
-
   // Rosters Page
   app.get('/:school/:team-:gender/roster', rosEvts.getRostersPage);
 
@@ -56,6 +46,16 @@ module.exports = function(app) {
   app.put('/:school/:team-:gender/roster/group/:oldGroup', rosEvts.updateGroup);
   app.delete('/:school/:team-:gender/roster/group/:group', rosEvts.deleteGroup);
 
+  //APE Library
+    //Drag'N Drop
+  // app.post('/:school/apelibrary/:mtrcat/:metric/:teamTgt-:genderTgt', apeLibEvts.metricCatMetricToTeam);
+  // app.post('/:school/apelibrary/:mtrcat/:teamTgt-:genderTgt', apeLibEvts.metricCatToTeam);
+  // app.post('/:school/apelibrary/:metric/:teamTgt-:genderTgt', apeLibEvts.metricToTeam);
+
+    //CRUD
+  // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:mtrcat/:metric/:teamTgt-:genderTgt', apeLibEvts.metricCatMetricToTeam);
+  // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:mtrcat/:teamTgt-:genderTgt', apeLibEvts.metricCatToTeam)
+  // app.post('/:school/apelibrary/:teamSrc-:genderSrc/:metric/:teamTgt-:genderTgt', apeLibEvts.metricToTeam)
 
 }
 

@@ -4,6 +4,8 @@
  */
 
 var APE = require('../models/db/config').apeMods;
+var dbErrors = require('./errors.js').dbErrors;
+var cliErrors = require('./errors.js').cliErrors;
 
 var rostersPageOps = {
 
@@ -27,7 +29,7 @@ var rostersPageOps = {
       var proj = {athletes:1, groups:1};
 
       pgload.Mods.Teams.findOne(query, proj, function(err, team) {
-        if (err) return evtCallback(err, null);
+        if (err) return evtCallback(dbErrors(err), null);
         console.log('team.athletes:', team.athletes.length);
         console.log('team.groups:', team.groups.length);
 
@@ -42,11 +44,11 @@ var rostersPageOps = {
       var query = {};
       var proj = {name:1, metrics:1};
       APE.MetricCats.find(query, proj, function(err, mcs) {
-        if (err) return evtCallback(err, null);
+        if (err) return evtCallback(dbErrors(err), null);
 
         apeLibPackage.mtrcats = mcs;
         APE.Metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
-          if (err) return evtCallback(err, null);
+          if (err) return evtCallback(dbErrors(err), null);
 
           apeLibPackage.metrics = mtrs;
           // console.log('apeLibPackage:\n', apeLibPackage);
@@ -103,7 +105,7 @@ var rostersPageOps = {
       // console.log('newAthlete:\n', newAthlete);
       // return evtCallback(null, newAthlete);
       newAthlete.save(function(err) {
-        if (err) return evtCallback(err, null);
+        if (err) return evtCallback(dbErrors(err), null);
         console.log('Athlete saved:', newAthlete);
 
         crAthlete.athlete = newAthlete;
@@ -137,11 +139,10 @@ var rostersPageOps = {
 
     function checkForNameDiff(athlete) {
       return function(err, ath) {
-        if (err) return evtCallback(err, null);
+        if (err) return evtCallback(dbErrors(err), null);
         console.log('checking for name changes');
         if (!ath) {
-          var err = {name: "ValidationError", msg: 'Athlete ID does not exist', code: 404};
-          return evtCallback(err, null);
+          return evtCallback(cliErrors("notFound"), null);
         }
 
         var query = {
@@ -154,7 +155,7 @@ var rostersPageOps = {
         };
 
         req.models.Athletes.findOne({_id: query._id, name: query.name}, function(err, ath) {
-          if (err) return evtCallback(err, null);
+          if (err) return evtCallback(dbErrors(err), null);
 
           if (ath) {
           console.log('no name change');
@@ -170,7 +171,7 @@ var rostersPageOps = {
         //NOTE:
         //  if athlete found, then do not propagate change
         req.models.Athletes.findOne(query, function(err, ath) {
-          if (err) return evtCallback(err, null);
+          if (err) return evtCallback(dbErrors(err), null);
 
           if (ath) {
             console.log('athlete found: no edits\n', ath.name);
@@ -186,7 +187,7 @@ var rostersPageOps = {
         delete update['_id'];
 
         req.models.Athletes.findOneAndUpdate({_id: athlete._id}, update, function(err, numUp) {
-          if (err) return evtCallback(err, null);
+          if (err) return evtCallback(dbErrors(err), null);
           console.log('athlete updated:\n', numUp);
 
           return evtCallback(null, athlete);
@@ -203,7 +204,7 @@ var rostersPageOps = {
         delete update['_id'];
 
         upAthlete.Mods.Athletes.findOneAndUpdate({_id: athlete._id}, update, function(err, ath) {
-          if (err) return evtCallback(err, null);
+          if (err) return evtCallback(dbErrors(err), null);
           console.log('athlete updated:\n', ath);
 
           upAthlete.athlete = ath;
@@ -225,12 +226,12 @@ var rostersPageOps = {
 
     // delAthlete.Mods.Athletes.findOne(cond, function(err, deldoc) {
     delAthlete.Mods.Athletes.findOneAndRemove(cond, function(err, deldoc) {
-      if (err) return evtCallback(err);
+      if (err) return evtCallback(dbErrors(err));
 
       if (!deldoc) {
         console.log("Athlete not found for deletion");
         var msg = {name:"DeleteAthlete" , msg:"Athlete not found", code: 404};
-        return evtCallback(msg);
+        return evtCallback(cliErrors("notFound"));
       }
       console.log('deleted athlete:', deldoc);
       delAthlete.athlete = deldoc;
@@ -259,9 +260,8 @@ var rostersPageOps = {
       crGroup.team = newGroup.team;
       crGroup.name = newGroup.name;
 
-      console.log('create ', crGroup.name);
       crGroup.save(function(err) {
-        if (err) return evtCallback(err, null);
+        if (err) return evtCallback(dbErrors(err), null);
         console.log("Group saved:", crGroup.name);
 
         newGroup.doc = crGroup;
@@ -292,7 +292,7 @@ var rostersPageOps = {
       var update = {$set: {name: upGroup.newGroup}};
 
       upGroup.Mods.Groups.findOneAndUpdate(cond, update, function(err, group) {
-        if (err) return evtCallback(err, null);
+        if (err) return evtCallback(dbErrors(err), null);
       console.log('upGroup:\n', group.name);
 
       upGroup.doc = group;
@@ -321,7 +321,7 @@ var rostersPageOps = {
       var cond = {school: delGroup.sess.school, team: delGroup.team, name: delGroup.name};
 
       delGroup.Mods.Groups.findOneAndRemove(cond, function(err, group) {
-        if (err) return evtCallback(err, null);
+        if (err) return evtCallback(dbErrors(err), null);
       console.log('delGroup:\n', group);
 
       delGroup.doc = group;
@@ -350,7 +350,7 @@ function propagateAthleteDelete(delAthlete, evtCallback) {
 
     // APE.Schools.findOne(cond, function(err, numUp) {
     APE.Schools.update(cond, update, function(err, numUp) {
-      if (err) return evtCallback(err);
+      if (err) return evtCallback(dbErrors(err));
       console.log('school:\n', numUp);
 
       // return evtCallback(null);
@@ -365,7 +365,7 @@ function propagateAthleteDelete(delAthlete, evtCallback) {
 
     // delAthlete.Mods.Coaches.findOne(cond, function(err, numUp) {
     delAthlete.Mods.Coaches.update(cond, update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(err);
+      if (err) return evtCallback(dbErrors(err));
       console.log('coach:\n', numUp);
 
       // return evtCallback(null);
@@ -380,7 +380,7 @@ function propagateAthleteDelete(delAthlete, evtCallback) {
 
     // delAthlete.Mods.Teams.findOne(cond, function(err, numUp) {
     delAthlete.Mods.Teams.findOneAndUpdate(cond, update, function(err, numUp) {
-      if (err) return evtCallback(err);
+      if (err) return evtCallback(dbErrors(err));
       console.log('team:\n', numUp);
 
       // return evtCallback(null);
@@ -395,7 +395,7 @@ function propagateAthleteDelete(delAthlete, evtCallback) {
 
     // delAthlete.Mods.Groups.find(cond, function(err, numUp) {
     delAthlete.Mods.Groups.update(cond, update, {multi: true}, function(err, numUp) {
-      if (err) return evtCallback(err);
+      if (err) return evtCallback(dbErrors(err));
       console.log('group:\n', numUp);
 
       // return evtCallback(null);
@@ -413,7 +413,7 @@ function propagateAthleteDelete(delAthlete, evtCallback) {
 
     // delAthlete.Mods.MetricCats.find(cond, function(err, numUp) {
     delAthlete.Mods.MetricCats.update(cond, update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(err);
+      if (err) return evtCallback(dbErrors(err));
       console.log('MetricCats:\n', numUp);
 
       // return evtCallback(null);
@@ -428,7 +428,7 @@ function propagateAthleteDelete(delAthlete, evtCallback) {
 
     // delAthlete.Mods.Metrics.find(cond, function(err, numUp) {
     delAthlete.Mods.Metrics.update(cond, update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(err);
+      if (err) return evtCallback(dbErrors(err));
       console.log('Metrics:\n', numUp);
 
       // return evtCallback(null);
@@ -443,7 +443,7 @@ function propagateAthleteDelete(delAthlete, evtCallback) {
 
     // delAthlete.Mods.Athmetrics.find(cond, function(err, numUp) {
     delAthlete.Mods.Athmetrics.update(cond, update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(err);
+      if (err) return evtCallback(dbErrors(err));
       console.log('Athmetrics:\n', numUp);
 
       return evtCallback(null);
@@ -461,7 +461,7 @@ function propagateAthleteUpdate(upAthlete, evtCallback) {
     var update = {$set: {"athletes.$.name": upAthlete.athlete.name}};
 
     APE.Schools.findOneAndUpdate(cond, update, function(err, numUp) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('school:\n', numUp.athletes);
 
       return upsertCoachAthlete(upAthlete);
@@ -474,7 +474,7 @@ function propagateAthleteUpdate(upAthlete, evtCallback) {
     var update = {$set: {"athletes.$.name": upAthlete.athlete.name}};
 
     upAthlete.Mods.Coaches.update(cond, update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('coach:\n', numUp);
 
       return upsertTeamAthlete(upAthlete);
@@ -487,7 +487,7 @@ function propagateAthleteUpdate(upAthlete, evtCallback) {
     var update = {$set: {"athletes.$.name": upAthlete.athlete.name}};
 
     upAthlete.Mods.Teams.findOneAndUpdate(cond, update, function(err, numUp) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('team:\n', numUp.athletes);
 
       return upsertGroupAthlete(upAthlete);
@@ -515,7 +515,7 @@ function propagateAthleteUpdate(upAthlete, evtCallback) {
       var update = {$set: {"athletes.$.name": upAthlete.athlete.name}};
 
       upAthlete.Mods.Groups.update(cond, update, {multi: true}, function(err, numUp) {
-        if (err) return evtCallback(err, null);
+        if (err) return evtCallback(dbErrors(err), null);
         console.log('group:\n', numUp);
         return;
       });
@@ -530,7 +530,7 @@ function propagateAthleteUpdate(upAthlete, evtCallback) {
     var update = {$set: {"athletes.$.name": upAthlete.athlete.name}};
 
     upAthlete.Mods.MetricCats.update(cond, update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('MetricCats:\n', numUp);
 
       return upsertMetricAthlete(upAthlete);
@@ -543,7 +543,7 @@ function propagateAthleteUpdate(upAthlete, evtCallback) {
     var update = {$set: {"athletes.$.name": upAthlete.athlete.name}};
 
     upAthlete.Mods.Metrics.update(cond, update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('Metrics:\n', numUp);
 
       return upsertAthmetricAthlete(upAthlete);
@@ -556,7 +556,7 @@ function propagateAthleteUpdate(upAthlete, evtCallback) {
     var update = {$set: {'athlete.name': upAthlete.athlete.name}};
 
     upAthlete.Mods.Athmetrics.update(cond, update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('Athmetrics:\n', numUp);
 
       return evtCallback(null, upAthlete.athlete);
@@ -575,7 +575,7 @@ function propagateAthleteCreate(crAthlete, evtCallback) {
     var update = {$push: {athletes: {_id: crAthlete.athlete._id, name: crAthlete.athlete.name}}};
     // APE.Schools.findOne(cond, function(err, numUp) {
     APE.Schools.update(cond, update, function(err, numUp) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('school:\n', numUp);
 
       // return evtCallback(null, crAthlete.athlete);
@@ -591,7 +591,7 @@ function propagateAthleteCreate(crAthlete, evtCallback) {
     var update = {$push: {athletes: {_id: crAthlete.athlete._id, name: crAthlete.athlete.name}}};
     // crAthlete.Mods.Coaches.findOne(cond, function(err, numUp) {
     crAthlete.Mods.Coaches.update(cond, update, function(err, numUp) {
-      if (err) evtCallback(err, null);
+      if (err) evtCallback(dbErrors(err), null);
       console.log('coach:\n', numUp);
 
       // return evtCallback(null, crAthlete.athlete);
@@ -606,7 +606,7 @@ function propagateAthleteCreate(crAthlete, evtCallback) {
     var update = {$push: {athletes: {_id: crAthlete.athlete._id, name: crAthlete.athlete.name}}};
     // crAthlete.Mods.Teams.findOne(cond, function(err, numUp) {
     crAthlete.Mods.Teams.update(cond, update, function(err, numUp) {
-      if (err) evtCallback(err, null);
+      if (err) evtCallback(dbErrors(err), null);
       console.log('team:\n', numUp);
 
       return evtCallback(null, crAthlete.athlete);
@@ -627,8 +627,7 @@ function validateUpdateAthleteInput(athlete, callback) {
 
   if (maxCharLen < athlete.name) {
     console.info("Validation: Error\n");
-    var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422, value: athlete.name};
-    return callback(err, null);
+    return callback(cliErrors("maxCharacters"), null);
   }
   if (!names.test(athlete.fname)) return valError(athlete.fname);
   if (!names.test(athlete.lname)) return valError(athlete.lname);
@@ -642,8 +641,7 @@ function validateUpdateAthleteInput(athlete, callback) {
 
   function valError(input) {
     console.info("Validation: Error\n");
-    var err = {name: "ValidationError", msg: 'Not valid input', code: 422, value: input};
-    return callback(err, null);
+    return callback(cliErrors("invalidInput"), null);
   }
 }
 
@@ -660,8 +658,7 @@ function validateCreateAthleteInput(athlete, callback) {
 
   if (maxCharLen < athlete.name) {
     console.info("Validation: Error\n");
-    var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422, value: athlete.name};
-    return callback(err, null);
+    return callback(cliErrors("maxCharacters"), null);
   }
   if (!names.test(athlete.fname)) return valError(athlete.fname);
   if (!names.test(athlete.lname)) return valError(athlete.lname);
@@ -674,6 +671,8 @@ function validateCreateAthleteInput(athlete, callback) {
   return crUsername(athlete);
 
   function crUsername(athlete) {
+    //NOTE:
+    //  this creates a uniqueID based on body data
       var username = '';
       for (var i in athlete)
       {
@@ -690,8 +689,7 @@ function validateCreateAthleteInput(athlete, callback) {
 
   function valError(input) {
     console.info("Validation: Error\n");
-    var err = {name: "ValidationError", msg: 'Not valid input', code: 422, value: input};
-    return callback(err, null);
+    return callback(cliErrors("invalidInput"), null);
   }
 }
 
@@ -710,7 +708,7 @@ function propagateGroupDelete(delGroup, evtCallback) {
     //  delete a single coach group rather all coaches?
     var cond = {school: delGroup.sess.school, "groups.name": delGroup.name};
     delGroup.Mods.Coaches.update(cond, delGroup.update, function(err, numUp) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('coach:\n', numUp);
 
       deleteTeamGroup(delGroup);
@@ -723,7 +721,7 @@ function propagateGroupDelete(delGroup, evtCallback) {
 
     var cond = {school: delGroup.sess.school, name: delGroup.team.name, gender: delGroup.team.gender, "groups.name": delGroup.name};
     delGroup.Mods.Teams.update(cond, delGroup.update, function(err, numUp) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('team:\n', numUp);
 
       deleteAthleteGroup(delGroup);
@@ -736,7 +734,7 @@ function propagateGroupDelete(delGroup, evtCallback) {
 
     var cond = {school: delGroup.sess.school, team: delGroup.team, "groups.name": delGroup.name};
     delGroup.Mods.Athletes.update(cond, delGroup.update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err) , null);
       console.log('athlete:\n', numUp);
 
       return evtCallback(null, delGroup.doc);
@@ -754,7 +752,7 @@ function propagateGroupUpdate(upGroup, evtCallback) {
     var cond = {school: upGroup.sess.school, "groups.name": upGroup.oldGroup};
     var update = {$set: {'groups.$.name': upGroup.newGroup}};
     upGroup.Mods.Coaches.findOneAndUpdate(cond, update, function(err, coach) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('coaches:\n', coach.groups);
 
       updateTeamGroup(upGroup);
@@ -767,7 +765,7 @@ function propagateGroupUpdate(upGroup, evtCallback) {
     var cond = {school: upGroup.sess.school, name: upGroup.team.name, gender: upGroup.team.gender, "groups.name": upGroup.oldGroup};
     var update = {$set: {'groups.$.name': upGroup.newGroup}};
     upGroup.Mods.Teams.findOneAndUpdate(cond, update, function(err, team) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('team:\n', team.groups);
 
       updateAthleteGroup(upGroup);
@@ -780,7 +778,7 @@ function propagateGroupUpdate(upGroup, evtCallback) {
     var cond = {school: upGroup.sess.school, "coaches.username": upGroup.sess.username, "coaches.name": upGroup.sess.name, "groups.name": upGroup.oldGroup};
     var update = {$set: {'groups.$.name': upGroup.newGroup}};
     upGroup.Mods.Athletes.update(cond, update, {multi: true}, function(err, numUp) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('athletes:', numUp);
 
       evtCallback(null, upGroup.doc);
@@ -798,7 +796,7 @@ function propagateGroupCreate(newGroup, evtCallback) {
     var cond = {school: newGroup.sess.school, username: newGroup.sess.username, "teams.name": newGroup.team.name, "teams.gender": newGroup.team.gender};
     var update = {$push: {groups: {_id: newGroup.doc._id, name: newGroup.doc.name}}};
     newGroup.Mods.Coaches.findOneAndUpdate(cond, update, function(err, coach) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('coach:\n', coach.groups);
 
       return insertTeamGroup(newGroup);
@@ -811,7 +809,7 @@ function propagateGroupCreate(newGroup, evtCallback) {
     var cond = {school: newGroup.sess.school, name: newGroup.team.name, gender: newGroup.team.gender};
     var update = {$push: {groups: {_id: newGroup.doc._id, name: newGroup.doc.name}}};
     newGroup.Mods.Teams.findOneAndUpdate(cond, update, function(err, team) {
-      if (err) return evtCallback(err, null);
+      if (err) return evtCallback(dbErrors(err), null);
       console.log('team:\n', team.groups);
 
       return evtCallback(null, newGroup.doc);
@@ -825,13 +823,13 @@ function validateInput(input, callback) {
   var rego = /^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$/;
   if (maxCharLen < input.length) {
     console.info("Validation: Error\n");
-    var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422};
-    return callback(err, null);
+    // var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422};
+    return callback(cliErrors("maxCharacters"), null);
   }
   if (!rego.test(input)) {
     console.info("Validation: Error\n");
-    var err = {name: "ValidationError", msg: 'Not valid input', code: 422};
-    return callback(err, null);
+    // var err = {name: "ValidationError", msg: 'Not valid input', code: 422};
+    return callback(cliErrors("invalidInput"), null);
   }
   console.info("Validation: Success\n");
   return callback(null, input);
