@@ -27,13 +27,15 @@ module.exports = function(app) {
   //Logout
   // app.get('/logout', mid.checkCookie, mid.checkSession, user.logout);
 
-  //Teams Page
+//Teams Page
   app.get('/:school/teams', tmEvts.getTeamsPage);
+  
+    //TEAMS
   app.post('/:school/:team-:gender', tmEvts.createTeam);
   app.put('/:school/:team-:gender', tmEvts.updateTeam);
   app.delete('/:school/:team-:gender', tmEvts.deleteTeam);
 
-  // Rosters Page
+// Rosters Page
   app.get('/:school/:team-:gender/roster', rosEvts.getRostersPage);
 
     //ATHLETES
@@ -46,7 +48,12 @@ module.exports = function(app) {
   app.put('/:school/:team-:gender/roster/group/:oldGroup', rosEvts.updateGroup);
   app.delete('/:school/:team-:gender/roster/group/:group', rosEvts.deleteGroup);
 
-  //APE Library
+    //ATHLETES + GROUPS
+  app.post('/:school/:team-:gender/roster/group/:id/pushathletes', rosEvts.pushAthletesToGroups);
+  app.post('/:school/:team-:gender/roster/group/:id/pullathletes', rosEvts.pullAthletesFromGroups);
+
+
+//APE Library
     //Drag'N Drop
   // app.post('/:school/apelibrary/:mtrcat/:metric/:teamTgt-:genderTgt', apeLibEvts.metricCatMetricToTeam);
   // app.post('/:school/apelibrary/:mtrcat/:teamTgt-:genderTgt', apeLibEvts.metricCatToTeam);
