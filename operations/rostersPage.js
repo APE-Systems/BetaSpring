@@ -338,43 +338,154 @@ var rostersPageOps = {
       athIds: req.body.athletes,
       Mods: req.models
     };
-    console.log('info:\n', info.athIds.replace('[','').replace(']',''));
+    var athct = 0;
+    var grpct = 0;
+    var athletes = [];
 
     return validateIds(req.params.id, function(err, ids) {
       if (err) return evtCallback(err);
       validateIds(req.body.athletes, addAthletesToGroup)
     });
 
+    //TODO:
+    //  check if athlete is in group before adding
     function addAthletesToGroup(err, input) {
       if (err) return evtCallback(err);
+      console.log('add athletes to group');
 
-      var query = {_id: info.grpId};
-      var proj = {name:1};
-      info.Mods.Groups.findOne(query, proj, function(err, grp) {
-        if (err) return evtCallback(dbErrors(err));
+      for (var i=0; i<input.length; i++) {
+        var cond = {_id: input[i]};
+        getAthlete(cond);
+      }
 
-        return evtCallback(null);
-      });
+      function getAthlete(cond) {
+        var proj = {name:1};
+
+        info.Mods.Athletes.findOne(cond, proj, function(err, ath) {
+          if (err) return evtCallback(dbErrors(err));
+
+          athct += 1;
+          athletes.push(ath);
+          if (input.length === athct)
+            return pushAthletes(athletes);
+        });
+      }
+
+      function pushAthletes(aths) {
+        var cond = {_id: info.grpId};
+        var update = {$push: {athletes: {$each: aths}}};
+
+        info.Mods.Groups.update(cond, update, function(err, numUp) {
+          if (err) return evtCallback(dbErrors(err));
+          console.log('athletes added to group:\n', numUp);
+
+          addGroupToAthlete(aths);
+        });
+      }
     }
 
-    function addGroupToAthlete() {
+    function addGroupToAthlete(aths) {
+      // console.log('athletes:\n', aths);
+      console.log('add group to athletes');
 
+      return getGroup(info.grpId);
+
+      function getGroup(id) {
+        var query = {_id: id};
+        var proj = {name:1};
+        info.Mods.Groups.findOne(query, proj, function(err, grp) {
+          if (err) return evtCallback(dbErrors(err));
+
+          pushGroup(grp);
+        });
+      }
+
+      function pushGroup(grp) {
+        var update = {$push: {groups: {_id: grp._id, name: grp.name}}};
+        for (var i=0; i<aths.length; i++) {
+          var cond = {_id: aths[i]._id};
+          updateAth(cond);
+        }
+
+        function updateAth(cond) {
+          // info.Mods.Athletes.findOne(cond, {name:1}, function(err, numUp) {
+          info.Mods.Athletes.update(cond, update, function(err, numUp) {
+            if (err) return evtCallback(dbErrors(err));
+
+            grpct +=1;
+            if (grpct === aths.length) {
+              console.log('group added to athletes\n');
+              return evtCallback(null);
+            }
+          });
+        }
+      }
     }
   },
 
   pullAthletesFromGroups: function(req, evtCallback) {
     console.log("Operation: pullAthletesFromGroups");
 
-    return validateInput(req.params.id, removeAthleteFromGroup);
+    var info = {
+      grpId: req.params.id,
+      athIds: req.body.athletes,
+      Mods: req.models
+    };
+    var athletes = [];
+    var athct = 0;
+    var grpct = 0;
 
-    function removeAthleteFromGroup(err, id) {
+    return validateIds(req.params.id, function(err, ids) {
+      if (err) return evtCallback(err);
+      validateIds(req.body.athletes, removeAthletesFromGroup)
+    });
+
+    function removeAthletesFromGroup(err, input) {
       if (err) return evtCallback(err, null);
+      console.log('removing athletes from group');
+      console.log(input);
+      var cond = {_id: info.grpId};
 
+      for (var i=0; i<input.length; i++) {
+        var update = {$pull: {athletes: {_id: input[i]}}};
+        pullAthlete(cond, update);
+      }
 
-    }
+      function pullAthlete(cond, update) {
+        info.Mods.Groups.update(cond, update, function(err, numUp) {
+          if (err) return evtCallback(dbErrors(err));
 
+          athct += 1;
+          if (athct === input.length) {
+            console.log('athletes removed from group')
+            return removeGroupFromAthletes(input);
+          }
+        });
+      }
+    }//END
 
-  }
+    function removeGroupFromAthletes(input) {
+      console.log('remove group from athletes');
+
+      var update = {$pull: {groups: {_id: info.grpId}}};
+      for (var i=0;i<input.length; i++) {
+        var cond = {_id: input[i]};
+        pullGroup(cond, update);
+      }
+
+      function pullGroup(cond, update) {
+        info.Mods.Athletes.update(cond, update, function(err, numUp) {
+          if (err) return evtCallback(dbErrors(err));
+
+          grpct += 1;
+          if (grpct === input.length) {
+            console.log('group removed from athletes\n')
+            return evtCallback(null);
+          }
+        });
+      }
+    }//END
+  }//END
 };
 
 
