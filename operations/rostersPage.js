@@ -25,19 +25,28 @@ var rostersPageOps = {
     return getAthletesAndGroups(pgload);
 
     function getAthletesAndGroups(pgload) {
+      var query = {school: pgload.sess.school, team: pgload.team};
+      var proj = {name:1, position:1, year:1};
+
+      pgload.Mods.Athletes.find(query, proj, function(err, athletes) {
+        if (err) return evtCallback(dbErrors(err), null);
+
+        dataLoad.athletes = athletes;
+        return getTeamGroups(pgload);
+      });
+    }//END
+
+    function getTeamGroups(pgload) {
       var query = {school: pgload.sess.school, name: pgload.team.name, gender: pgload.team.gender};
-      var proj = {athletes:1, groups:1};
+      var proj = {groups:1}
 
       pgload.Mods.Teams.findOne(query, proj, function(err, team) {
-        if (err) return evtCallback(dbErrors(err), null);
-        console.log('team.athletes:', team.athletes.length);
-        console.log('team.groups:', team.groups.length);
+        if (err) return evtCallback(dbErrors(err));
 
-        dataLoad.athletes = team.athletes;
         dataLoad.groups = team.groups;
         return getAPElib(pgload);
       });
-    }
+    }//END
 
     function getAPElib(pgload) {
       var apeLibPackage = {};
@@ -59,7 +68,7 @@ var rostersPageOps = {
           return;
         });
       });
-    };
+    }//END
   },
 
   createAthlete: function(req, evtCallback) {
