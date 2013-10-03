@@ -24,6 +24,13 @@ function cliErrors(err) {
         msg: "Resource not found",
         rescode: 404,
         name: "notFound"
+    },
+    "invalidIDinput": {
+        id: errorId(),
+        code: "val03v1",
+        msg: "Not a valid id",
+        rescode: 422,
+        name: "invalidIDinput"
     }
   };
 
