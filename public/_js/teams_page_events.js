@@ -20,27 +20,30 @@ $(function() {
 
   });
 
-  document.addEventListener('keydown', function (event) {
-    var esc = event.which == 27,
-        nl = event.which == 13,
-        el = event.target,
-        input = el.nodeName != 'INPUT' && el.nodeName != 'TEXTAREA',
-        data = {};
+  $(document).keydown(function(event) { this; debugger })
+  // document.addEventListener('keydown', function (event) {
+  //   debugger;
+  //   var esc = event.which == 27,
+  //       nl = event.which == 13,
+  //       el = event.target,
+  //       input = el.nodeName != 'INPUT' && el.nodeName != 'TEXTAREA',
+  //       data = {};
 
-    if (input && editMode) {
-      console.log('user pressed a key');
-      if (esc) {
-        console.log('user hit the ESC key');
-        $('.foundicon-edit').trigger("click");
-      } else if (nl) {
-        console.log('user hit enter');
-        editMode = false;
-      }
-    }
-    event.preventDefault();
+  //   if (input && editMode) {
+  //     console.log('user pressed a key');
+  //     if (esc) {
+  //       console.log('user hit the ESC key');
+  //       $(this).
+  //       $('.foundicon-edit').trigger("click");
+  //     } else if (nl) {
+  //       console.log('user hit enter');
+  //       editMode = false;
+  //     }
+  //   }
+  //   event.preventDefault();
 
 
-  });
+  // });
 
   //- EDIT TEAM FUNCTION BELOW
   //var editMode = false;
