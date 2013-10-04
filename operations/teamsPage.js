@@ -4,6 +4,8 @@
  */
 
 var APE = require('../models/db/config').apeMods;
+var dbErrors = require('../operations/errors.js').dbErrors;
+var cliErrors = require('../operations/errors.js').cliErrors;
 
 var teamsPageOps = {
 
@@ -23,7 +25,7 @@ var teamsPageOps = {
       var proj = {name:1, gender:1, mtrcats:1, metrics:1};
 
       pgload.Mods.Teams.find(query, proj, function(err, teams) {
-        if (err) evtCallback(err, null);
+        if (err) evtCallback(dbErrors(err), null);
 
         dataLoad.teams = teams;
         return getAPElib(pgload);
@@ -34,12 +36,13 @@ var teamsPageOps = {
       var apeLibPackage = {};
       var query = {};
       var proj = {name:1, metrics:1};
+
       APE.MetricCats.find(query, proj, function(err, mcs) {
-        if (err) evtCallback(err, null);
+        if (err) evtCallback(dbErrors(err), null);
 
         apeLibPackage.mtrcats = mcs;
         APE.Metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
-          if (err) evtCallback(err, null);
+          if (err) evtCallback(dbErrors(err), null);
 
           apeLibPackage.metrics = mtrs;
           // console.log('apeLibPackage:\n', apeLibPackage);
@@ -53,16 +56,23 @@ var teamsPageOps = {
     }
   },
 
-  createTeam: function(req, callback) {
+  createTeam: function(req, evtCallback) {
     console.log('Operation: createTeam');
-    validateInput(req.params.team, insertTeam);
+    var val = {
+      team: req.params.team,
+      gender: req.params.gender
+    };
+    validateInput(val, insertTeam);
 
     //NOTE:
     //  new team propagates to all coaches in same school
     //  need to figure out which coaches get updated
     function insertTeam(err, team) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
 
+      var info = {
+
+      };
       var Mods = req.models;
       var school = req.sess.school;
       var newTeam = new Mods.Teams();
@@ -74,21 +84,21 @@ var teamsPageOps = {
       newTeam.gender = req.params.gender;
 
       // console.log(newTeam);
-      newTeam.save(function(err) {
-        if (err) return callback(err, null);
+      // newTeam.save(function(err) {
+      //   if (err) return callback(dbErrors(err), null);
 
-        insertSchoolTeam(newTeam, function(err, doc) {
-          if (err) return callback(err, null);
+      //   insertSchoolTeam(newTeam, function(err, doc) {
+      //     if (err) return callback(dbErrors(err), null);
 
-          console.info("Team saved in School\n", doc);
-          insertCoachesTeam(req, newTeam, function(err, doc) {
-            if (err) return callback(err, null);
+      //     console.info("Team saved in School\n", doc);
+      //     insertCoachesTeam(req, newTeam, function(err, doc) {
+      //       if (err) return callback(dbErrors(err), null);
 
-            console.info("Team saved in coaches\n", doc);
-            callback(null, newTeam);
-          });
-        });
-      });
+      //       console.info("Team saved in coaches\n", doc);
+      //       callback(null, newTeam);
+      //     });
+      //   });
+      // });
     }
   },//END createTeam
 
@@ -108,7 +118,7 @@ var teamsPageOps = {
       var cond = {name: req.params.team, gender: req.params.gender};
       var update = {$set: {name: team, gender: gender}};
       Mods.Teams.findOneAndUpdate(cond, update, {new: true}, function(err, upDoc) {
-        if (err) callback(err);
+        if (err) return callback(dbErrors(err), null);
 
         console.log('teamUpdated:\n', upDoc.name, upDoc.gender);
         propagateUpdate(req, upDoc, callback);
@@ -131,11 +141,12 @@ var teamsPageOps = {
     };
 
     Mods.Teams.findOneAndRemove(cond, function(err, deldoc) {
-      if (err) callback(err);
+      if (err) return callback(dbError(err), null);
 
       console.log('teamDelete:', deldoc);
       propagateDelete(req, delDoc, callback);
-      callback(null);
+      return;
+
     });
   }//END deleteTeam
 }
@@ -157,21 +168,29 @@ function insertSchoolTeam(team, callback) {
   APE.Schools.update(query, update, callback);
 }
 
-function validateInput(input, callback) {
+function validateInput(val, callback) {
   console.log('Operations: validateInput\n');
   var maxCharLen = 45;
-  var rego = /^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$/;
-  if (maxCharLen < input.length) {
-    var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422};
-    return callback(err, null);
+  var rego = /^[_]*[A-Z0-9][A-Z0-9 _.-]*$/i;
+  var objs = Object.keys(val);
+  if (!objs.some(checkVal)) {
+    console.info("Validation: Success");
+    return callback(null, val);
   }
-  if (!rego.test(input)) {
-    var err = {name: "ValidationError", msg: 'Not valid input', code: 422};
-    return callback(err, null);
+
+  function checkVal(el, ind, arr) {
+    if (maxCharLen < val[el].length) {
+      console.info("Validation: Error\n");
+      callback(cliErrors("maxCharacters"), null);
+      return true;
+    }
+    if (!rego.test(val[el])) {
+      console.info("Validation: Error\n");
+      callback(cliErrors("invalidInput"), null);
+      return true;
+    }
   }
-  console.info("Validation: Success");
-  return callback(null, input);
-}
+}//END
 
 //NOTE:
 //  Test with multiple coaches, metrics, metriccats, athletes and groups
