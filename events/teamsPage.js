@@ -12,8 +12,14 @@ var teamsPageEvts = {
 
     tmspgOps.getTeamsPage(req, function(err, payLoad) {
       if (err) {
-        console.error("getTeamsPage: Error\n", err);
-        res.send(500, "Problem getting rosters page.");
+        console.error("getTeamsPage: Error\n", err.name);
+        res.json(err.rescode, {
+          error: {
+            id: err.id,
+            msg: err.msg,
+            value: ""
+          }
+        });
       } else {
         // console.log('payLoad:', payLoad);
         res.json(200, {
@@ -31,26 +37,20 @@ var teamsPageEvts = {
 
     tmspgOps.createTeam(req, function(err, team) {
       if (err) {
-        if (err.code === 422) {
-          console.error("Invalid Team name\n", err);
-          res.json(422, {error: err});
-        } else if (err.code === 11000) {
-          console.error("duplicate key\n", err);
-          res.json(409, {error: {msg: "Team name already in database", err: err}});
-        } else {
-          console.error("createTeam: Error\n", err);
-          res.json(500, {
-            error: {
-              msg: "Problem saving team",
-              err: err
-            }
-          });
-        }
+        console.log("createTeam: Error\n", err.name);
+        var val = {team: req.params.team, gender: req.params.gender};
+        res.json(err.rescode, {
+          error: {
+            id: err.id,
+            msg: err.msg,
+            value: val
+          }
+        });
       } else {
         console.log('createTeam: Success\n');
         res.json(201, {id: team._id, name: team.name, gender: team.gender});
       }
-    })
+    });
   },
 
   //AJAX

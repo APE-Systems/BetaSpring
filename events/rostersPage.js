@@ -12,8 +12,14 @@ var rostersPageEvts = {
 
     rospgOps.getRostersPage(req, function(err, payload) {
       if (err) {
-        console.error("getRostersPage: Error\n", err);
-        res.send(500, "Problem getting rosters page.");
+        console.error("getRostersPage: Error\n", err.name);
+        res.json(err.rescode, {
+          error: {
+            id: err.id,
+            msg: err.msg,
+            value: ""
+          }
+        });
       } else {
         // res.json(payload);
         console.log('getRostersPage: Success');
