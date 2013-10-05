@@ -39,24 +39,51 @@ block content
 
   .display
   .row.athleteHeader
-    .large-2.columns
+    .small-2.columns
       h5 First Name
-    .large-2.columns
+    .small-2.columns
       h5 Last Name
-    .large-2.columns
+    .small-2.columns
       h5 Last Record
-    .large-6.columns
+    .small-6.columns
       h5 Input Data
-  .row.athletes(data-id='1').active
-    .large-2.columns
-      span(data-athleteFirstName) Kristopher
-    .large-2.columns
-      span(data-athleteLastName) Washington
-    .large-2.columns
-    .large-6.columns
+  .row.athlete-table
+    .small-12.columns
+      .row(data-id='1').active
+        .small-2.columns
+          span(data-athleteFirstName) Kristopher
+        .small-2.columns
+          span(data-athleteLastName) Washington
+        .small-1.columns
+          span(data-last-record) 90
+        .small-1.columns
+          i.foundicon-edit
+        .small-3.columns
+          input(type='text')
+        .small-3.columns
+          button Confirm
+      .row(data-id='2').active
+        .small-2.columns
+          span(data-athleteFirstName) Some
+        .small-2.columns
+          span(data-athleteLastName) Otherguy
+        .small-1.columns
+          span(data-last-record) 90
+        .small-1.columns
+          i.foundicon-edit
+        .small-3.columns
+          input(type='text')
+        .small-3.columns
+          button Confirm
 
 
-
+  .row
+    h1 This is the h1
+    h2 This is the h2
+    h3 This is the h3
+    h4 This is the h4
+    h5 This is the h5
+    h6 This is the h6
 
 //-<a href="#" data-dropdown="drop1" class="button dropdown">Dropdown Button</a><br>
 

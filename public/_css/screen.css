@@ -5950,7 +5950,7 @@ li p {
 
 /* line 8, ../_scss/partials/_training-test.scss */
 .athleteHeader {
-  text-align: center;
+  /* text-align: center; */
   background: #f2f2f2; }
 
 /* line 13, ../_scss/partials/_training-test.scss */
@@ -6006,10 +6006,14 @@ li p {
     float: right;
     float: left; }
 
-/* line 22, ../_scss/partials/_training-test.scss */
-.active {
-  background: #9c0010;
-  color: white; }
+/* line 23, ../_scss/partials/_training-test.scss */
+.row.athlete-table {
+  padding-bottom: 1em;
+  padding-top: 1em; }
+  /* line 28, ../_scss/partials/_training-test.scss */
+  .row.athlete-table.active {
+    background: #9c0010;
+    color: white; }
 
 /* line 10, ../_scss/screen.scss */
 .red-button {

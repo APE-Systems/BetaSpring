@@ -20,9 +20,11 @@ $(function() {
 
   });
 
-  $(document).keydown(function(event) { this; debugger })
+  $(document).keydown(function(event) { 
+
+   });
   // document.addEventListener('keydown', function (event) {
-  //   debugger;
+  //-  
   //   var esc = event.which == 27,
   //       nl = event.which == 13,
   //       el = event.target,

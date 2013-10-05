@@ -6,7 +6,7 @@
 
 
 .athleteHeader {
-  text-align: center;
+  /* text-align: center; */
   background: $light-gray;
 }
 
@@ -19,7 +19,14 @@
   & > .dateDropdown {@include grid-column(2, true); }
 }
 
-.active {
-  background: rgba(156, 0, 16, 1);
-  color: white;
+
+.row.athlete-table {
+  
+  padding-bottom: 1em;
+  padding-top: 1em;
+
+  &.active {
+    background: rgba(156, 0, 16, 1);
+    color: white;
+  }
 }
