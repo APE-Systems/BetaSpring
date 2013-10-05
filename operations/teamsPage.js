@@ -143,6 +143,9 @@ var teamsPageOps = {
       info.Mods.Teams.findOneAndUpdate(cond, update, {new: true}, function(err, upDoc) {
         if (err) return evtCallback(dbErrors(err), null);
 
+        if (!upDoc)
+          return evtCallback(cliErrors("notFound", null));
+
         console.log('teamUpdated:\n', upDoc.name, upDoc.gender);
         info.newTeam = upDoc;
         propagateUpdate(info, evtCallback);
@@ -153,25 +156,33 @@ var teamsPageOps = {
 
   deleteTeam: function(req, evtCallback) {
     console.log('Operation: deleteTeam');
-
-    var Mods, school, cond, username;
-    Mods = req.models;
-    school = req.sess.school;
-    username: req.sess.username;
-    cond = {
+    var val = {
       name: req.params.team,
-      gender:req.params.gender,
-      "coaches.username": username
+      gender: req.params.gender
     };
 
-    Mods.Teams.findOneAndRemove(cond, function(err, deldoc) {
-      if (err) return callback(dbError(err), null);
+    validateInput(val, removeTeam);
 
-      console.log('teamDelete:', deldoc);
-      propagateDelete(req, delDoc, callback);
-      return;
+    function removeTeam(err, team) {
+      if (err) return evtCallback(err, null);
 
-    });
+      var info = {
+        sess: req.sess,
+        Mods: req.models,
+      };
+      var cond = {name: team.name, gender: team.gender, "coaches.username": info.sess.username};
+      info.Mods.Teams.findOneAndRemove(cond, function(err, delDoc) {
+        if (err) return evtCallback(dbError(err), null);
+
+        if (!delDoc)
+          return evtCallback(cliErrors("notFound"));
+
+        console.log('teamDelete:\n', delDoc.name, delDoc.gender);
+        info.team = delDoc;
+        propagateDelete(info, evtCallback);
+        return;
+      });
+    }
   }//END deleteTeam
 }
 
@@ -209,6 +220,7 @@ function validateInput(val, callback) {
 //NOTE:
 //  Test with multiple coaches, metrics, metriccats, athletes and groups
 function propagateUpdate(info, evtCallback) {
+  console.log('propagating update');
   var conds = {
     school: info.sess.school,
     'teams.name': info.oldTeam.name,
@@ -217,7 +229,7 @@ function propagateUpdate(info, evtCallback) {
   var cond = {
     school: info.sess.school,
     'team.name': info.oldTeam.name,
-    'team.gender': info.oldTeam.genderr
+    'team.gender': info.oldTeam.gender
   };
   updateSchoolTeam();
 
@@ -313,45 +325,95 @@ function propagateUpdate(info, evtCallback) {
   }//END
 }
 
-function propagateDelete(req, delTeam, callback) {
-  var Mods = req.models;
-  deleteSchoolTeam(delTeam);
+function propagateDelete(info, evtCallback) {
+  console.log('propagating delete');
 
-  function deleteSchoolTeam(delTeam) {
+  var conds = {
+    school: info.sess.school,
+    'teams.name': info.team.name,
+    'teams.gender': info.team.gender
+  };
+  var cond = {
+    school: info.sess.school,
+    'team.name': info.team.name,
+    'team.gender': info.team.gender
+  };
+  var updates = {$pull: {teams: {name: info.team.name, gender: info.team.gender}}};
+  var update = {$set: {"team.name":'', "team.gender": ''}};
+  deleteSchoolTeam();
+
+  function deleteSchoolTeam() {
     var schCond = {
-      name: req.sess.school,
-      'teams.name': req.params.team,
-      'teams.gender': req.params.gender
+      name: info.sess.school,
+      'teams.name': info.team.name,
+      'teams.gender': info.team.gender
     };
 
-    APE.Schools.update(schCond, function(err, delDoc) {
+    APE.Schools.update(schCond, updates, function(err, numUp, raw) {
     // APE.Schools.findOne(schCond, function(err, schDoc) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
-      console.info('Deleted: School\n', delDoc);
-      deleteCoachesTeam(delTeam);
+      console.info('Deleted: School\n', numUp, raw);
+      deleteCoachesTeam();
       return;
     });
   }//END
 
   function deleteCoachesTeam(delTeam) {
-    Mods.Coaches.update();
+    //NOTE:
+    //  All coaches that belong to the team are updated
+    info.Mods.Coaches.update(conds, updates, {multi:true}, function(err, numUp, raw) {
+    // Mods.Coaches.find(conds, function(err, numUp) {
+      if (err) return evtCallback(dbErrors(err));
+
+      console.info("Deleted: Coaches", numUp, raw);
+      deleteMetricsTeam();
+      return;
+    });
   }//END
 
-  function deleteMetricsTeam(delTeam) {
-    Mods.Metrics.update();
+  function deleteMetricsTeam() {
+    info.Mods.Metrics.update(conds, updates, {multi:true}, function(err, numUp, raw) {
+    // Mods.Metrics.find(conds, function(err, numUp, raw) {
+      if (err) return evtCallback(dbErrors(err));
+
+      console.info("Deleted: Metrics", numUp, raw);
+      deleteMetricCatsTeam();
+      return;
+    });
   }//END
 
-  function deleteMetricCatsTeam(delTeam) {
-    Mods.MetricCats.update()
+  function deleteMetricCatsTeam() {
+    info.Mods.MetricCats.update(cond, update, {multi:true}, function(err, numUp, raw) {
+    // Mods.MetricCats.find(cond, function(err, numUp) {
+      if (err) return evtCallback(dbErrors(err));
+
+      console.info("Deleted: Metric Categories", numUp, raw);
+      deleteAthletesTeam();
+      return;
+    });
   }//END
 
-  function deleteAthletesTeam(delTeam) {
+  function deleteAthletesTeam() {
+    info.Mods.Athletes.update(cond, update, {multi:true}, function(err, numUp, raw) {
+    // Mods.Athletes.find(cond, function(err, numUp) {
+      if (err) return evtCallback(dbErrors(err));
 
+      console.info("Deleted: Athletes", numUp, raw);
+      deleteGroupsTeam();
+      return;
+    });
   }//END
 
-  function deleteGroupsTeam(delTeam) {
+  function deleteGroupsTeam() {
+    info.Mods.Groups.update(cond, update, {multi:true}, function(err, numUp, raw) {
+    // Mods.Groups.find(cond, function(err, numUp) {
+      if (err) return evtCallback(dbErrors(err));
 
+      console.info("Deleted: Groups", numUp, raw);
+      evtCallback(null);
+      return;
+    });
   }//END
 }
 

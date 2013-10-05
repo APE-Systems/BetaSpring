@@ -79,21 +79,17 @@ var teamsPageEvts = {
   deleteTeam: function(req, res, next) {
     console.log('Event: deleteTeam');
 
-    tmspgOps.updateTeam(req, function(err) {
+    tmspgOps.deleteTeam(req, function(err) {
       if (err) {
-        if (err.code === 404) {
-        console.info("Group not found\n", err);
-        res.json(404, {error: err});
-        } else {
-          console.error("deleteTeam: Error\n", err);
-          res.json({
-            status: 500, 
-            error: {
-              Msg: "Problem deleting team",
-              err: err
-            }
-          });
-        }
+        console.log("deleteTeam: Error\n", err.name);
+        var val = {team: req.params.team, gender: req.params.gender};
+        res.json(err.rescode, {
+          error: {
+            id: err.id,
+            msg: err.msg,
+            value: val
+          }
+        });
       } else {
         console.log('deleteTeam: Success');
         res.send(204);
