@@ -22,7 +22,19 @@ var rostersPageOps = {
     };
     var dataLoad = {};
 
-    return getAthletesAndGroups(pgload);
+    return checkTeamExistence(pgload, getAthletesAndGroups);
+
+    function checkTeamExistence(pgload, callback) {
+      var query = {name: pgload.team.name, gender: pgload.team.gender};
+      pgload.Mods.Teams.findOne(query, function(err, team) {
+        if (err) return evtCallback(dbErrors(err), null);
+
+        if (!team)
+          return evtCallback(cliErrors("notFound"), null);
+
+        return callback(pgload);
+      });
+    }//END
 
     function getAthletesAndGroups(pgload) {
       var query = {school: pgload.sess.school, team: pgload.team};
