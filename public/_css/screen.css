@@ -5942,7 +5942,76 @@ li p {
 [contenteditable="false"] {
   outline: none; }
 
-/* line 9, ../_scss/screen.scss */
+/* Training Test */
+/* line 2, ../_scss/partials/_training-test.scss */
+.dropdowns {
+  padding: 15px;
+  background: #f2f2f2; }
+
+/* line 8, ../_scss/partials/_training-test.scss */
+.athleteHeader {
+  text-align: center;
+  background: #f2f2f2; }
+
+/* line 13, ../_scss/partials/_training-test.scss */
+#dropdown-selection {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+  margin-bottom: 0;
+  max-width: 68.75em;
+  *zoom: 1; }
+  /* line 121, ../_scss/foundation/components/_global.scss */
+  #dropdown-selection:before, #dropdown-selection:after {
+    content: " ";
+    display: table; }
+  /* line 122, ../_scss/foundation/components/_global.scss */
+  #dropdown-selection:after {
+    clear: both; }
+  /* line 15, ../_scss/partials/_training-test.scss */
+  #dropdown-selection > .groupDropdown {
+    position: relative;
+    padding-left: 0.9375em;
+    padding-right: 0.9375em;
+    width: 16.66667%;
+    float: left; }
+  /* line 16, ../_scss/partials/_training-test.scss */
+  #dropdown-selection > .categoryDropdown {
+    position: relative;
+    padding-left: 0.9375em;
+    padding-right: 0.9375em;
+    width: 16.66667%;
+    float: left; }
+  /* line 17, ../_scss/partials/_training-test.scss */
+  #dropdown-selection > .metricDropdown {
+    position: relative;
+    padding-left: 0.9375em;
+    padding-right: 0.9375em;
+    width: 16.66667%;
+    float: left; }
+  /* line 18, ../_scss/partials/_training-test.scss */
+  #dropdown-selection > .unitTypeDropdown {
+    position: relative;
+    padding-left: 0.9375em;
+    padding-right: 0.9375em;
+    width: 16.66667%;
+    float: left; }
+  /* line 19, ../_scss/partials/_training-test.scss */
+  #dropdown-selection > .dateDropdown {
+    position: relative;
+    padding-left: 0.9375em;
+    padding-right: 0.9375em;
+    width: 16.66667%;
+    float: right;
+    float: left; }
+
+/* line 22, ../_scss/partials/_training-test.scss */
+.active {
+  background: #9c0010;
+  color: white; }
+
+/* line 10, ../_scss/screen.scss */
 .red-button {
   border-style: solid;
   border-width: 1px;
@@ -5970,7 +6039,7 @@ li p {
   .red-button:hover, .red-button:focus {
     color: white; }
 
-/* line 13, ../_scss/screen.scss */
+/* line 14, ../_scss/screen.scss */
 hr {
   border: solid #9c0012;
   border-width: 4px 0 0;
@@ -5978,17 +6047,17 @@ hr {
   margin: 1.25em 0 1.1875em;
   height: 0; }
 
-/* line 22, ../_scss/screen.scss */
+/* line 23, ../_scss/screen.scss */
 .large-centered {
   margin-bottom: 2.25em; }
 
 /* THE STUFF BELOW IS FROM THE OLD _CSS/ROSTER.CSS PAGE. REFACTOR*/
-/* line 27, ../_scss/screen.scss */
+/* line 28, ../_scss/screen.scss */
 .roster-table {
   width: 100%; }
 
 /* TEAMS PAGE */
-/* line 35, ../_scss/screen.scss */
+/* line 36, ../_scss/screen.scss */
 .all-teams ul li button {
   display: block; }
 
@@ -6003,26 +6072,26 @@ LIGHT RED:; #9C0012;
 
 */
 /* TYPOGRAPHY */
-/* line 59, ../_scss/screen.scss */
+/* line 60, ../_scss/screen.scss */
 .athlete-photo img {
   display: block;
   width: 100%; }
 
-/* line 63, ../_scss/screen.scss */
+/* line 64, ../_scss/screen.scss */
 .vanity-plate {
   background-color: #f2f2f2;
   padding-top: 0.5em; }
 
-/* line 69, ../_scss/screen.scss */
+/* line 70, ../_scss/screen.scss */
 .athlete-photo button {
   display: block;
   width: 100%; }
 
-/* line 74, ../_scss/screen.scss */
+/* line 75, ../_scss/screen.scss */
 .athlete-metrics {
   text-align: center; }
 
-/* line 77, ../_scss/screen.scss */
+/* line 78, ../_scss/screen.scss */
 .athlete-metrics h3 {
   font-family: 'helvetica neue', helvetica, arial;
   font-size: 1.5em;
@@ -6030,38 +6099,38 @@ LIGHT RED:; #9C0012;
   letter-spacing: 1px;
   text-shadow: #262729 0 -1px 0; }
 
-/* line 85, ../_scss/screen.scss */
+/* line 86, ../_scss/screen.scss */
 .athlete-metrics span {
   display: block; }
 
-/* line 88, ../_scss/screen.scss */
+/* line 89, ../_scss/screen.scss */
 span.metric-value {
   font-size: 4.5em;
   font-weight: normal;
   line-height: 1; }
 
-/* line 95, ../_scss/screen.scss */
+/* line 96, ../_scss/screen.scss */
 span.metric-measurement {
   padding-top: 0.5em;
   font-size: 1.5em;
   line-height: 1;
   font-weight: 100; }
 
-/* line 103, ../_scss/screen.scss */
+/* line 104, ../_scss/screen.scss */
 .athlete-info dl {
   line-height: .75em; }
 
-/* line 106, ../_scss/screen.scss */
+/* line 107, ../_scss/screen.scss */
 .athlete-info dl dt {
   float: left;
   font-weight: bold;
   margin-right: 10px; }
 
-/* line 112, ../_scss/screen.scss */
+/* line 113, ../_scss/screen.scss */
 .roster-subnav {
   background-color: #F2F2F2; }
 
-/* line 118, ../_scss/screen.scss */
+/* line 119, ../_scss/screen.scss */
 .name-style {
   font-family: 'helvetica neue', helvetica, arial;
   font-size: 20px;
@@ -6069,67 +6138,67 @@ span.metric-measurement {
   letter-spacing: 1px;
   text-shadow: #262729 0 -1px 0; }
 
-/* line 126, ../_scss/screen.scss */
+/* line 127, ../_scss/screen.scss */
 .bold {
   font-weight: bolder; }
 
-/* line 130, ../_scss/screen.scss */
+/* line 131, ../_scss/screen.scss */
 .sub-nav {
   margin-bottom: 0em;
   margin-top: 1em;
   margin-left: 0em; }
 
-/* line 136, ../_scss/screen.scss */
+/* line 137, ../_scss/screen.scss */
 .sub-nav dd.active a {
   background: #9C0012; }
 
-/* line 144, ../_scss/screen.scss */
+/* line 145, ../_scss/screen.scss */
 input[type=submit] {
   background-color: #9c0012;
   padding: 10px;
   color: white; }
 
-/* line 150, ../_scss/screen.scss */
+/* line 151, ../_scss/screen.scss */
 input[type=submit]:hover {
   background-color: #69000c; }
 
-/* line 159, ../_scss/screen.scss */
+/* line 160, ../_scss/screen.scss */
 h5 {
   text-transform: uppercase; }
 
 /* ****************************************** */
-/* line 167, ../_scss/screen.scss */
+/* line 168, ../_scss/screen.scss */
 .athlete-canvas {
   background: #f2f2f2; }
 
-/* line 171, ../_scss/screen.scss */
+/* line 172, ../_scss/screen.scss */
 .display {
   margin-top: 20px;
   margin-bottom: 20px; }
 
-/* line 177, ../_scss/screen.scss */
+/* line 178, ../_scss/screen.scss */
 .row.athlete-canvas h4 {
   font-size: 1.2375em;
   font-weight: 500; }
 
-/* line 185, ../_scss/screen.scss */
+/* line 186, ../_scss/screen.scss */
 .athlete-canvas-metrics .large-2.columns {
   width: 20%;
   text-transform: uppercase;
   text-align: center; }
-/* line 191, ../_scss/screen.scss */
+/* line 192, ../_scss/screen.scss */
 .athlete-canvas-metrics h2 {
   margin-bottom: 0.2em;
   font-size: 3em;
   position: relative;
   top: -0.3em;
   font-weight: 400; }
-/* line 199, ../_scss/screen.scss */
+/* line 200, ../_scss/screen.scss */
 .athlete-canvas-metrics i {
   margin-bottom: 0;
   display: block;
   font-size: 3.9em;
   font-weight: 100; }
-/* line 205, ../_scss/screen.scss */
+/* line 206, ../_scss/screen.scss */
 .athlete-canvas-metrics .positive {
   color: #458b00; }

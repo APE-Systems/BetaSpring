@@ -1,0 +1,25 @@
+/* Training Test */
+.dropdowns {
+  padding: 15px;
+  background: $light-gray;
+}
+
+
+.athleteHeader {
+  text-align: center;
+  background: $light-gray;
+}
+
+#dropdown-selection {
+  @include grid-row;
+  & > .groupDropdown { @include grid-column(2); }
+  & > .categoryDropdown { @include grid-column(2); }
+  & > .metricDropdown { @include grid-column(2); }
+  & > .unitTypeDropdown {@include grid-column(2); }
+  & > .dateDropdown {@include grid-column(2, true); }
+}
+
+.active {
+  background: rgba(156, 0, 16, 1);
+  color: white;
+}

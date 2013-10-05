@@ -1,0 +1,68 @@
+extends layout
+
+append head
+  link(rel='stylesheet',  href='../_css/foundation-datepicker.css')
+
+block content
+
+  .row.dropdowns
+    form.custom
+      section#dropdown-selection
+        .groupDropdown
+          label(for='groupDropdown') Group
+          select.medium(id='groupDropdown')
+            option All
+            option Group 1
+            option Group 2
+        .categoryDropdown
+          label(for='categoryDropdown') Category
+          select.medium(id='categoryDropdown')
+            option Strength
+            option Power
+            option Whatevs
+        .metricDropdown
+          label(for='metricDropdown') Metric
+          select.medium(id='metricDropdown')
+            option Power Clean
+        .unitTypeDropdown
+          label(for='unitTypeDropdown') Unit Type
+          select.medium(id='unitTypeDropdown')
+            option kg
+            option lb
+        .dateDropdown
+          label(for='dp') Date
+          input(type='text', value='10/20/2013', id='dp') Test
+
+
+  .display
+  include includes/vanity-plate
+
+  .display
+  .row.athleteHeader
+    .large-2.columns
+      h5 First Name
+    .large-2.columns
+      h5 Last Name
+    .large-2.columns
+      h5 Last Record
+    .large-6.columns
+      h5 Input Data
+  .row.athletes(data-id='1').active
+    .large-2.columns
+      span(data-athleteFirstName) Kristopher
+    .large-2.columns
+      span(data-athleteLastName) Washington
+    .large-2.columns
+    .large-6.columns
+
+
+
+
+//-<a href="#" data-dropdown="drop1" class="button dropdown">Dropdown Button</a><br>
+
+//-<ul id="drop1" class="f-dropdown">
+//-  <li><a href="#">This is a link</a></li>
+//-  <li><a href="#">This is another</a></li>
+//-  <li><a href="#">Yet another</a></li>
+//-</ul>
+

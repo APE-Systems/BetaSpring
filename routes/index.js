@@ -462,6 +462,12 @@ module.exports = function(app) {
   app.get('/athleteProfile', function(req, res) {
     res.render('athleteProfile');
   });
+
+  app.get('/trainingTest', function(req, res) {
+    res.render('trainingTest');
+  });
+
+  
   // app.put();
   // app.delete();
 
