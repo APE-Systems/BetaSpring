@@ -57,27 +57,20 @@ var teamsPageEvts = {
   updateTeam: function(req, res, next) {
     console.log('Event: updateTeam');
 
-    tmspgOps.updateTeam(req, function(err) {
+    tmspgOps.updateTeam(req, function(err, team) {
       if (err) {
-        if (err.code === 422) {
-          console.error("Invalid Team name\n", err);
-          res.json(422, {error: err});
-        } else if (err.code === 11000) {
-          console.error("duplicate key\n", err);
-          res.json(409, {error: {msg: "Team already in database", err: err}});
-        } else {
-          console.error("updateTeam: Error\n", err);
-          res.json({
-            status: 500,
-            error: {
-              Msg: "Problem updating team",
-              err: err
-            }
-          });
-        }
+        console.log("updateTeam: Error\n", err.name);
+        var val = {team: req.params.team, gender: req.params.gender};
+        res.json(err.rescode, {
+          error: {
+            id: err.id,
+            msg: err.msg,
+            value: val
+          }
+        });
       } else {
         console.log('updateTeam: Success');
-        res.json(200, {status: "success"});
+        res.json(200, {_id: team._id, name: team.name, gender: team.gender});
       }
     });
   },

@@ -115,32 +115,43 @@ var teamsPageOps = {
     }
   },//END createTeam
 
-  updateTeam: function(req, callback) {
+  updateTeam: function(req, evtCallback) {
     console.log('Operation: updateTeam');
-    var team = req.body["team-name"];
-    var gender = req.body["team-gender"];
-    
-    validateInput(team, editTeam);
+    var val = {
+      oldName: req.params.team,
+      oldGen: req.params.gender,
+      newName: req.body["team-name"],
+      newGen: req.body["team-gender"]
+    };
+
+    validateInput(val, editTeam);
 
     function editTeam(err, team) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
 
-      var Mods = req.models;
-      var school = req.sess.school;
+      var info = {
+        sess: req.sess,
+        Mods: req.models,
+        oldTeam: {
+          name: val.oldName,
+          gender: val.oldGen
+        }
+      };
 
-      var cond = {name: req.params.team, gender: req.params.gender};
-      var update = {$set: {name: team, gender: gender}};
-      Mods.Teams.findOneAndUpdate(cond, update, {new: true}, function(err, upDoc) {
-        if (err) return callback(dbErrors(err), null);
+      var cond = {name: team.oldName, gender: team.oldGen};
+      var update = {$set: {name: team.newName, gender: team.newGen}};
+      info.Mods.Teams.findOneAndUpdate(cond, update, {new: true}, function(err, upDoc) {
+        if (err) return evtCallback(dbErrors(err), null);
 
         console.log('teamUpdated:\n', upDoc.name, upDoc.gender);
-        propagateUpdate(req, upDoc, callback);
+        info.newTeam = upDoc;
+        propagateUpdate(info, evtCallback);
         return;
       });
     }
   },//END updateTeam
 
-  deleteTeam: function(req, callback) {
+  deleteTeam: function(req, evtCallback) {
     console.log('Operation: deleteTeam');
 
     var Mods, school, cond, username;
@@ -174,6 +185,7 @@ function validateInput(val, callback) {
   var maxCharLen = 45;
   var rego = /^[_]*[A-Z0-9][A-Z0-9 _.-]*$/i;
   var objs = Object.keys(val);
+
   if (!objs.some(checkVal)) {
     console.info("Validation: Success");
     return callback(null, val);
@@ -196,108 +208,106 @@ function validateInput(val, callback) {
 
 //NOTE:
 //  Test with multiple coaches, metrics, metriccats, athletes and groups
-function propagateUpdate(req, upTeam, callback) {
-  var Mods = req.models;
+function propagateUpdate(info, evtCallback) {
   var conds = {
-    school: req.sess.school,
-    'teams.name': req.params.team,
-    'teams.gender': req.params.gender
+    school: info.sess.school,
+    'teams.name': info.oldTeam.name,
+    'teams.gender': info.oldTeam.gender
   };
   var cond = {
-    school: req.sess.school,
-    'team.name': req.params.team,
-    'team.gender': req.params.gender
+    school: info.sess.school,
+    'team.name': info.oldTeam.name,
+    'team.gender': info.oldTeam.genderr
   };
-  updateSchoolTeam(upTeam);
+  updateSchoolTeam();
 
-  function updateSchoolTeam(upTeam) {
+  function updateSchoolTeam() {
     var schCond = {
-      name: req.sess.school,
-      'teams.name': req.params.team,
-      'teams.gender': req.params.gender
+      name: info.sess.school,
+      'teams.name': info.oldTeam.name,
+      'teams.gender': info.oldTeam.gender
     };
     var update = {
-      $set: {"teams.$.name": upTeam.name, "teams.$.gender": upTeam.gender}
+      $set: {"teams.$.name": info.newTeam.name, "teams.$.gender": info.newTeam.gender}
     };
-
     APE.Schools.update(schCond, update, function(err, numUp, raw) {
     // APE.Schools.findOne(schCond, function(err, schDoc) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
       console.info('Updated: School', numUp, raw);
-      updateCoachesTeam(upTeam);
+      updateCoachesTeam();
       return;
     });
   }//END
 
-  function updateCoachesTeam(upTeam) {
+  function updateCoachesTeam() {
     //NOTE:
     //  All coaches that belong to the team are updated
     var update = {
-      $set: {"teams.$.name": upTeam.name, "teams.$.gender": upTeam.gender}
+      $set: {"teams.$.name": info.newTeam.name, "teams.$.gender": info.newTeam.gender}
     };
-    Mods.Coaches.update(conds, update, {multi:true}, function(err, numUp, raw) {
+    info.Mods.Coaches.update(conds, update, {multi:true}, function(err, numUp, raw) {
     // Mods.Coaches.find(conds, function(err, numUp) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
       console.info("Updated: Coaches", numUp, raw);
-      updateMetricsTeam(upTeam);
+      updateMetricsTeam();
       return;
     });
   }//END
 
-  function updateMetricsTeam(upTeam) {
+  function updateMetricsTeam() {
     var update = {
-      $set: {"teams.$.name": upTeam.name, "teams.$.gender": upTeam.gender}
+      $set: {"teams.$.name": info.newTeam.name, "teams.$.gender": info.newTeam.gender}
     };
-    Mods.Metrics.update(conds, update, {multi:true}, function(err, numUp, raw) {
+    info.Mods.Metrics.update(conds, update, {multi:true}, function(err, numUp, raw) {
     // Mods.Metrics.find(conds, function(err, numUp, raw) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
       console.info("Updated: Metrics", numUp, raw);
-      updateMetricCatsTeam(upTeam);
+      updateMetricCatsTeam();
       return;
     });
   }//END
 
-  function updateMetricCatsTeam(upTeam) {
+  function updateMetricCatsTeam() {
     var update = {
-      $set: {team: {name: upTeam.name, gender: upTeam.gender}}
+      $set: {team: {name: info.newTeam.name, gender: info.newTeam.gender}}
     };
-    Mods.MetricCats.update(cond, update, {multi:true}, function(err, numUp, raw) {
+    info.Mods.MetricCats.update(cond, update, {multi:true}, function(err, numUp, raw) {
     // Mods.MetricCats.find(cond, function(err, numUp) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
       console.info("Updated: Metric Categories", numUp, raw);
-      updateAthletesTeam(upTeam);
+      updateAthletesTeam();
       return;
     });
   }//END
 
-  function updateAthletesTeam(upTeam) {
+  function updateAthletesTeam() {
     var update = {
-      $set: {team: {name: upTeam.name, gender: upTeam.gender}}
+      $set: {team: {name: info.newTeam.name, gender: info.newTeam.gender}}
     };
-    Mods.Athletes.update(cond, update, {multi:true}, function(err, numUp, raw) {
+    info.Mods.Athletes.update(cond, update, {multi:true}, function(err, numUp, raw) {
     // Mods.Athletes.find(cond, function(err, numUp) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
       console.info("Updated: Athletes", numUp, raw);
-      updateGroupsTeam(upTeam);
+      updateGroupsTeam();
       return;
     });
   }//END
 
-  function updateGroupsTeam(upTeam) {
+  function updateGroupsTeam() {
     var update = {
-      $set: {team: {name: upTeam.name, gender: upTeam.gender}}
+      $set: {team: {name: info.newTeam.name, gender: info.newTeam.gender}}
     };
-    Mods.Groups.update(cond, update, {multi:true}, function(err, numUp, raw) {
+    info.Mods.Groups.update(cond, update, {multi:true}, function(err, numUp, raw) {
     // Mods.Groups.find(cond, function(err, numUp) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
       console.info("Updated: Groups", numUp, raw);
-      callback(null);
+      evtCallback(null, info.newTeam);
       return;
     });
   }//END
