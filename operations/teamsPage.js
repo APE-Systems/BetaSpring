@@ -59,46 +59,59 @@ var teamsPageOps = {
   createTeam: function(req, evtCallback) {
     console.log('Operation: createTeam');
     var val = {
-      team: req.params.team,
+      name: req.params.team,
       gender: req.params.gender
     };
     validateInput(val, insertTeam);
 
-    //NOTE:
-    //  new team propagates to all coaches in same school
-    //  need to figure out which coaches get updated
     function insertTeam(err, team) {
       if (err) return evtCallback(err, null);
 
       var info = {
-
+        team: val,
+        sess: req.sess,
+        Mods: req.models
       };
-      var Mods = req.models;
-      var school = req.sess.school;
-      var newTeam = new Mods.Teams();
+      var newTeam = new info.Mods.Teams();
 
-      newTeam.createdBy = req.sess.COID;
-      newTeam.coaches.push({_id: req.sess.COID, username: req.sess.username, name: req.sess.name});
-      newTeam.school = school;
-      newTeam.name = team;
-      newTeam.gender = req.params.gender;
+      newTeam.createdBy = info.sess.COID;
+      newTeam.coaches.push({_id: info.sess.COID, username: info.sess.username, name: info.sess.name});
+      newTeam.school = info.sess.school;
+      newTeam.name = info.team.name;
+      newTeam.gender = info.team.gender;
 
       // console.log(newTeam);
-      // newTeam.save(function(err) {
-      //   if (err) return callback(dbErrors(err), null);
+      saveTeam(newTeam, insertSchoolTeam);
 
-      //   insertSchoolTeam(newTeam, function(err, doc) {
-      //     if (err) return callback(dbErrors(err), null);
+      function saveTeam(newTeam, callback) {
+        console.log('saving team');
+        newTeam.save(function(err) {
+          if (err) return evtCallback(dbErrors(err), null);
+          return callback(newTeam, insertCoachesTeam);
+        });
+      }
 
-      //     console.info("Team saved in School\n", doc);
-      //     insertCoachesTeam(req, newTeam, function(err, doc) {
-      //       if (err) return callback(dbErrors(err), null);
+      function insertSchoolTeam(team, callback) {
+        var query = {name: team.school};
+        var update = {$push: {teams: {_id: team._id, name: team.name, gender: team.gender}}}
+        APE.Schools.update(query, update, function(err, numUp) {
+          if (err) return evtCallback(dbErrors(err), null);
+          console.log("team saved in school:", numUp);
+          return callback(team);
+        });
+      }
 
-      //       console.info("Team saved in coaches\n", doc);
-      //       callback(null, newTeam);
-      //     });
-      //   });
-      // });
+      //NOTE:
+      //  new team propagates to all coaches in same school
+      function insertCoachesTeam(team) {
+        var query = {school: team.school};
+        var update = {$push: {teams: {_id: team._id, name: team.name, gender: team.gender}}}
+        info.Mods.Coaches.update(query, update, {multi:true}, function(err, numUp) {
+          if (err) return evtCallback(dbErrors(err), null);
+          console.info("team saved in coaches:", numUp);
+          return evtCallback(null, team);
+        });
+      }
     }
   },//END createTeam
 
@@ -155,18 +168,6 @@ var teamsPageOps = {
   ------ HELPER FUNCTIONS ------
  */
 
-function insertCoachesTeam(req, team, callback) {
-  var Mods = req.models;
-  var query = {school: team.school};
-  var update = {$push: {teams: {_id: team._id, name: team.name, gender: team.gender}}}
-  Mods.Coaches.update(query, update, {multi:true}, callback);
-}
-
-function insertSchoolTeam(team, callback) {
-  var query = {name: team.school};
-  var update = {$push: {teams: {_id: team._id, name: team.name, gender: team.gender}}}
-  APE.Schools.update(query, update, callback);
-}
 
 function validateInput(val, callback) {
   console.log('Operations: validateInput\n');
@@ -191,6 +192,7 @@ function validateInput(val, callback) {
     }
   }
 }//END
+
 
 //NOTE:
 //  Test with multiple coaches, metrics, metriccats, athletes and groups
