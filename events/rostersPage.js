@@ -21,7 +21,6 @@ var rostersPageEvts = {
           }
         });
       } else {
-        // res.json(payload);
         console.log('getRostersPage: Success');
         res.json(200, {
           nav: req.sess.school,

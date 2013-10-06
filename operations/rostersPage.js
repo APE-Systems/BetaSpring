@@ -245,19 +245,21 @@ var rostersPageOps = {
         };
     var cond = {_id: delAthlete._id};
 
-    // delAthlete.Mods.Athletes.findOne(cond, function(err, deldoc) {
-    delAthlete.Mods.Athletes.findOneAndRemove(cond, function(err, deldoc) {
-      if (err) return evtCallback(dbErrors(err));
 
-      if (!deldoc) {
-        console.log("Athlete not found for deletion");
-        var msg = {name:"DeleteAthlete" , msg:"Athlete not found", code: 404};
-        return evtCallback(cliErrors("notFound"));
-      }
-      console.log('deleted athlete:', deldoc);
-      delAthlete.athlete = deldoc;
-      return propagateAthleteDelete(delAthlete, evtCallback);
-    });
+    function removeAthlete() { 
+      delAthlete.Mods.Athletes.findOneAndRemove(cond, function(err, deldoc) {
+        if (err) return evtCallback(dbErrors(err));
+
+        if (!deldoc) {
+          console.log("Athlete not found for deletion");
+          var msg = {name:"DeleteAthlete" , msg:"Athlete not found", code: 404};
+          return evtCallback(cliErrors("notFound"));
+        }
+        console.log('deleted athlete:', deldoc);
+        delAthlete.athlete = deldoc;
+        return propagateAthleteDelete(delAthlete, evtCallback);
+      });
+    }
   },
 
   createGroup: function(req, evtCallback) {
@@ -354,18 +356,15 @@ var rostersPageOps = {
   pushAthletesToGroups: function(req, evtCallback) {
     console.log("Operation: pushAthletesToGroups");
 
-    var info = {
-      grpId: req.params.id,
-      athIds: req.body.athletes,
-      Mods: req.models
-    };
+    var grpId = req.params.id;
+    var athIds = req.body.athletes;
     var athct = 0;
     var grpct = 0;
     var athletes = [];
 
-    return validateIds(req.params.id, function(err, ids) {
-      if (err) return evtCallback(err);
-      validateIds(req.body.athletes, addAthletesToGroup)
+    return validateInput({val: grpId}, function(err, ok) {
+      if (err) return evtCallback(err, null);
+      return validateIds(athIds, addAthletesToGroup);
     });
 
     //TODO:
@@ -373,6 +372,11 @@ var rostersPageOps = {
     function addAthletesToGroup(err, input) {
       if (err) return evtCallback(err);
       console.log('add athletes to group');
+
+      var info = {
+        sess: req.sess,
+        Mods: req.models
+      }
 
       for (var i=0; i<input.length; i++) {
         var cond = {_id: input[i]};
@@ -447,24 +451,25 @@ var rostersPageOps = {
   pullAthletesFromGroups: function(req, evtCallback) {
     console.log("Operation: pullAthletesFromGroups");
 
-    var info = {
-      grpId: req.params.id,
-      athIds: req.body.athletes,
-      Mods: req.models
-    };
+    var grpId = req.params.id;
+    var athIds = req.body.athletes;
     var athletes = [];
     var athct = 0;
     var grpct = 0;
 
-    return validateIds(req.params.id, function(err, ids) {
-      if (err) return evtCallback(err);
-      validateIds(req.body.athletes, removeAthletesFromGroup)
+    return validateInput({val: grpId}, function(err, ok) {
+      if (err) return evtCallback(err, null);
+      return validateIds(athIds, removeAthletesFromGroup);
     });
 
     function removeAthletesFromGroup(err, input) {
       if (err) return evtCallback(err, null);
       console.log('removing athletes from group');
-      console.log(input);
+
+      var info = {
+        sess: req.sess,
+        Mods: req.models
+      };
       var cond = {_id: info.grpId};
 
       for (var i=0; i<input.length; i++) {
@@ -996,44 +1001,51 @@ function propagateGroupCreate(newGroup, evtCallback) {
   }
 }
 
-function validateInput(input, callback) {
-  console.log('Operations: validateInput');
+function validateInput(val, callback) {
+  console.log('Operations: validateInput\n');
   var maxCharLen = 45;
-  var regString = /^[_]*[A-Z0-9][A-Z0-9 _.-]*$/i;
+  var rego = /^[_]*[A-Z0-9][A-Z0-9 _.-]*$/i;
+  var objs = Object.keys(val);
 
-  if (maxCharLen < input.length) {
-    console.info("Validation: Error\n");
-    return callback(cliErrors("maxCharacters"), null);
-  }
-  if (!regString.test(input)) {
-    console.info("Validation: Error\n");
-    return callback(cliErrors("invalidInput"), null);
+  if (!objs.some(checkVal)) {
+    console.info("Validation: Success");
+    return callback(null, val);
   }
 
-  console.info("Validation: Success\n");
-  return callback(null, input);
-}
+  function checkVal(el, ind, arr) {
+    if (maxCharLen < val[el].length) {
+      console.info("Validation: Error\n");
+      callback(cliErrors("maxCharacters"), null);
+      return true;
+    }
+    if (!rego.test(val[el])) {
+      console.info("Validation: Error\n");
+      callback(cliErrors("invalidInput"), null);
+      return true;
+    }
+  }
+}//END
 
-function validateIds(input, callback) {
+function validateIds(val, callback) {
   console.log("Operations: validateIds");
 
-  var input = input.replace(/[\["\]]/g, '').split(',');
+  var val = val.replace(/[\["\] ]*/g, '').split(',');
   var maxCharLen = 35;
   var regId= /^[A-Z0-9][A-Z0-9]*$/i;
 
-  for (var i=0; i<input.length; i++) {
-    if (maxCharLen < input[i].length) {
+  for (var i=0; i<val.length; i++) {
+    if (maxCharLen < val[i].length) {
       console.info("Validation: Error\n");
       return callback(cliErrors("maxCharacters"), null);
     }
-    if (!regId.test(input[i])) {
-      console.info("Validation: Error\n", input[i]);
-      return callback(cliErrors("invalidIDinput"), null);
+    if (!regId.test(val[i])) {
+      console.info("Validation: Error\n", val[i]);
+      return callback(cliErrors("invalidIDval"), null);
     }
   }
 
   console.info("Validation: Success\n");
-  return callback(null, input);
-}
+  return callback(null, val);
+}//END
 
 module.exports = exports = rostersPageOps;
