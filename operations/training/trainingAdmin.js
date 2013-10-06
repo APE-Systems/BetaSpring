@@ -68,51 +68,41 @@ var trainingAdminOps = {
   },
 
   createMetricCat: function(req, evtCallback) {
-    console.log('Operation: onSelection');
+    console.log('Operation: createMetricCat');
     var val = {
-      school: req.params.school,
-      team: req.params.team,
+      tname: req.params.team,
       gender: req.params.gender,
-      grp: req.params.grp,
-      mcat: req.params.mcat,
+      mcname: req.body.mcatName
     };
 
-    return validateInput(val, sel);
+    return validateInput(val, forgeMetricCat);
 
-    function forgeAthlete(err, athlete) {
+    function forgeMetricCat(err, input) {
       if (err) return evtCallback(err, null);
 
       var info = {
-        team: {name: req.params.team, gender: req.params.gender},
+        team: {name: input.tname, gender: input.gender},
         sess: req.sess,
-        Mods: req.models
+        Mods: req.models,
+        mcname: input.mcname
       };
-      var newAthlete = new crAthlete.Mods.Athletes();
+      var newMcat = new info.Mods.MetricCats();
 
-      newAthlete.createdBy = req.sess.COID;
-      newAthlete.school = crAthlete.sess.school;
-      newAthlete.team = crAthlete.team;
+      newMcat.createdBy = info.sess.COID;
+      newMcat.school = info.sess.school;
+      newMcat.team = info.team;
+      newMcat.name = info.mcname;
 
-      newAthlete.name = athlete.fname + ' ' + athlete.lname;
-      newAthlete.username = athlete.username + crAthlete.sess.webdom;
-      newAthlete.position = athlete.position;
-      newAthlete.year = athlete.year;
-      newAthlete.hometown = athlete.city + ', ' + athlete.state;
-      newAthlete.height = athlete.height;
-      newAthlete.coaches.push({
-        username: crAthlete.sess.username,
-        name: crAthlete.sess.name,
-        _id: crAthlete.sess.COID
-      });
-
-      // console.log('newAthlete:\n', newAthlete);
-      // return evtCallback(null, newAthlete);
-      newAthlete.save(function(err) {
+      // console.log('newMcat:\n', newMcat);
+      // return evtCallback(null, newMcat);
+      // info.mCat = newMcati;
+      // return propageMCatCreate(info, evtCallback);
+      newMcat.save(function(err) {
         if (err) return evtCallback(dbErrors(err), null);
-        console.log('Athlete saved:', newAthlete);
+        console.log('MCat saved:\n', newMcat.name);
 
-        crAthlete.athlete = newAthlete;
-        return propagateAthleteCreate(crAthlete, evtCallback);
+        info.mCat = newMcat;
+        return propageMCatCreate(info, evtCallback);
       });
     }
   },
@@ -219,16 +209,16 @@ var trainingAdminOps = {
 
   updateMetricCat: function(req, evtCallback) {
     console.log('Operation: deleteAthlete');
-    var delAthlete = {
+    var delMcat = {
           _id: req.params.id,
           team: {name: req.params.team, gender: req.params.gender},
           sess: req.sess,
           Mods: req.models
         };
-    var cond = {_id: delAthlete._id};
+    var cond = {_id: delMcat._id};
 
-    // delAthlete.Mods.Athletes.findOne(cond, function(err, deldoc) {
-    delAthlete.Mods.Athletes.findOneAndRemove(cond, function(err, deldoc) {
+    // delMcat.Mods.Athletes.findOne(cond, function(err, deldoc) {
+    delMcat.Mods.Athletes.findOneAndRemove(cond, function(err, deldoc) {
       if (err) return evtCallback(dbErrors(err));
 
       if (!deldoc) {
@@ -237,8 +227,8 @@ var trainingAdminOps = {
         return evtCallback(cliErrors("notFound"));
       }
       console.log('deleted athlete:', deldoc);
-      delAthlete.athlete = deldoc;
-      return propagateAthleteDelete(delAthlete, evtCallback);
+      delMcat.athlete = deldoc;
+      return propagateAthleteDelete(delMcat, evtCallback);
     });
   },
 
@@ -274,32 +264,36 @@ var trainingAdminOps = {
   },
 
   deleteMetricCat: function(req, evtCallback) {
-    console.log('Operation: updateGroup');
-    //who follows groups? Teams, Athletes, mtrcats, metrics
+    console.log('Operation: deleteMetricCat');
+    var val = {
+      tname: req.params.team,
+      gender: req.params.gender,
+      mcid: req.params.mcat
+    }
 
-    validateInput(req.params.oldGroup, updateGroup);
+    validateInput(val, removeMetricCat);
 
-    function updateGroup(err, group) {
+    function removeMetricCat(err, input) {
       if (err) return evtCallback(err, null);
 
-      var upGroup = {
-        newGroup: req.body.upName,
-        oldGroup: req.params.oldGroup,
-        team: {name: req.params.team, gender: req.params.gender},
+      var info = {
+        team: {name: input.tname, gender: input.gender},
         sess: req.sess,
-        Mods: req.models
+        Mods: req.models,
+        mcid: input.mcid
       };
 
-      console.log('replace ' + upGroup.oldGroup + ' with ' + upGroup.newGroup);
-      var cond = {school: upGroup.sess.school, team: upGroup.team, name: upGroup.oldGroup};
-      var update = {$set: {name: upGroup.newGroup}};
+      var cond = {
+        school: info.sess.school,
+        team: info.team,
+        _id: info.mcid};
 
-      upGroup.Mods.Groups.findOneAndUpdate(cond, update, function(err, group) {
+      info.Mods.MetricCats.findOneAndRemove(cond, function(err, rmDoc) {
         if (err) return evtCallback(dbErrors(err), null);
-      console.log('upGroup:\n', group.name);
+      console.log('rmMCat:\n', rmDoc.name);
 
-      upGroup.doc = group;
-      propagateGroupUpdate(upGroup, evtCallback);
+      info.mcat = rmDoc;
+      propagateMCatDelete(info, evtCallback);
       });
     }
   },
@@ -500,117 +494,24 @@ var trainingAdminOps = {
 
 // ---- ATHLETE ---- //
 
-function propagateAthleteDelete(delAthlete, evtCallback) {
-  console.info('propagating delAthlete');
-  return removeSchoolAthlete();
+function propagateMCatDelete(delMcat, evtCallback) {
+  console.info('propagating delete metric category');
+  return removeTeamMCat();
 
-  function removeSchoolAthlete() {
-    console.log('deleting from school');
-    var cond = {name: delAthlete.sess.school, "athletes._id": delAthlete.athlete._id};
-    var update = {$pull: {athletes: {_id: delAthlete.athlete._id}}};
-
-    // APE.Schools.findOne(cond, function(err, numUp) {
-    APE.Schools.update(cond, update, function(err, numUp) {
-      if (err) return evtCallback(dbErrors(err));
-      console.log('school:\n', numUp);
-
-      // return evtCallback(null);
-      return removeCoachAthlete(delAthlete);
-    });
-  }
-
-  function removeCoachAthlete(delAthlete) {
-    console.log('deleting from coach');
-    var cond = {school: delAthlete.sess.school, "athletes._id": delAthlete.athlete._id};
-    var update = {$pull: {athletes: {_id: delAthlete.athlete._id}}};
-
-    // delAthlete.Mods.Coaches.findOne(cond, function(err, numUp) {
-    delAthlete.Mods.Coaches.update(cond, update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(dbErrors(err));
-      console.log('coach:\n', numUp);
-
-      // return evtCallback(null);
-      return removeTeamAthlete(delAthlete);
-    });
-  }
-
-  function removeTeamAthlete(delAthlete) {
+  function removeTeamMCat() {
     console.log('deleting from team');
-    var cond = {school: delAthlete.sess.school, name: delAthlete.team.name, gender: delAthlete.team.gender, "athletes._id": delAthlete.athlete._id};
-    var update = {$pull: {athletes: {_id: delAthlete.athlete._id}}};
+    var cond = {name: delMcat.team.name, gender: delMcat.team.gender, 'mtrcats._id': delMcat.mcat._id};
+    var update = {$pull: {mtrcats: {_id: delMcat.mcat._id}}};
 
-    // delAthlete.Mods.Teams.findOne(cond, function(err, numUp) {
-    delAthlete.Mods.Teams.findOneAndUpdate(cond, update, function(err, numUp) {
+    // delMcat.Mods.Teams.findOne(cond, function(err, numUp) {
+    delMcat.Mods.Teams.update(cond, update, function(err, numUp) {
       if (err) return evtCallback(dbErrors(err));
-      console.log('team:\n', numUp);
-
-      // return evtCallback(null);
-      return removeGroupAthlete(delAthlete);
-    });
-  }
-
-  function removeGroupAthlete(delAthlete) {
-    console.log('deleting from group');
-    var cond = {school: delAthlete.sess.school, team: delAthlete.team, "athletes._id": delAthlete.athlete._id};
-    var update = {$pull: {athltes: {_id: delAthlete.athlete._id}}};
-
-    // delAthlete.Mods.Groups.find(cond, function(err, numUp) {
-    delAthlete.Mods.Groups.update(cond, update, {multi: true}, function(err, numUp) {
-      if (err) return evtCallback(dbErrors(err));
-      console.log('group:\n', numUp);
-
-      // return evtCallback(null);
-      return removeMetricCatAthlete(delAthlete);
-    });
-
-  }
-
-  function removeMetricCatAthlete(delAthlete) {
-    //NOTE:
-    //  index the conditional search
-    console.log('deleting from metric category');
-    var cond = {school: delAthlete.sess.school, team: delAthlete.team, "athletes._id": delAthlete.athlete._id};
-    var update = {$pull: {athltes: {_id: delAthlete.athlete._id}}};
-
-    // delAthlete.Mods.MetricCats.find(cond, function(err, numUp) {
-    delAthlete.Mods.MetricCats.update(cond, update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(dbErrors(err));
-      console.log('MetricCats:\n', numUp);
-
-      // return evtCallback(null);
-      return removeMetricAthlete(delAthlete);
-    });
-  }
-
-  function removeMetricAthlete(delAthlete) {
-    console.log('deleting from metrics');
-    var cond = {school: delAthlete.sess.school, "athletes._id": delAthlete.athlete._id};
-    var update = {$pull: {athltes: {_id: delAthlete.athlete._id}}};
-
-    // delAthlete.Mods.Metrics.find(cond, function(err, numUp) {
-    delAthlete.Mods.Metrics.update(cond, update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(dbErrors(err));
-      console.log('Metrics:\n', numUp);
-
-      // return evtCallback(null);
-      return removeAthmetricAthlete(delAthlete);
-    });
-  }
-
-  function removeAthmetricAthlete(delAthlete) {
-    console.log('deleting from athmetrics');
-    var cond = {school: delAthlete.sess.school, team: delAthlete.team, "athlete._id": delAthlete.athlete._id};
-    var update = {$pull: {athltes: {_id: delAthlete.athlete._id}}};
-
-    // delAthlete.Mods.Athmetrics.find(cond, function(err, numUp) {
-    delAthlete.Mods.Athmetrics.update(cond, update, {multi:true}, function(err, numUp) {
-      if (err) return evtCallback(dbErrors(err));
-      console.log('Athmetrics:\n', numUp);
+      console.log('Team:\n', numUp);
 
       return evtCallback(null);
     });
   }
-}
+}//END
 
 function propagateAthleteUpdate(upAthlete, evtCallback) {
   console.info('propagating upAthlete');
@@ -725,52 +626,24 @@ function propagateAthleteUpdate(upAthlete, evtCallback) {
   }
 }
 
-function propagateAthleteCreate(crAthlete, evtCallback) {
-  console.info('propagating crAthlete');
-  return insertSchoolAthlete(crAthlete);
+function propageMCatCreate(info, evtCallback) {
+  console.info('propagating MCAT info');
+  return insertTeamMCat(info);
 
-  function insertSchoolAthlete(crAthlete) {
-    console.log('insertSchoolAthlete');
+  function insertTeamMCat(info) {
+    console.log('insertTeamMCat');
 
-    var cond = {name: crAthlete.sess.school, "coaches.username": crAthlete.sess.username, "teams.name": crAthlete.team.name, "teams.gender": crAthlete.team.gender};
-    var update = {$push: {athletes: {_id: crAthlete.athlete._id, name: crAthlete.athlete.name}}};
-    // APE.Schools.findOne(cond, function(err, numUp) {
-    APE.Schools.update(cond, update, function(err, numUp) {
+    var cond = {name: info.sess.school, name: info.team.name, gender: info.team.gender};
+    var update = {$push: {mtrcats: {_id: info.mCat._id, name: info.mCat.name}}};
+    // info.Mods.Teams.findOne(cond, function(err, numUp) {
+    info.Mods.Teams.update(cond, update, function(err, numUp) {
       if (err) return evtCallback(dbErrors(err), null);
-      console.log('school:\n', numUp);
+      console.log('Team:\n', numUp);
 
-      // return evtCallback(null, crAthlete.athlete);
-      return insertCoachAthlete(crAthlete);
-    });
-  }
+      if (numUp === 0)
+        return evtCallback(cliErrors("notFound"), null);
 
-  function insertCoachAthlete(crAthlete) {
-    console.log('insertCoachAthlete');
-    //TODO:
-    //  a single coach or all coaches?
-    var cond = {school: crAthlete.sess.school, 'teams.name': crAthlete.team.name, 'teams.gender': crAthlete.team.gender};
-    var update = {$push: {athletes: {_id: crAthlete.athlete._id, name: crAthlete.athlete.name}}};
-    // crAthlete.Mods.Coaches.findOne(cond, function(err, numUp) {
-    crAthlete.Mods.Coaches.update(cond, update, function(err, numUp) {
-      if (err) evtCallback(dbErrors(err), null);
-      console.log('coach:\n', numUp);
-
-      // return evtCallback(null, crAthlete.athlete);
-      return insertTeamAthlete(crAthlete);
-    });
-  }
-
-  function insertTeamAthlete(crAthlete) {
-    console.log('insertTeamAthlete');
-
-    var cond = {school: crAthlete.sess.school, name: crAthlete.team.name, gender: crAthlete.team.gender};
-    var update = {$push: {athletes: {_id: crAthlete.athlete._id, name: crAthlete.athlete.name}}};
-    // crAthlete.Mods.Teams.findOne(cond, function(err, numUp) {
-    crAthlete.Mods.Teams.update(cond, update, function(err, numUp) {
-      if (err) evtCallback(dbErrors(err), null);
-      console.log('team:\n', numUp);
-
-      return evtCallback(null, crAthlete.athlete);
+      return evtCallback(null, info.mCat);
     });
   }
 }

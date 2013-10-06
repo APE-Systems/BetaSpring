@@ -34,12 +34,12 @@ var trainingAdminEvts = {
     });
   },
 
-  onSelection: function(req, res, next) {
-    console.log('Event: onSelection');
+  createMetricCat: function(req, res, next) {
+    console.log('Event: createMetricCat');
 
-    trnadmOps.createAthlete(req, function(err, athlete) {
+    trnadmOps.createMetricCat(req, function(err, mcat) {
       if (err) {
-        console.log("onSelection: Error\n", err.name);
+        console.log("createMetricCat: Error\n", err.name);
         res.json(err.rescode, {
           error: {
             id: err.id,
@@ -48,21 +48,19 @@ var trainingAdminEvts = {
           }
         });
       } else {
-        console.log('onSelection: Success\n');
-        // res.json(200, {
-        //   group: ,
-        //   mtrcats: ,
-        //   athletes: ,
-        //   athmetrics: 
-        // });
+        console.log('createMetricCat: Success\n');
+        res.json(201, {
+          id: mcat._id,
+          name: mcat.name
+        });
       }
     });
   },
 
-  onCatSelection: function(req, res, next) {
+  createMetric: function(req, res, next) {
     console.log('Event: updateAthlete');
 
-    rospgOps.updateAthlete(req, function(err, athlete) {
+    trnadmOps.updateAthlete(req, function(err, athlete) {
       if (err) {
         console.log("updateAthlete: Error\n", err.name);
         res.json(err.rescode, {
@@ -79,10 +77,10 @@ var trainingAdminEvts = {
     });
   },
 
-  onMetricSelection: function(req, res, next) {
+  updateMetricCat: function(req, res, next) {
     console.log('Event: deleteAthlete');
 
-    rospgOps.deleteAthlete(req, function(err) {
+    trnadmOps.deleteAthlete(req, function(err) {
       if (err) {
         console.log("deleteAthlete: Error\n", err.name);
         res.json(err.rescode, {
@@ -99,10 +97,10 @@ var trainingAdminEvts = {
     });
   },
 
-  createGroup: function(req, res, next) {
+  updateMetric: function(req, res, next) {
     console.log('Event: createGroup');
 
-    rospgOps.createGroup(req, function(err, group) {
+    trnadmOps.createGroup(req, function(err, group) {
       if (err) {
         console.log("createGroup: Error\n", err.name);
         res.json(err.rescode, {
@@ -119,12 +117,12 @@ var trainingAdminEvts = {
     });
   },
 
-  updateGroup: function(req, res, next) {
-    console.log('Event: updateGroup');
+  deleteMetricCat: function(req, res, next) {
+    console.log('Event: deleteMetricCat');
 
-    rospgOps.updateGroup(req, function(err, group) {
+    trnadmOps.deleteMetricCat(req, function(err) {
       if (err) {
-        console.log("updateGroup: Error\n", err.name);
+        console.log("deleteMetricCat: Error\n", err.name);
         res.json(err.rescode, {
           error: {
             id: err.id,
@@ -133,16 +131,16 @@ var trainingAdminEvts = {
           }
         });
       } else {
-        console.log('updateGroup: Success\n');
-        res.json(200, {id: group._id, name: group.name});
+        console.log('deleteMetricCat: Success\n');
+        res.send(204);
       }
     });
   },
 
-  deleteGroup: function(req, res, next) {
+  deleteMetric: function(req, res, next) {
     console.log('Event: deleteGroup');
 
-    rospgOps.deleteGroup(req, function(err, group) {
+    trnadmOps.deleteGroup(req, function(err, group) {
       if (err) {
         console.log("deleteGroup: Error\n", err.name);
         res.json(err.rescode, {
@@ -159,10 +157,10 @@ var trainingAdminEvts = {
     });
   },
 
-  pushAthletesToGroups: function(req, res, next) {
+  pushMetricToMCat: function(req, res, next) {
     console.log('EVENT: pushAthletesToGroups');
 
-    rospgOps.pushAthletesToGroups(req, function(err) {
+    trnadmOps.pushAthletesToGroups(req, function(err) {
       if (err) {
         console.log("pushAthletesToGroups: Error\n", err.name);
         res.json(err.rescode, {
@@ -179,10 +177,10 @@ var trainingAdminEvts = {
     });
   },
 
-  pullAthletesFromGroups: function(req, res, next) {
+  pullMetricFromMCat: function(req, res, next) {
     console.log('EVENT: pullAthletesFromGroups');
 
-    rospgOps.pullAthletesFromGroups(req, function(err) {
+    trnadmOps.pullAthletesFromGroups(req, function(err) {
       if (err) {
         console.log("pullAthletesFromGroups: Error\n", err.name);
         res.json(err.rescode, {
@@ -199,7 +197,6 @@ var trainingAdminEvts = {
     });
   }
 
-
-}
+};//END
 
 module.exports = exports = trainingAdminEvts;
