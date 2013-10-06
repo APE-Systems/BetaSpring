@@ -3,6 +3,8 @@
 module.exports.Login = require('./login');
 module.exports.TeamsPageEvts = require('./teamsPage');
 module.exports.RostersPageEvts = require('./rostersPage');
+module.exports.TrainingPageEvts = require('./training/trainingPage');
+module.exports.TrainingAdminEvts = require('./training/trainingAdmin');
 module.exports.ApeLibEvts = require('./apeLibrary');
 
 

@@ -3,6 +3,8 @@
 module.exports.Sessions = require('./sessions');
 module.exports.TeamsPageOps = require('./teamsPage');
 module.exports.RostersPageOps = require('./rostersPage');
+module.exports.TrainingPageOps = require('./training/trainingPage');
+module.exports.TrainingAdminOps = require('./training/trainingAdmin');
 module.exports.ApeLibOps = require('./apeLibrary');
 module.exports.Errors = require('./errors');
 

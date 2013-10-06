@@ -10,6 +10,8 @@ var mid = require('../middleware').middle
   , fs = require('fs')
   , tmEvts = require('../events').TeamsPageEvts
   , rosEvts = require('../events').RostersPageEvts
+  , trnEvts = require('../events').TrainingPageEvts
+  , trnAdmEvts = require('../events').TrainingAdminEvts
   , apeLibEvts = require('../events').ApeLibEvts;
 
 
@@ -35,7 +37,7 @@ module.exports = function(app) {
   app.put('/:school/:team-:gender', tmEvts.updateTeam);
   app.delete('/:school/:team-:gender', tmEvts.deleteTeam);
 
-// Rosters Page
+//Rosters Page
   app.get('/:school/:team-:gender/roster', rosEvts.getRostersPage);
 
     //ATHLETES
@@ -52,6 +54,25 @@ module.exports = function(app) {
   app.post('/:school/:team-:gender/roster/group/:id/pushathletes', rosEvts.pushAthletesToGroups);
   app.post('/:school/:team-:gender/roster/group/:id/pullathletes', rosEvts.pullAthletesFromGroups);
 
+//Training Page
+  app.get('/:school/:team-:gender/training', trnEvts.getTrainingPage);
+    //SELECTIONS
+  app.get('/:school/:team-:gender/training/group/:grp/metriccat/:mcat', trnEvts.onSelection);
+
+//Training Admin
+  app.get('/:school/:team-:gender/training/admin', trnAdmEvts.getTrainingAdmin);
+    //METRICCATS
+  // app.post();
+  // app.put();
+  // app.delete();
+
+  //   //METRICS
+  // app.post();
+  // app.put();
+  // app.delete();
+
+  //   //METRICCATS + METRICS
+  // app.post();
 
 //APE Library
     //Drag'N Drop
