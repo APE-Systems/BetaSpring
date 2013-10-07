@@ -427,6 +427,7 @@ function propagateGroupDelete(delGroup, evtCallback) {
       deleteTeamGroup(delGroup);
       return;
     });
+  });
   }
 
   function deleteTeamGroup(delGroup) {
@@ -438,13 +439,14 @@ function propagateGroupDelete(delGroup, evtCallback) {
     delGroup.Mods.Teams.update(cond, update, function(err, numUp) {
       if (err) return callback(err, null);
 
-    delGroup.Mods.Teams.update(cond, delGroup.update, function(err, numUp) {
-      if (err) return evtCallback(err, null);
+      delGroup.Mods.Teams.update(cond, delGroup.update, function(err, numUp) {
+        if (err) return evtCallback(err, null);
 
-      console.log('team:\n', numUp);
+        console.log('team:\n', numUp);
 
-      deleteAthleteGroup(delGroup);
-      return;
+        deleteAthleteGroup(delGroup);
+        return;
+      });
     });
   }
 
@@ -464,6 +466,7 @@ function propagateGroupDelete(delGroup, evtCallback) {
 
       return evtCallback(null, delGroup.doc);
     });
+  });
   }
 }
 
