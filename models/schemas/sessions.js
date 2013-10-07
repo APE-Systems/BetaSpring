@@ -29,6 +29,12 @@ var SessionSchema = module.exports = new mongoose.Schema({
   , require: true
   , index: true
   },
+  webdom: {
+    type: String
+  , require: true
+  , index: true
+
+  },
   date: {
     type: Date,
     default: Date.now

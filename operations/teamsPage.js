@@ -120,7 +120,7 @@ function validateInput(input, callback) {
   console.log('Operations: validateInput\n');
   var maxCharLen = 45;
   var rego = /^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$/;
-  if (maxCharLen === input.length) {
+  if (maxCharLen < input.length) {
     var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422};
     return callback(err, null);
   }
