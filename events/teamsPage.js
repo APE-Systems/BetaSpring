@@ -22,7 +22,7 @@ var teamsPageEvts = {
         });
       } else {
         // console.log('payLoad:', payLoad);
-        res.json(200, {
+        res.render('teamsPage', {
           nav: req.sess.school,
           teams: payLoad.teams,
           apeLib: payLoad.apeLibPackage
@@ -79,6 +79,8 @@ var teamsPageEvts = {
   deleteTeam: function(req, res, next) {
     console.log('Event: deleteTeam');
 
+    // res.json(200, {});
+    // res.json(422, {"err": "this is an error"});
     tmspgOps.deleteTeam(req, function(err) {
       if (err) {
         console.log("deleteTeam: Error\n", err.name);
@@ -92,7 +94,7 @@ var teamsPageEvts = {
         });
       } else {
         console.log('deleteTeam: Success');
-        res.send(204);
+        res.json(200, {});
       }
     });
   }

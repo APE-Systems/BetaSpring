@@ -33,7 +33,7 @@ module.exports = function(app) {
   app.get('/:school/teams', tmEvts.getTeamsPage);
   
     //TEAMS
-  app.post('/:school/:team-:gender', tmEvts.createTeam);
+  app.post('/:school/teams/:team-:gender', tmEvts.createTeam);
   app.put('/:school/:team-:gender', tmEvts.updateTeam);
   app.delete('/:school/:team-:gender', tmEvts.deleteTeam);
 

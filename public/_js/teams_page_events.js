@@ -4,7 +4,7 @@ $(function() {
   //  Edit Team Mode
   $('.foundicon-edit').on("click", function(event) {
     var teamName = $(this).closest('li').find('h3');
-    if (teamName.attr("contenteditable") == 'true') {
+    if (teamName.attr("contenteditable")) {
       teamName.attr("contenteditable", "false");
       console.log("was true, now it's false");
       $(this).removeClass('white');
@@ -17,6 +17,8 @@ $(function() {
       editMode = true;
       console.log(editMode);
     }
+
+    // display_OK_Cancel_Buttons($(this));
 
   });
 
@@ -57,21 +59,49 @@ $(function() {
   //  console.log(editMode);
   //});  
 
-  
-
-
-
 
   // DeleteTeam
-  $('.foundicon-trash').on("click", function(event) {
-      console.log('clicked the trash can, invoked delete method');
-      if (window.confirm("Are you sure you want to delete this team?")) {
-        console.log("user selected yes!");
-        //- ajax call to delete ROUTE
-      } else {
-        console.log("user cancelled delete team action");
-      }
+  $('a#delete-team').off('click').on('click', function(event) {
+    console.log('clicked delete');
+    event.preventDefault();
 
-  });
+    var school, team, gender, url;
 
+    var self = $(this);
+    school = $("#school-name").text();
+    team = self.parent().children('h3').text();
+    gender = self.parent().children('span').text();
+    url = '/' + school + '/' + team + '-' + gender;
+    console.log('url:\n', url);
+
+    //REVEAL MODAL
+    $('#deleteModal.reveal-link').trigger('click');
+
+    doesThisWork(self, url);
+  });//DELETE TEAM END
+
+  function doesThisWork(self, url) {
+    // console.log(self, url);
+
+    //EVENT LISTENER ON YES
+    $('form#delete-team-form').on('click', function(event) {
+      // event.preventDefault();
+      console.log('delete-team confirmed');
+      $.ajax({
+        url: url,
+        type: "DELETE",
+        dataType: "json"
+      })
+      .done(function() {
+          console.log('delete successful');
+          self.parent().remove();
+      })
+      .fail(function(err) {
+        console.log('error:\n', err);
+        alert('error:\n', err);
+      })
+
+    $('form#delete-team-form').off('click')
+    });//DELETE CONFIRM END
+  }
 });
