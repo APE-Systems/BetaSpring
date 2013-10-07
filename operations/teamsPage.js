@@ -4,98 +4,185 @@
  */
 
 var APE = require('../models/db/config').apeMods;
+var dbErrors = require('../operations/errors.js').dbErrors;
+var cliErrors = require('../operations/errors.js').cliErrors;
 
 var teamsPageOps = {
 
   getTeamsPage: function(req, evtCallback) {
     console.log('Operation: getTeamsPage');
-    getTeams(req, getAPElib(evtCallback));
-  },
 
-  createTeam: function(req, callback) {
-    console.log('Operation: createTeam');
-    validateInput(req.params.team, insertTeam);
+    var pgload = {
+      sess: req.sess,
+      Mods: req.models
+    }
+    var dataLoad = {};
 
-    //NOTE:
-    //  new team propagates to all coaches in same school
-    //  need to figure out which coaches get updated
-    function insertTeam(err, team) {
-      if (err) return callback(err, null);
+    return getTeams(pgload);
 
-      var Mods = req.models;
-      var school = req.sess.school;
-      var newTeam = new Mods.Teams();
+    function getTeams(pgload) {
+      var query = {school: pgload.sess.school, 'coaches.username': pgload.sess.username};
+      var proj = {name:1, gender:1, mtrcats:1, metrics:1};
 
-      newTeam.createdBy = req.sess.COID;
-      newTeam.coaches.push({_id: req.sess.COID, username: req.sess.username, name: req.sess.name});
-      newTeam.school = school;
-      newTeam.name = team;
-      newTeam.gender = req.params.gender;
+      pgload.Mods.Teams.find(query, proj, function(err, teams) {
+        if (err) evtCallback(dbErrors(err), null);
 
-      // console.log(newTeam);
-      newTeam.save(function(err) {
-        if (err) return callback(err, null);
+        dataLoad.teams = teams;
+        return getAPElib(pgload);
+      });
+    }
 
-        insertSchoolTeam(newTeam, function(err, doc) {
-          if (err) return callback(err, null);
+    function getAPElib(pgload) {
+      var apeLibPackage = {};
+      var query = {};
+      var proj = {name:1, metrics:1};
 
-          console.info("Team saved in School\n", doc);
-          insertCoachesTeam(req, newTeam, function(err, doc) {
-            if (err) return callback(err, null);
+      APE.MetricCats.find(query, proj, function(err, mcs) {
+        if (err) evtCallback(dbErrors(err), null);
 
-            console.info("Team saved in coaches\n", doc);
-            callback(null, newTeam);
-          });
+        apeLibPackage.mtrcats = mcs;
+        APE.Metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
+          if (err) evtCallback(dbErrors(err), null);
+
+          apeLibPackage.metrics = mtrs;
+          // console.log('apeLibPackage:\n', apeLibPackage);
+          dataLoad.apeLibPackage = apeLibPackage;
+          // console.log('dataLoad\n', dataLoad);
+          
+          evtCallback(null, dataLoad);
+          return;
         });
       });
     }
+  },
+
+  createTeam: function(req, evtCallback) {
+    console.log('Operation: createTeam');
+    var val = {
+      name: req.params.team,
+      gender: req.params.gender
+    };
+    validateInput(val, insertTeam);
+
+    function insertTeam(err, team) {
+      if (err) return evtCallback(err, null);
+
+      var info = {
+        team: val,
+        sess: req.sess,
+        Mods: req.models
+      };
+      var newTeam = new info.Mods.Teams();
+
+      newTeam.createdBy = info.sess.COID;
+      newTeam.coaches.push({_id: info.sess.COID, username: info.sess.username, name: info.sess.name});
+      newTeam.school = info.sess.school;
+      newTeam.name = info.team.name;
+      newTeam.gender = info.team.gender;
+
+      // console.log(newTeam);
+      saveTeam(newTeam, insertSchoolTeam);
+
+      function saveTeam(newTeam, callback) {
+        console.log('saving team');
+        newTeam.save(function(err) {
+          if (err) return evtCallback(dbErrors(err), null);
+          return callback(newTeam, insertCoachesTeam);
+        });
+      }
+
+      function insertSchoolTeam(team, callback) {
+        var query = {name: team.school};
+        var update = {$push: {teams: {_id: team._id, name: team.name, gender: team.gender}}}
+        APE.Schools.update(query, update, function(err, numUp) {
+          if (err) return evtCallback(dbErrors(err), null);
+          console.log("team saved in school:", numUp);
+          return callback(team);
+        });
+      }
+
+      //NOTE:
+      //  new team propagates to all coaches in same school
+      function insertCoachesTeam(team) {
+        var query = {school: team.school};
+        var update = {$push: {teams: {_id: team._id, name: team.name, gender: team.gender}}}
+        info.Mods.Coaches.update(query, update, {multi:true}, function(err, numUp) {
+          if (err) return evtCallback(dbErrors(err), null);
+          console.info("team saved in coaches:", numUp);
+          return evtCallback(null, team);
+        });
+      }
+    }
   },//END createTeam
 
-  updateTeam: function(req, callback) {
+  updateTeam: function(req, evtCallback) {
     console.log('Operation: updateTeam');
-    var team = req.body["team-name"];
-    var gender = req.body["team-gender"];
-    
-    validateInput(team, editTeam);
+    var val = {
+      oldName: req.params.team,
+      oldGen: req.params.gender,
+      newName: req.body["team-name"],
+      newGen: req.body["team-gender"]
+    };
+
+    validateInput(val, editTeam);
 
     function editTeam(err, team) {
-      if (err) return callback(err, null);
+      if (err) return evtCallback(err, null);
 
-      var Mods = req.models;
-      var school = req.sess.school;
+      var info = {
+        sess: req.sess,
+        Mods: req.models,
+        oldTeam: {
+          name: val.oldName,
+          gender: val.oldGen
+        }
+      };
 
-      var cond = {name: req.params.team, gender: req.params.gender};
-      var update = {$set: {name: team, gender: gender}};
-      Mods.Teams.findOneAndUpdate(cond, update, {new: true}, function(err, upDoc) {
-        if (err) callback(err);
+      var cond = {name: team.oldName, gender: team.oldGen};
+      var update = {$set: {name: team.newName, gender: team.newGen}};
+      info.Mods.Teams.findOneAndUpdate(cond, update, {new: true}, function(err, upDoc) {
+        if (err) return evtCallback(dbErrors(err), null);
+
+        if (!upDoc)
+          return evtCallback(cliErrors("notFound", null));
 
         console.log('teamUpdated:\n', upDoc.name, upDoc.gender);
-        propagateUpdate(req, upDoc, callback);
+        info.newTeam = upDoc;
+        propagateUpdate(info, evtCallback);
         return;
       });
     }
   },//END updateTeam
 
-  deleteTeam: function(req, callback) {
+  deleteTeam: function(req, evtCallback) {
     console.log('Operation: deleteTeam');
-
-    var Mods, school, cond, username;
-    Mods = req.models;
-    school = req.sess.school;
-    username: req.sess.username;
-    cond = {
+    var val = {
       name: req.params.team,
-      gender:req.params.gender,
-      "coaches.username": username
+      gender: req.params.gender
     };
 
-    Mods.Teams.findOneAndRemove(cond, function(err, deldoc) {
-      if (err) callback(err);
+    validateInput(val, removeTeam);
 
-      console.log('teamDelete:', deldoc);
-      propagateDelete(req, delDoc, callback);
-      callback(null);
-    });
+    function removeTeam(err, team) {
+      if (err) return evtCallback(err, null);
+
+      var info = {
+        sess: req.sess,
+        Mods: req.models,
+      };
+      var cond = {name: team.name, gender: team.gender, "coaches.username": info.sess.username};
+      info.Mods.Teams.findOneAndRemove(cond, function(err, delDoc) {
+        if (err) return evtCallback(dbError(err), null);
+
+        if (!delDoc)
+          return evtCallback(cliErrors("notFound"));
+
+        console.log('teamDelete:\n', delDoc.name, delDoc.gender);
+        info.team = delDoc;
+        propagateDelete(info, evtCallback);
+        return;
+      });
+    }
   }//END deleteTeam
 }
 
@@ -103,220 +190,230 @@ var teamsPageOps = {
   ------ HELPER FUNCTIONS ------
  */
 
-function insertCoachesTeam(req, team, callback) {
-  var Mods = req.models;
-  var query = {school: team.school};
-  var update = {$push: {teams: {_id: team._id, name: team.name, gender: team.gender}}}
-  Mods.Coaches.update(query, update, {multi:true}, callback);
-}
 
-function insertSchoolTeam(team, callback) {
-  var query = {name: team.school};
-  var update = {$push: {teams: {_id: team._id, name: team.name, gender: team.gender}}}
-  APE.Schools.update(query, update, callback);
-}
-
-function validateInput(input, callback) {
+function validateInput(val, callback) {
   console.log('Operations: validateInput\n');
   var maxCharLen = 45;
-  var rego = /^[_]*[a-zA-Z0-9][a-zA-Z0-9 _.-]*$/;
-  if (maxCharLen < input.length) {
-    var err = {name: "ValidationError", msg: 'Input exceeds number of characaters allowed', code: 422};
-    return callback(err, null);
+  var rego = /^[_]*[A-Z0-9][A-Z0-9 _.-]*$/i;
+  var objs = Object.keys(val);
+
+  if (!objs.some(checkVal)) {
+    console.info("Validation: Success");
+    return callback(null, val);
   }
-  if (!rego.test(input)) {
-    var err = {name: "ValidationError", msg: 'Not valid input', code: 422};
-    return callback(err, null);
+
+  function checkVal(el, ind, arr) {
+    if (maxCharLen < val[el].length) {
+      console.info("Validation: Error\n");
+      callback(cliErrors("maxCharacters"), null);
+      return true;
+    }
+    if (!rego.test(val[el])) {
+      console.info("Validation: Error\n");
+      callback(cliErrors("invalidInput"), null);
+      return true;
+    }
   }
-  console.info("Validation: Success");
-  return callback(null, input);
-}
+}//END
 
-function getTeams(req, callback) {
-  var dataLoad = {};
-  var Mods = req.models;
-  var school = req.sess.school;
-  var username = req.sess.username;
-  var query = {school: school, 'coaches.username': username};
-  var proj = {name:1, gender:1, mtrcats:1, metrics:1};
-
-  Mods.Teams.find(query, proj, function(err, teams) {
-    if (err) callback(err, null);
-    dataLoad.teams = teams;
-    callback(dataLoad);
-  });
-}
-
-function getAPElib(evtCallback) {
-  return function(dataLoad) {
-    var apeLibPackage = {};
-    var query = {};
-    var proj = {name:1, metrics:1};
-    APE.MetricCats.find(query, proj, function(err, mcs) {
-      if (err) evtCallback(err, null);
-
-      apeLibPackage.mtrcats = mcs;
-      APE.Metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
-        if (err) evtCallback(err, null);
-
-        apeLibPackage.metrics = mtrs;
-        // console.log('apeLibPackage:\n', apeLibPackage);
-        dataLoad.apeLibPackage = apeLibPackage;
-        // console.log('dataLoad\n', dataLoad);
-        return evtCallback(null, dataLoad);
-      });
-    });
-  };
-}
 
 //NOTE:
 //  Test with multiple coaches, metrics, metriccats, athletes and groups
-function propagateUpdate(req, upTeam, callback) {
-  var Mods = req.models;
+function propagateUpdate(info, evtCallback) {
+  console.log('propagating update');
   var conds = {
-    school: req.sess.school,
-    'teams.name': req.params.team,
-    'teams.gender': req.params.gender
+    school: info.sess.school,
+    'teams.name': info.oldTeam.name,
+    'teams.gender': info.oldTeam.gender
   };
   var cond = {
-    school: req.sess.school,
-    'team.name': req.params.team,
-    'team.gender': req.params.gender
+    school: info.sess.school,
+    'team.name': info.oldTeam.name,
+    'team.gender': info.oldTeam.gender
   };
-  updateSchoolTeam(upTeam);
+  updateSchoolTeam();
 
-  function updateSchoolTeam(upTeam) {
+  function updateSchoolTeam() {
     var schCond = {
-      name: req.sess.school,
-      'teams.name': req.params.team,
-      'teams.gender': req.params.gender
+      name: info.sess.school,
+      'teams.name': info.oldTeam.name,
+      'teams.gender': info.oldTeam.gender
     };
     var update = {
-      $set: {"teams.$.name": upTeam.name, "teams.$.gender": upTeam.gender}
+      $set: {"teams.$.name": info.newTeam.name, "teams.$.gender": info.newTeam.gender}
     };
-
     APE.Schools.update(schCond, update, function(err, numUp, raw) {
     // APE.Schools.findOne(schCond, function(err, schDoc) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
       console.info('Updated: School', numUp, raw);
-      updateCoachesTeam(upTeam);
+      updateCoachesTeam();
       return;
     });
   }//END
 
-  function updateCoachesTeam(upTeam) {
+  function updateCoachesTeam() {
     //NOTE:
     //  All coaches that belong to the team are updated
     var update = {
-      $set: {"teams.$.name": upTeam.name, "teams.$.gender": upTeam.gender}
+      $set: {"teams.$.name": info.newTeam.name, "teams.$.gender": info.newTeam.gender}
     };
-    Mods.Coaches.update(conds, update, {multi:true}, function(err, numUp, raw) {
+    info.Mods.Coaches.update(conds, update, {multi:true}, function(err, numUp, raw) {
     // Mods.Coaches.find(conds, function(err, numUp) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
       console.info("Updated: Coaches", numUp, raw);
-      updateMetricsTeam(upTeam);
+      updateMetricsTeam();
       return;
     });
   }//END
 
-  function updateMetricsTeam(upTeam) {
+  function updateMetricsTeam() {
     var update = {
-      $set: {"teams.$.name": upTeam.name, "teams.$.gender": upTeam.gender}
+      $set: {"teams.$.name": info.newTeam.name, "teams.$.gender": info.newTeam.gender}
     };
-    Mods.Metrics.update(conds, update, {multi:true}, function(err, numUp, raw) {
+    info.Mods.Metrics.update(conds, update, {multi:true}, function(err, numUp, raw) {
     // Mods.Metrics.find(conds, function(err, numUp, raw) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
       console.info("Updated: Metrics", numUp, raw);
-      updateMetricCatsTeam(upTeam);
+      updateMetricCatsTeam();
       return;
     });
   }//END
 
-  function updateMetricCatsTeam(upTeam) {
+  function updateMetricCatsTeam() {
     var update = {
-      $set: {team: {name: upTeam.name, gender: upTeam.gender}}
+      $set: {team: {name: info.newTeam.name, gender: info.newTeam.gender}}
     };
-    Mods.MetricCats.update(cond, update, {multi:true}, function(err, numUp, raw) {
+    info.Mods.MetricCats.update(cond, update, {multi:true}, function(err, numUp, raw) {
     // Mods.MetricCats.find(cond, function(err, numUp) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
       console.info("Updated: Metric Categories", numUp, raw);
-      updateAthletesTeam(upTeam);
+      updateAthletesTeam();
       return;
     });
   }//END
 
-  function updateAthletesTeam(upTeam) {
+  function updateAthletesTeam() {
     var update = {
-      $set: {team: {name: upTeam.name, gender: upTeam.gender}}
+      $set: {team: {name: info.newTeam.name, gender: info.newTeam.gender}}
     };
-    Mods.Athletes.update(cond, update, {multi:true}, function(err, numUp, raw) {
+    info.Mods.Athletes.update(cond, update, {multi:true}, function(err, numUp, raw) {
     // Mods.Athletes.find(cond, function(err, numUp) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
       console.info("Updated: Athletes", numUp, raw);
-      updateGroupsTeam(upTeam);
+      updateGroupsTeam();
       return;
     });
   }//END
 
-  function updateGroupsTeam(upTeam) {
+  function updateGroupsTeam() {
     var update = {
-      $set: {team: {name: upTeam.name, gender: upTeam.gender}}
+      $set: {team: {name: info.newTeam.name, gender: info.newTeam.gender}}
     };
-    Mods.Groups.update(cond, update, {multi:true}, function(err, numUp, raw) {
+    info.Mods.Groups.update(cond, update, {multi:true}, function(err, numUp, raw) {
     // Mods.Groups.find(cond, function(err, numUp) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
       console.info("Updated: Groups", numUp, raw);
-      callback(null);
+      evtCallback(null, info.newTeam);
       return;
     });
   }//END
 }
 
-function propagateDelete(req, delTeam, callback) {
-  var Mods = req.models;
-  deleteSchoolTeam(delTeam);
+function propagateDelete(info, evtCallback) {
+  console.log('propagating delete');
 
-  function deleteSchoolTeam(delTeam) {
+  var conds = {
+    school: info.sess.school,
+    'teams.name': info.team.name,
+    'teams.gender': info.team.gender
+  };
+  var cond = {
+    school: info.sess.school,
+    'team.name': info.team.name,
+    'team.gender': info.team.gender
+  };
+  var updates = {$pull: {teams: {name: info.team.name, gender: info.team.gender}}};
+  var update = {$set: {"team.name":'', "team.gender": ''}};
+  deleteSchoolTeam();
+
+  function deleteSchoolTeam() {
     var schCond = {
-      name: req.sess.school,
-      'teams.name': req.params.team,
-      'teams.gender': req.params.gender
+      name: info.sess.school,
+      'teams.name': info.team.name,
+      'teams.gender': info.team.gender
     };
 
-    APE.Schools.update(schCond, function(err, delDoc) {
+    APE.Schools.update(schCond, updates, function(err, numUp, raw) {
     // APE.Schools.findOne(schCond, function(err, schDoc) {
-      if (err) throw new Error(err);
+      if (err) return evtCallback(dbErrors(err));
 
-      console.info('Deleted: School\n', delDoc);
-      deleteCoachesTeam(delTeam);
+      console.info('Deleted: School\n', numUp, raw);
+      deleteCoachesTeam();
       return;
     });
   }//END
 
   function deleteCoachesTeam(delTeam) {
-    Mods.Coaches.update();
+    //NOTE:
+    //  All coaches that belong to the team are updated
+    info.Mods.Coaches.update(conds, updates, {multi:true}, function(err, numUp, raw) {
+    // Mods.Coaches.find(conds, function(err, numUp) {
+      if (err) return evtCallback(dbErrors(err));
+
+      console.info("Deleted: Coaches", numUp, raw);
+      deleteMetricsTeam();
+      return;
+    });
   }//END
 
-  function deleteMetricsTeam(delTeam) {
-    Mods.Metrics.update();
+  function deleteMetricsTeam() {
+    info.Mods.Metrics.update(conds, updates, {multi:true}, function(err, numUp, raw) {
+    // Mods.Metrics.find(conds, function(err, numUp, raw) {
+      if (err) return evtCallback(dbErrors(err));
+
+      console.info("Deleted: Metrics", numUp, raw);
+      deleteMetricCatsTeam();
+      return;
+    });
   }//END
 
-  function deleteMetricCatsTeam(delTeam) {
-    Mods.MetricCats.update()
+  function deleteMetricCatsTeam() {
+    info.Mods.MetricCats.update(cond, update, {multi:true}, function(err, numUp, raw) {
+    // Mods.MetricCats.find(cond, function(err, numUp) {
+      if (err) return evtCallback(dbErrors(err));
+
+      console.info("Deleted: Metric Categories", numUp, raw);
+      deleteAthletesTeam();
+      return;
+    });
   }//END
 
-  function deleteAthletesTeam(delTeam) {
+  function deleteAthletesTeam() {
+    info.Mods.Athletes.update(cond, update, {multi:true}, function(err, numUp, raw) {
+    // Mods.Athletes.find(cond, function(err, numUp) {
+      if (err) return evtCallback(dbErrors(err));
 
+      console.info("Deleted: Athletes", numUp, raw);
+      deleteGroupsTeam();
+      return;
+    });
   }//END
 
-  function deleteGroupsTeam(delTeam) {
+  function deleteGroupsTeam() {
+    info.Mods.Groups.update(cond, update, {multi:true}, function(err, numUp, raw) {
+    // Mods.Groups.find(cond, function(err, numUp) {
+      if (err) return evtCallback(dbErrors(err));
 
+      console.info("Deleted: Groups", numUp, raw);
+      evtCallback(null);
+      return;
+    });
   }//END
 }
 

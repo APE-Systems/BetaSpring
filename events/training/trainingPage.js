@@ -1,43 +1,46 @@
 ;"use strict";
 /*
-  EVENTS: rostersPage
+  EVENTS: trainingPage
  */
 
-var rospgOps = require('../operations').RostersPageOps;
+var trnpgOps = require('../../operations').TrainingPageOps;
 
-var rostersPageEvts = {
+var trainingPageEvts = {
 
-  getRostersPage: function(req, res, next) {
-    console.log('Event: getRostersPage');
+  getTrainingPage: function(req, res, next) {
+    console.log('Event: getTrainingPage');
 
-    rospgOps.getRostersPage(req, function(err, payload) {
+    trnpgOps.getTrainingPage(req, function(err, payload) {
       if (err) {
-        console.error("getRostersPage: Error\n", err.name);
+        console.error("getTrainingPage: Error\n", err.name);
         res.json(err.rescode, {
           error: {
             id: err.id,
             msg: err.msg,
-            value: ""
+            value: {
+              team: req.params.team,
+              gender: req.params.gender
+            }
           }
         });
       } else {
-        console.log('getRostersPage: Success');
+        console.log('getTrainingPage: Success');
         res.json(200, {
           nav: req.sess.school,
           athletes: payload.athletes,
           groups: payload.groups,
-          apeLib: payload.apeLibPackage
+          metricCat: payload.mtrcats
         });
       }
     });
   },
 
-  createAthlete: function(req, res, next) {
-    console.log('Event: createAthlete');
+  onSelection: function(req, res, next) {
+    console.log('Event: onSelection');
 
-    rospgOps.createAthlete(req, function(err, athlete) {
+    trnpgOps.createAthlete(req, function(err, athlete) {
       if (err) {
-        console.log("createAthlete: Error\n", err.name);
+        console.log("onSelection: Error\n", err.name);
         res.json(err.rescode, {
           error: {
             id: err.id,
@@ -46,13 +49,18 @@ var rostersPageEvts = {
           }
         });
       } else {
-        console.log('createAthlete: Success\n');
-        res.json(201, {id: athlete._id, name: athlete.name});
+        console.log('onSelection: Success\n');
+        // res.json(200, {
+        //   group: ,
+        //   mtrcats: ,
+        //   athletes: ,
+        //   athmetrics: 
+        // });
       }
     });
   },
 
-  updateAthlete: function(req, res, next) {
+  onCatSelection: function(req, res, next) {
     console.log('Event: updateAthlete');
 
     rospgOps.updateAthlete(req, function(err, athlete) {
@@ -72,7 +80,7 @@ var rostersPageEvts = {
     });
   },
 
-  deleteAthlete: function(req, res, next) {
+  onMetricSelection: function(req, res, next) {
     console.log('Event: deleteAthlete');
 
     rospgOps.deleteAthlete(req, function(err) {
@@ -195,4 +203,4 @@ var rostersPageEvts = {
 
 }
 
-module.exports = exports = rostersPageEvts;
+module.exports = exports = trainingPageEvts;
