@@ -9,7 +9,7 @@ block content
     mixin flash-messages(flash)
 
   - if (typeof(teams) !== "undefined")
-    .large-12.large-centered.columns.centered
+    .small-12.large-centered.columns.centered
       a.button(href='#', data-reveal-id='teamModal') Create Team
     hr
 
@@ -40,7 +40,7 @@ prepend scripts
     a.close-reveal-modal &#215;
     form#create-team-form(action='#', method='post')
       .row
-        .large-12.columns
+        .small-12.columns
           h4 Create Team
           div
             label Sport
@@ -56,7 +56,7 @@ prepend scripts
     a.close-reveal-modal &#215;
     form#edit-team-form(action='#', method='put')
       .row
-        .large-12.columns
+        .small-12.columns
           h4 Edit Team
           div
             label Sport
@@ -68,3 +68,6 @@ prepend scripts
               option(value='women') Women
           div
             input(type='submit', id='edit-team-submit', value='Edit Team')
+
+append scripts
+  script(type='text/javascript', src='/_js/teams_page_events.js')

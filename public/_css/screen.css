@@ -5836,26 +5836,25 @@ a.th {
   color: white;
   text-transform: capitalize; }
 
-/* line 44, ../_scss/partials/_teams-page.scss */
-a > i {
+/* line 46, ../_scss/partials/_teams-page.scss */
+#teams-list a > i {
   color: gray; }
-
-/* line 48, ../_scss/partials/_teams-page.scss */
-a > i:hover {
+/* line 50, ../_scss/partials/_teams-page.scss */
+#teams-list a > i:hover {
   color: white; }
 
-/* line 53, ../_scss/partials/_teams-page.scss */
+/* line 60, ../_scss/partials/_teams-page.scss */
 input[type=submit] {
   margin-top: 0.6em;
   background-color: #9c0012;
   padding: 10px;
   color: white; }
 
-/* line 60, ../_scss/partials/_teams-page.scss */
+/* line 67, ../_scss/partials/_teams-page.scss */
 input[type=submit]:hover {
   background-color: #69000c; }
 
-/* line 64, ../_scss/partials/_teams-page.scss */
+/* line 71, ../_scss/partials/_teams-page.scss */
 .box {
   width: 360px;
   height: 175px;
@@ -5867,24 +5866,24 @@ input[type=submit]:hover {
   background-color: #9c0012;
   position: relative; }
 
-/* line 78, ../_scss/partials/_teams-page.scss */
+/* line 85, ../_scss/partials/_teams-page.scss */
 .box:hover {
   background-color: #69000c; }
 
-/* line 82, ../_scss/partials/_teams-page.scss */
+/* line 89, ../_scss/partials/_teams-page.scss */
 .add-team-box {
   width: 190px;
   height: 170px; }
 
-/* line 87, ../_scss/partials/_teams-page.scss */
+/* line 94, ../_scss/partials/_teams-page.scss */
 .gray {
   background-color: #cccccc; }
 
-/* line 91, ../_scss/partials/_teams-page.scss */
+/* line 98, ../_scss/partials/_teams-page.scss */
 a#add-team {
   font-size: 150px; }
 
-/* line 96, ../_scss/partials/_teams-page.scss */
+/* line 103, ../_scss/partials/_teams-page.scss */
 .caption {
   position: absolute;
   width: 150px;
@@ -5895,16 +5894,16 @@ a#add-team {
   margin-top: -25px;
   /*z-index: 100; */ }
 
-/* line 108, ../_scss/partials/_teams-page.scss */
+/* line 115, ../_scss/partials/_teams-page.scss */
 li p {
   color: white;
   font-size: 2.5em; }
 
-/* line 113, ../_scss/partials/_teams-page.scss */
+/* line 120, ../_scss/partials/_teams-page.scss */
 .centered {
   text-align: center; }
 
-/* line 117, ../_scss/partials/_teams-page.scss */
+/* line 124, ../_scss/partials/_teams-page.scss */
 .centered-div {
   position: fixed;
   /*z-index: 100;  */
@@ -5914,31 +5913,31 @@ li p {
   width: 200px;
   height: 200px; }
 
-/* line 127, ../_scss/partials/_teams-page.scss */
+/* line 134, ../_scss/partials/_teams-page.scss */
 #gender {
   margin-bottom: 40px; }
 
-/* line 130, ../_scss/partials/_teams-page.scss */
+/* line 137, ../_scss/partials/_teams-page.scss */
 #myModal {
   background-color: #efefef; }
 
-/* line 134, ../_scss/partials/_teams-page.scss */
+/* line 141, ../_scss/partials/_teams-page.scss */
 .upimage {
   max-width: 150px; }
 
-/* line 138, ../_scss/partials/_teams-page.scss */
+/* line 145, ../_scss/partials/_teams-page.scss */
 #ape-nav li ul {
   display: none; }
 
-/* line 141, ../_scss/partials/_teams-page.scss */
+/* line 148, ../_scss/partials/_teams-page.scss */
 #side-nav li ul {
   display: none; }
 
-/* line 145, ../_scss/partials/_teams-page.scss */
+/* line 152, ../_scss/partials/_teams-page.scss */
 [contenteditable="true"] {
   outline: 3px dashed #CCC; }
 
-/* line 149, ../_scss/partials/_teams-page.scss */
+/* line 156, ../_scss/partials/_teams-page.scss */
 [contenteditable="false"] {
   outline: none; }
 
@@ -6014,6 +6013,34 @@ li p {
   .row.athlete-table.active {
     background: #9c0010;
     color: white; }
+
+/* line 34, ../_scss/partials/_training-test.scss */
+table.responsive {
+  width: 100%;
+  font-size: 1.1em;
+  border-spacing: 0.6em; }
+  /* line 41, ../_scss/partials/_training-test.scss */
+  table.responsive tr td {
+    font-weight: 300; }
+  /* line 44, ../_scss/partials/_training-test.scss */
+  table.responsive tr td:nth-child(3) {
+    font-size: 1.9em; }
+    /* line 47, ../_scss/partials/_training-test.scss */
+    table.responsive tr td:nth-child(3) i {
+      font-size: 0.8em;
+      margin-left: 0.3em; }
+  /* line 54, ../_scss/partials/_training-test.scss */
+  table.responsive th, table.responsive td {
+    padding: 12px 25px; }
+  /* line 59, ../_scss/partials/_training-test.scss */
+  table.responsive th {
+    font-weight: bold; }
+  /* line 65, ../_scss/partials/_training-test.scss */
+  table.responsive input[type="text"] {
+    width: 60%;
+    height: 100%;
+    margin-right: 1em;
+    display: inline; }
 
 /* line 10, ../_scss/screen.scss */
 .red-button {

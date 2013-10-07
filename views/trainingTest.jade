@@ -2,6 +2,8 @@ extends layout
 
 append head
   link(rel='stylesheet',  href='../_css/foundation-datepicker.css')
+  link(rel='stylesheet', href='../_css/responsive-tables.css')
+  script(type='text/javascript', src='/_js/responsive-tables.js')
 
 block content
 
@@ -38,58 +40,47 @@ block content
   include includes/vanity-plate
 
   .display
-  .row.athleteHeader
-    .small-2.columns
-      h5 First Name
-    .small-2.columns
-      h5 Last Name
-    .small-2.columns
-      h5 Last Record
-    .small-6.columns
-      h5 Input Data
   .row.athlete-table
-    .small-12.columns
-      .row(data-id='1').active
-        .small-2.columns
-          span(data-athleteFirstName) Kristopher
-        .small-2.columns
-          span(data-athleteLastName) Washington
-        .small-1.columns
-          span(data-last-record) 90
-        .small-1.columns
-          i.foundicon-edit
-        .small-3.columns
-          input(type='text')
-        .small-3.columns
-          button Confirm
-      .row(data-id='2').active
-        .small-2.columns
-          span(data-athleteFirstName) Some
-        .small-2.columns
-          span(data-athleteLastName) Otherguy
-        .small-1.columns
-          span(data-last-record) 90
-        .small-1.columns
-          i.foundicon-edit
-        .small-3.columns
-          input(type='text')
-        .small-3.columns
-          button Confirm
+    table.responsive
+      thead
+        tr
+          th First Name
+          th Last Name
+          th Last Record
+          th Input Data
+      tbody
+        tr
+          td Kristopher 
+          td Washington
+          td 90
+            a(href='#'): i.foundicon-edit
+          td
+            input(type='text') 
+            a.medium.button.success.radius(href='#') Update
+        tr
+          td D'Jasper
+          td Probincruxx III
+          td 67
+            a(href='#'): i.foundicon-edit
+          td
+            input(type='text') 
+            a.medium.button.success.radius(href='#') Update
+        tr
+          td Ozamataz
+          td Buckshank
+          td 90
+            a(href='#'): i.foundicon-edit
+          td
+            input(type='text') 
+            a.medium.button.success.radius(href='#') Update
+        tr
+          td Isaiah
+          td T.Billings-Clyde
+          td 83
+            a(href='#'): i.foundicon-edit
+          td
+            input(type='text') 
+            a.medium.button.success.radius(href='#') Update
 
 
-  .row
-    h1 This is the h1
-    h2 This is the h2
-    h3 This is the h3
-    h4 This is the h4
-    h5 This is the h5
-    h6 This is the h6
-
-//-<a href="#" data-dropdown="drop1" class="button dropdown">Dropdown Button</a><br>
-
-//-<ul id="drop1" class="f-dropdown">
-//-  <li><a href="#">This is a link</a></li>
-//-  <li><a href="#">This is another</a></li>
-//-  <li><a href="#">Yet another</a></li>
-//-</ul>
 

@@ -41,13 +41,20 @@
   text-transform:capitalize;
 }
 
-a > i {
+
+#teams-list {
+  a > i {
   color: gray;
 }
 
 a > i:hover {
   color: white;
 }
+
+}
+
+
+
 
 
 input[type=submit] {

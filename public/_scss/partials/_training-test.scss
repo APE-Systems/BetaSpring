@@ -30,3 +30,45 @@
     color: white;
   }
 }
+
+table.responsive {
+  width: 100%;
+  font-size: 1.1em;
+  border-spacing: 0.6em;
+
+  tr {
+
+    td {
+      font-weight: 300;
+    }
+    td:nth-child(3)  {
+      font-size:1.9em;
+
+      i {
+      font-size: 0.8em;
+      margin-left: 0.3em;
+      }
+    }
+  }
+
+  th, td {
+    padding: 12px 25px;
+
+  }
+
+  th {
+    font-weight: bold;
+  }
+
+
+
+  input[type="text"]{
+    width: 60%;
+    height: 100%;
+    margin-right: 1em;
+    display:inline;
+  }
+
+
+}
+
