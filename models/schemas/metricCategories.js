@@ -50,4 +50,4 @@ MetricCategorySchema.virtual('MCATID').get(function() {
 });
 
 // compound indexes
-MetricCategorySchema.index({"team.name": 1, "team.gender": -1, name: 1}, {unique: true});
+MetricCategorySchema.index({team: 1, name: 1}, {unique: true});
