@@ -20,18 +20,18 @@ $topbar-title-font-size: em-calc(17) !default;
 
 // Style the top bar dropdown elements
 $topbar-dropdown-bg: #222 !default;
-$topbar-dropdown-link-color: #fff !default;
+$topbar-dropdown-link-color: #383c3a !default;
 $topbar-dropdown-link-bg: lighten($topbar-bg-color, 5%) !default;
 $topbar-dropdown-toggle-size: 5px !default;
 $topbar-dropdown-toggle-color: #fff !default;
 $topbar-dropdown-toggle-alpha: 0.5 !default;
 
 // Set the link colors and styles for top-level nav
-$topbar-link-color: #fff !default;
+$topbar-link-color: #383c3a !default;
 $topbar-link-color-hover: #fff !default;
 $topbar-link-color-active: #fff !default;
 $topbar-link-weight: bold !default;
-$topbar-link-font-size: em-calc(13) !default;
+$topbar-link-font-size: em-calc(14) !default;
 $topbar-link-hover-lightness: -30% !default; // Darken by 30%
 $topbar-link-bg-hover: adjust-color($topbar-dropdown-bg, $lightness: $topbar-link-hover-lightness) !default;
 $topbar-link-bg-active: darken($topbar-bg-color, 3%) !default;

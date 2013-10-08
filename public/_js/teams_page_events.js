@@ -19,7 +19,7 @@ $(function() {
       }
       //if contenteditable
          //show icons for save cancel
-         event.preventDefault();
+        // event.preventDefault();
 
     });
 
@@ -34,10 +34,8 @@ $(function() {
     function toggleContentEditable(el) {
       if (contentIsEditable(el)) {
         el.attr('contenteditable', 'false');
-        console.log('contenteditable for' + el.text() + ' is false');
       } else {
         el.attr('contenteditable', 'true');
-        console.log('contenteditable for' + el.text() + ' is true');
       }
     }
 
@@ -52,8 +50,12 @@ $(function() {
     $('a.save-team').on('click', function() {
       //ajax call
       ///:school/:team-:gender
+      var school = $("#school-name").text();
+      var team = $(this).closest('li').find('h3').text();
+      var gender = $(this).closest('li').find('span').text();
+      console.log('school: ' + school + '\n team: ' + team + '\n gender: ' + gender);
       $.ajax({
-        url: '/',
+        url: '/' + school + '/' + team + '-' + gender;
         data: data,
         type: 'post'
       });
@@ -109,4 +111,57 @@ $(function() {
     $('form#delete-team-form').off('click')
     });//DELETE CONFIRM END
   }
+
+
+  var teamsArray = $('#teams-list h3').map(function() {
+    return $(this).text();
+  }).get();
+  var school = $('#school-name').text();
+
+  $('#create-team-form').on("submit", function(event) { 
+    console.log("clicked from " + this );
+    var form = $(this);
+    //- console.log(form);
+    var school = $('#school-name').text();
+    var teamName = $('#team-name').val().toLowerCase();
+    var teamGender = $('#team-gender').val().toLowerCase();
+    console.log("school: " + school);
+    console.log("teamName: " + teamName);
+    console.log("teamGender: " + teamGender);
+    console.log('formSerialize:', form.serialize());
+    var url = '/'+ school + '/' + teamName + '/' + teamGender;
+    //- var url = '/'+ school + '/baseball/men';
+    //- var url = '/'+ school + '/hardball/women';
+
+    console.log("teamsArray:" + teamsArray);
+    console.log($.inArray(teamName, teamsArray));
+
+    //- if ( $.inArray(teamName,teamsArray) === -1)  {
+      console.log('sending PUT ajax', url);
+      $.ajax({
+        //- url: '/'+ school + '/' + teamName + '/' + teamGender,
+        url: url,
+        type: 'POST',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        dataType: 'json',
+        data: form.serialize()
+      }).done(function(msg) {
+        console.log("data saved: " + msg);
+        $("#teams-list").append("<li><h3 class='capitalize'>" + teamName + "</h3><span class='capitalize'>" + teamGender + "</span></li>");
+        //location.reload();  
+      }).fail(function(msg) {
+        console.log("failure: " + msg);
+        console.dir(msg);
+      }).always(function() {
+        $('a.close-reveal-modal').trigger('click');     
+      }); // ajax
+    //- } else {
+    //-   alert("Name already exists in database");
+    //-   $('a.close-reveal-modal').trigger('click');
+    //- }
+    event.preventDefault();
+  }); // create form on subsmit
+
+
+
 });
