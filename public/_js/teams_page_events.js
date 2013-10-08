@@ -53,9 +53,9 @@ $(function() {
       var school = $("#school-name").text();
       var team = $(this).closest('li').find('h3').text();
       var gender = $(this).closest('li').find('span').text();
-      console.log('school: ' + school + '\n team: ' + team + '\n gender: ' + gender);
+      console.log('school: ' + school + '\n team: ' + 'team' + '\n gender: ' + gender)
       $.ajax({
-        url: '/' + school + '/' + team + '-' + gender;
+        url: '/',
         data: data,
         type: 'post'
       });
@@ -67,17 +67,18 @@ $(function() {
 
 
   // DeleteTeam
-  $('a#delete-team').off('click').on('click', function(event) {
+  $('a#delete-team').on('click', function(event) {
     console.log('clicked delete');
     event.preventDefault();
-
 
     var school, team, gender, url;
 
     var self = $(this);
+    console.log(self.closest('li').find('h3').text());
+
     school = $("#school-name").text();
-    team = self.parent().children('h3').text();
-    gender = self.parent().children('span').text();
+    team = self.closest('li').find('h3').text();
+    gender = self.closest('li').find('span').text();
     url = '/' + school + '/' + team + '-' + gender;
     console.log('url:\n', url);
 
@@ -91,7 +92,7 @@ $(function() {
     // console.log(self, url);
 
     //EVENT LISTENER ON YES
-    $('form#delete-team-form').on('click', function(event) {
+    $('form#delete-team-form').off('click').on('click', function(event) {
       // event.preventDefault();
       console.log('delete-team confirmed');
       $.ajax({
@@ -107,8 +108,10 @@ $(function() {
         console.log('error:\n', err);
         alert('error:\n', err);
       })
+      .always(function() {
+        $('a.close-reveal-modal').trigger('click');
+      });
 
-    $('form#delete-team-form').off('click')
     });//DELETE CONFIRM END
   }
 
