@@ -26,6 +26,7 @@ var teamsPageOps = {
 
       pgload.Mods.Teams.find(query, proj, function(err, teams) {
         if (err) evtCallback(dbErrors(err), null);
+        // console.log('teams:\n', teams);
 
         dataLoad.teams = teams;
         return getAPElib(pgload);

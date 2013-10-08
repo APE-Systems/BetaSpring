@@ -18,10 +18,12 @@ block content
         ul#teams-list
           for team in teams
             li(class=team.name + " " + team.gender)
-              h3(data-name=team.name).capitalize=team.name
-              span.capitalize= team.gender
-              a(href='/:school/:team/:gender/roster'): button View team
-              a.delete-team.team-buttons(href='#')
+
+              h3(data-name=team.name)= team.name
+              span= team.gender
+              //- a(href='/:school/:team/:gender/roster'): button View team
+              a#delete-team(href='#', data-reveal-id='deleteModal')
+
                 i.foundicon-trash.right
               a.edit-team.team-buttons(href='#')
                 i.foundicon-edit.right
@@ -40,6 +42,16 @@ block content
         span Get started by creating teams.
 
 prepend scripts
+  #deleteModal.reveal-modal.small
+    form#delete-team-form(action='#', method='delete')
+      .row
+        .small-12.columns
+          h4 Are you sure you want to delete this team?
+          div
+            input.close-reveal-modal(type='submit', id='delete-team', value='Yes')
+          div
+            input.close-reveal-modal(type='button', id='delete-cancel', value='Cancel')
+
   #teamModal.reveal-modal.small
     a.close-reveal-modal &#215;
     form#create-team-form(action='#', method='post')
@@ -56,6 +68,7 @@ prepend scripts
               option(value='women') Women
           div
             input(type='submit', id='create-team-submit', value='Create Team')
+
   #edit-team-modal.reveal-modal.small
     a.close-reveal-modal &#215;
     form#edit-team-form(action='#', method='put')
