@@ -17,20 +17,20 @@ block content
       .large-centered.columns#all-teams
         ul#teams-list
           for team in teams
-            li(class=team.name + " " + team.gender)
+            a(href='/:school/:team/:gender/roster')
+              li(class=team.name + " " + team.gender)
+                h3(data-name=team.name)= team.name
+                span= team.gender
+                //- a(href='/:school/:team/:gender/roster'): button View team
+                a#delete-team(href='#', data-reveal-id='deleteModal')
 
-              h3(data-name=team.name)= team.name
-              span= team.gender
-              //- a(href='/:school/:team/:gender/roster'): button View team
-              a#delete-team(href='#', data-reveal-id='deleteModal')
-
-                i.foundicon-trash.right
-              a.edit-team.team-buttons(href='#')
-                i.foundicon-edit.right
-              a.save-team.team-edits(href='#')
-                i.foundicon-checkmark.right
-              a.cancel-team.team-edits(href='#')
-                i.foundicon-remove.right
+                  i.foundicon-trash.right
+                a.edit-team.team-buttons(href='#')
+                  i.foundicon-edit.right
+                a.save-team.team-edits(href='#')
+                  i.foundicon-checkmark.right
+                a.cancel-team.team-edits(href='#')
+                  i.foundicon-remove.right
   - else
     .small-6.large-centered.columns
       .centered-div
