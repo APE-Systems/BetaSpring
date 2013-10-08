@@ -38,20 +38,27 @@
 #teams-list > li h3 {
   margin-bottom: 0.1em;
   color:white;
-  text-transform:capitalize;
+  /* text-transform:capitalize; */
 }
 
 
 #teams-list {
   a > i {
   color: gray;
-}
-
-a > i:hover {
+  }
+  a > i:hover {
   color: white;
+  }
+
+  a > i.foundicon-checkmark {
+    color: green;
+  }
+
+  a > i.foundicon-remove {
+    color: #9c0012;
+  }
 }
 
-}
 
 
 

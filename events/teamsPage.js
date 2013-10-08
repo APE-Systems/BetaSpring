@@ -22,7 +22,7 @@ var teamsPageEvts = {
         });
       } else {
         // console.log('payLoad:', payLoad);
-        res.json(200, {
+        res.render('teamsPage', {
           nav: req.sess.school,
           teams: payLoad.teams,
           apeLib: payLoad.apeLibPackage

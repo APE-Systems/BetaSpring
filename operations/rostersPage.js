@@ -903,7 +903,6 @@ function propagateGroupDelete(delGroup, evtCallback) {
         return;
       });
     });
-  });
   }
 
   function deleteTeamGroup(delGroup) {
@@ -943,7 +942,6 @@ function propagateGroupDelete(delGroup, evtCallback) {
         return evtCallback(null, delGroup.doc);
       });
     });
-  });
   }
 }
 
