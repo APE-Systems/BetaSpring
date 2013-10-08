@@ -121,8 +121,8 @@ var teamsPageOps = {
     var val = {
       oldName: req.params.team,
       oldGen: req.params.gender,
-      newName: req.body["team-name"],
-      newGen: req.body["team-gender"]
+      newName: req.body["edit-team-name"],
+      newGen: req.body["edit-team-gender"]
     };
 
     validateInput(val, editTeam);
