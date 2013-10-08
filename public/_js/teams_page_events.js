@@ -1,22 +1,6 @@
 $(function() {
 
-  //  var editMode = false;  
-  // //  Edit Team Mode
-  // $('.foundicon-edit').on("click", function(event) {
-  //   var teamName = $(this).closest('li').find('h3');
-  //   if (teamName.attr("contenteditable") == 'true') {
-  //     teamName.attr("contenteditable", "false");
-  //     console.log("was true, now it's false");
-  //     $(this).removeClass('white');
-  //     editMode = false;
-  //     console.log(editMode);
-  //   } else {
-  //     teamName.attr("contenteditable", "true");
-  //     console.log("was false, now it's true");
-  //     $(this).addClass('white');
-  //     editMode = true;
-  //     console.log(editMode);
-  //   }
+
     $('.team-edits').hide();
 
     $('ul#teams-list').on('click', 'a.edit-team', function(event) {
@@ -25,17 +9,13 @@ $(function() {
       var team = $(this).closest('li').find('h3');
       var teamName = team.text();
 
-
       toggleContentEditable(team);
 
       if (contentIsEditable(team)) {
-        $(this).closest('li').find('.team-buttons').hide();
-        $(this).closest('li').find('.team-edits').show();
-
         //hide edit,trash
         //show save, cancel
-      } else {
-        alert ('nope, content is not editable');
+        $(this).closest('li').find('.team-buttons').hide();
+        $(this).closest('li').find('.team-edits').show();
       }
       //if contenteditable
          //show icons for save cancel
