@@ -22,8 +22,7 @@ block content
                 h3(data-name=team.name)= team.name
                 span= team.gender
                 //- a(href='/:school/:team/:gender/roster'): button View team
-                a#delete-team(href='#', data-reveal-id='deleteModal')
-
+                a.team-buttons#delete-team(href='#', data-reveal-id='deleteModal')
                   i.foundicon-trash.right
                 a.edit-team.team-buttons(href='#')
                   i.foundicon-edit.right
@@ -42,15 +41,16 @@ block content
         span Get started by creating teams.
 
 prepend scripts
+
   #deleteModal.reveal-modal.small
+    a.close-reveal-modal(id='delete-cancel') &#215;
     form#delete-team-form(action='#', method='delete')
       .row
         .small-12.columns
           h4 Are you sure you want to delete this team?
-          div
-            input.close-reveal-modal(type='submit', id='delete-team', value='Yes')
-          div
-            input.close-reveal-modal(type='button', id='delete-cancel', value='Cancel')
+         .small-12.columns
+            input(type='submit', id='delete-team', value='Yes, Delete')
+            //-input.close-reveal-modal(type='button', id='delete-cancel', value='Cancel')
 
   #teamModal.reveal-modal.small
     a.close-reveal-modal &#215;
