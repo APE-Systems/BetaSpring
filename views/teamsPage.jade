@@ -1,7 +1,7 @@
 extends layout
 
 append head
-  //-link(rel='stylesheet', href='../_css/teams.css')
+
 
 block content
   - if(typeof flash != 'undefined')
@@ -17,19 +17,18 @@ block content
       .large-centered.columns#all-teams
         ul#teams-list
           for team in teams
-            a(href='/#{nav}/#{team.name}-#{team.gender}/roster')
-              li(class=team.name + " " + team.gender)
-                h3(data-name=team.name)= team.name
-                span= team.gender
-                //- a(href='/:school/:team/:gender/roster'): button View team
-                a.team-buttons#delete-team(href='#', data-reveal-id='deleteModal')
-                  i.foundicon-trash.right
-                a.edit-team.team-buttons(href='#')
-                  i.foundicon-edit.right
-                a.save-team.team-edits(href='#')
-                  i.foundicon-checkmark.right
-                a.cancel-team.team-edits(href='#')
-                  i.foundicon-remove.right
+            li(class=team.name + " " + team.gender)
+              h3(data-name=team.name)= team.name
+              span= team.gender
+              a(href='/#{nav}/#{team.name}-#{team.gender}/roster'): button View team
+              a.team-buttons#delete-team(href='#', data-reveal-id='deleteModal')
+                i.foundicon-trash.right
+              a.edit-team.team-buttons(href='#')
+                i.foundicon-edit.right
+              a.save-team.team-edits(href='#')
+                i.foundicon-checkmark.right
+              a.cancel-team.team-edits(href='#')
+                i.foundicon-remove.right
   - else
     .small-6.large-centered.columns
       .centered-div
@@ -60,7 +59,7 @@ prepend scripts
           h4 Create Team
           div
             label Sport
-            input#team-name(type='text', name='team-name', required='required', pattern='[a-zA-Z0-9]+', placeholder='Ex: Baseball, Football')
+            input#team-name(type='text', name='team-name', required='required', pattern='[a-zA-Z]+', placeholder='Ex: Baseball, Football')
           div
             label Gender
             select#team-gender(name='team-gender')
