@@ -1,0 +1,1 @@
+"use strict";var SessionOPS=require("../operations").Sessions;module.exports=exports={isLoggedIn:function(e,t,n){console.log("Middleware: isLoggedIn");var r="523f650049dbbf403bca0619";SessionOPS.getSession(r,function(t,r){if(!t&&r.username){console.log("username in session");e.sess=r}return n()})}};

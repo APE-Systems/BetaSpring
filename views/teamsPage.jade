@@ -17,7 +17,7 @@ block content
       .large-centered.columns#all-teams
         ul#teams-list
           for team in teams
-            a(href='/:school/:team/:gender/roster')
+            a(href='/#{nav}/#{team.name}-#{team.gender}/roster')
               li(class=team.name + " " + team.gender)
                 h3(data-name=team.name)= team.name
                 span= team.gender

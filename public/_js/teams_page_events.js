@@ -121,43 +121,39 @@ $(function() {
   }).get();
   var school = $('#school-name').text();
 
-  $('#create-team-form').on("submit", function(event) { 
+  $('#create-team-submit').on("click", function(event) {
     console.log("clicked from " + this );
-    var form = $(this);
-    //- console.log(form);
-    var school = $('#school-name').text();
-    var teamName = $('#team-name').val().toLowerCase();
-    var teamGender = $('#team-gender').val().toLowerCase();
-    console.log("school: " + school);
-    console.log("teamName: " + teamName);
-    console.log("teamGender: " + teamGender);
-    console.log('formSerialize:', form.serialize());
-    var url = '/'+ school + '/' + teamName + '/' + teamGender;
-    //- var url = '/'+ school + '/baseball/men';
-    //- var url = '/'+ school + '/hardball/women';
+
+    var self, school, name, gender, url;
+    self = $(this);
+    school = $('#school-name').text();
+    name = $('#team-name').val();
+    gender = $('#team-gender').val();
+    url = '/'+ school + '/teams/' + name + '-' + gender;
 
     console.log("teamsArray:" + teamsArray);
     console.log($.inArray(teamName, teamsArray));
 
     //- if ( $.inArray(teamName,teamsArray) === -1)  {
       console.log('sending PUT ajax', url);
+
       $.ajax({
         //- url: '/'+ school + '/' + teamName + '/' + teamGender,
         url: url,
         type: 'POST',
         contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-        dataType: 'json',
-        data: form.serialize()
-      }).done(function(msg) {
-        console.log("data saved: " + msg);
-        $("#teams-list").append("<li><h3 class='capitalize'>" + teamName + "</h3><span class='capitalize'>" + teamGender + "</span></li>");
+        dataType: 'json'
+      }).done(function(data) {
+        console.log("data saved: " + data);
+        $("#teams-list").append("<li><h3 class='capitalize'>" + data.name + "</h3><span class='capitalize'>" + data.gender + "</span></li>");
         //location.reload();  
-      }).fail(function(msg) {
-        console.log("failure: " + msg);
-        console.dir(msg);
+      }).fail(function(data) {
+        console.log("failure: " + data);
+        console.dir(data);
       }).always(function() {
         $('a.close-reveal-modal').trigger('click');     
       }); // ajax
+
     //- } else {
     //-   alert("Name already exists in database");
     //-   $('a.close-reveal-modal').trigger('click');
