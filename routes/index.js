@@ -15,7 +15,6 @@ var mid = require('../middleware').middle
   , apeLibEvts = require('../events').ApeLibEvts;
 
 
-
 module.exports = function(app) {
   //Home
   app.get('/', function(req, res) {
@@ -63,8 +62,8 @@ module.exports = function(app) {
   app.get('/:school/:team-:gender/training/admin', trnAdmEvts.getTrainingAdmin);
     //METRICCATS
   app.post('/:school/:team-:gender/training/admin/metriccat', trnAdmEvts.createMetricCat);
-  // app.put();
-  app.delete('/:school/:team-:gender/training/admin/metriccat/:mcat', trnAdmEvts.deleteMetricCat);
+  app.put('/:school/:team-:gender/training/admin/metriccat/:id', trnAdmEvts.updateMetricCat);
+  app.delete('/:school/:team-:gender/training/admin/metriccat/:id', trnAdmEvts.deleteMetricCat);
 
   //   //METRICS
   // app.post();

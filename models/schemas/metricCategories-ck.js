@@ -1,4 +1,0 @@
-/*
-    Metric Category schema
-      Categories created by coaches that identify metrics that make-up the category
-*/var mongoose=require("mongoose"),Schema=mongoose.Schema,Types=mongoose.Types,ObjIdType=Schema.ObjectId,ObjId=Types.ObjectId,MetricCategorySchema=module.exports=new Schema({createdBy:{type:ObjIdType,required:!0},createdOn:{type:Date,required:!0,"default":Date.now},school:{type:String,required:!0},team:{name:{type:String},gender:{type:String}},trplans:[{name:{type:String,required:!0}}],surveys:[{name:{type:String,required:!0}}],name:{type:String,required:!0},metrics:[{name:{type:String,required:!0}}],groups:[{name:{type:String,required:!0}}],athletes:[{name:{type:String,required:!0}}]},{collection:"metriccats",safe:!0});MetricCategorySchema.virtual("MCATID").get(function(){return this._id});MetricCategorySchema.index({"team.name":1,"team.gender":-1,name:1},{unique:!0});

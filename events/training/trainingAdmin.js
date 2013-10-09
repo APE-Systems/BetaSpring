@@ -78,11 +78,11 @@ var trainingAdminEvts = {
   },
 
   updateMetricCat: function(req, res, next) {
-    console.log('Event: deleteAthlete');
+    console.log('Event: updateMetricCat');
 
-    trnadmOps.deleteAthlete(req, function(err) {
+    trnadmOps.updateMetricCat(req, function(err, mcat) {
       if (err) {
-        console.log("deleteAthlete: Error\n", err.name);
+        console.log("\nupdateMetricCat: Error\n", err.name + '\n code: ' + err.code);
         res.json(err.rescode, {
           error: {
             id: err.id,
@@ -91,8 +91,8 @@ var trainingAdminEvts = {
           }
         });
       } else {
-        console.log('deleteAthlete: Success');
-        res.send(204);
+        console.log('updateMetricCat: Success');
+        res.json(200, {_id: mcat.id, name: mcat.name});
       }
     });
   },
