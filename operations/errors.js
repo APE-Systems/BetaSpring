@@ -45,6 +45,13 @@ function dbErrors(err) {
       err.rescode = 409;
       err.name = err.err;
       return err;
+    },
+    11001: function(err) {
+      err.id = errorId();
+      err.msg = "Resource already in database";
+      err.rescode = 409;
+      err.name = err.err;
+      return err;
     }
   };
 
