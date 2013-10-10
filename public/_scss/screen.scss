@@ -103,6 +103,7 @@ span.metric-measurement {
 
 .athlete-info dl {
 	line-height: .75em;
+	font-size: 0.9em;
 }
 .athlete-info dl dt {
 	float: left;
@@ -208,4 +209,30 @@ h5 {
 	}
 }
 
+/* ***************  Edit Metric Values ***************** */
 
+$light-red: rgba(156, 0, 18, 0.4);
+
+table.edit-metric-data-table {
+	overflow-y: scroll;
+	width: 100%;
+
+	caption {
+		margin-bottom:1.5em;
+		font-weight: bold;
+	}
+
+
+
+	i.foundicon-checkmark {
+		color: green; /* Over specified? Perhaps make this global */
+	}
+
+	i.foundicon-add-doc {
+		color: gray;
+	}
+
+	tbody tr:hover {
+		background: $light-red;
+	}
+}

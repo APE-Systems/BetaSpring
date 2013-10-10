@@ -1,0 +1,26 @@
+#editDataModal.reveal-modal.small
+  a.close-reveal-modal &#215;
+  .row
+    .small-6.columns
+      p Dan Richards
+    .small-6.columns
+  .row
+    .small-6.small-centered.columns
+      
+  form#edit-data-form(action='#', method='put')
+    table.edit-metric-data-table
+      caption Edit Metric Data
+      thead
+        tr
+          th Date
+          th Value
+          th &nbsp;
+          th &nbsp;
+          th &nbsp;
+      tbody
+        +edit-data-row('10/06/2013', '155 lb')
+        +edit-data-row('08/07/2013', '161 lb')
+        +edit-data-row('01/10/2013', '155 lb')
+        +edit-data-row('11/15/2012', '155 lb')
+        +edit-data-row('08/23/2012', '168 lb')
+    a#edit-metric-data-table-button.button Done

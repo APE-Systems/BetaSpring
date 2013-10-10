@@ -4,6 +4,7 @@ extends layout
   //-link(rel='stylesheet', href='/_css/roster.css')
 block content
   include includes/vanity-plate
+  include includes/mixins/edit-data-mixin
 
   .row.display
     .section-container.tabs(data-section='tabs')
@@ -31,10 +32,12 @@ block content
                     h2.positive +10
        
                   .large-2.columns
-                    i.foundicon-graph
+                    a(href='#', data-reveal-id='viewGraphModal')
+                      i.foundicon-graph
 
                   .large-2.columns
-                    i.foundicon-edit
+                    a(href='#', data-reveal-id='editDataModal')
+                      i.foundicon-edit
                 .row.athlete-canvas-metric-labels
                   .large-2.columns
                     span Latest Record
@@ -70,10 +73,12 @@ block content
                     h2 0
        
                   .large-2.columns
-                    i.foundicon-graph
+                    a(href='#', data-reveal-id='viewGraphModal')
+                      i.foundicon-graph
 
                   .large-2.columns
-                    i.foundicon-edit
+                    a(href='#', data-reveal-id='editDataModal')
+                      i.foundicon-edit
                 .row
                   .large-2.columns
                     span Latest Record
@@ -105,3 +110,18 @@ block content
           a(href='#') Speed
         .content(data-section-content='')
           p Content of section 2&period;
+
+prepend scripts
+
+  include includes/edit-data-modal
+  
+  #viewGraphModal.reveal-modal.medium
+    a.close-reveal-modal &#215;
+    .row
+      .small-6.columns
+        p Dan Richards
+      .small-6.columns
+    .row
+      .small-12.columns
+        h4 Graph Goes here
+     

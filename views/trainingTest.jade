@@ -6,7 +6,8 @@ append head
   script(type='text/javascript', src='/_js/responsive-tables.js')
 
 block content
-
+  include includes/mixins/edit-data-mixin
+  
   .row.dropdowns
     form.custom
       section#dropdown-selection
@@ -37,7 +38,7 @@ block content
 
 
   .display
-  include includes/vanity-plate
+  include includes/training-test-athlete-graph
 
   .display
   .row.athlete-table
@@ -53,21 +54,21 @@ block content
           td Kristopher 
           td Washington
           td 90
-            a(href='#'): i.foundicon-edit
+            a(href='#', data-reveal-id='editDataModal'): i.foundicon-edit
           td
             input(type='text') 
             a.medium.button.success.radius(href='#') Update
         tr
-          td D'Jasper
-          td Probincruxx III
+          td Douglas
+          td Bogie
           td 67
-            a(href='#'): i.foundicon-edit
+            a(href='#', data-reveal-id='editDataModal'): i.foundicon-edit
           td
             input(type='text') 
             a.medium.button.success.radius(href='#') Update
         tr
-          td Ozamataz
-          td Buckshank
+          td Reggie
+          td Wayne
           td 90
             a(href='#'): i.foundicon-edit
           td
@@ -82,5 +83,7 @@ block content
             input(type='text') 
             a.medium.button.success.radius(href='#') Update
 
+prepend scripts
 
+  include includes/edit-data-modal
 

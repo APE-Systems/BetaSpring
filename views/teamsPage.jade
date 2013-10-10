@@ -1,7 +1,5 @@
 extends layout
 
-append head
-
 
 block content
   - if(typeof flash != 'undefined')
@@ -9,10 +7,10 @@ block content
     mixin flash-messages(flash)
 
   - if (typeof(teams) !== "undefined")
-    .small-12.large-centered.columns.centered
-      a.button(href='#', data-reveal-id='teamModal') Create Team
-    hr
 
+    .small-12.large-centered.columns.centered#createTeamButton
+      a#createTeamButton.button(href='#', data-reveal-id='teamModal') Create Team
+  
     .row
       .large-centered.columns#all-teams
         ul#teams-list

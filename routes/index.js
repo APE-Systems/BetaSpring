@@ -39,7 +39,25 @@ module.exports = function(app) {
 
 //Rosters Page
   app.get('/:school/:team-:gender/roster', rosEvts.getRostersPage);
+  
+  app.get('/rostersPage', function(req, res) {
+    res.render('rostersPage', {
+      nav: 'University of Southern California'
+    })
+  });
 
+  app.get('/athleteProfile', function(req, res) {
+    res.render('athleteProfile', {
+      nav: 'University of Southern California'
+    })
+  });
+
+  app.get('/trainingTest', function(req, res) {
+    res.render('trainingTest', {
+      nav: 'University of Southern California'
+    })
+  });
+  
     //ATHLETES
   app.post('/:school/:team-:gender/roster/athlete', rosEvts.createAthlete);
   app.put('/:school/:team-:gender/roster/athlete/:id', rosEvts.updateAthlete);

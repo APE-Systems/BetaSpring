@@ -5794,14 +5794,18 @@ a.th {
     max-width: 800px; }
 
 /* line 1, ../_scss/partials/_teams-page.scss */
+#createTeamButton {
+  margin-top: 10px; }
+
+/* line 6, ../_scss/partials/_teams-page.scss */
 .white {
   color: white; }
 
-/* line 4, ../_scss/partials/_teams-page.scss */
+/* line 9, ../_scss/partials/_teams-page.scss */
 #all-teams ul {
   list-style-type: none; }
 
-/* line 8, ../_scss/partials/_teams-page.scss */
+/* line 13, ../_scss/partials/_teams-page.scss */
 #all-teams li {
   list-style: none;
   background: #383c3a;
@@ -5811,7 +5815,7 @@ a.th {
   min-width: 190px;
   max-width: 28%; }
 
-/* line 19, ../_scss/partials/_teams-page.scss */
+/* line 24, ../_scss/partials/_teams-page.scss */
 #all-teams span {
   display: block;
   font-weight: bold;
@@ -5820,7 +5824,7 @@ a.th {
   padding: 3px 0;
   color: white; }
 
-/* line 28, ../_scss/partials/_teams-page.scss */
+/* line 33, ../_scss/partials/_teams-page.scss */
 #all-teams ul li button {
   font-size: 0.77778em;
   line-height: 1.28571em;
@@ -5830,37 +5834,37 @@ a.th {
   display: block;
   width: 100%; }
 
-/* line 38, ../_scss/partials/_teams-page.scss */
+/* line 43, ../_scss/partials/_teams-page.scss */
 #teams-list > li h3 {
   margin-bottom: 0.1em;
   color: white;
   /* text-transform:capitalize; */ }
 
-/* line 46, ../_scss/partials/_teams-page.scss */
+/* line 51, ../_scss/partials/_teams-page.scss */
 #teams-list a > i {
   color: gray; }
-/* line 49, ../_scss/partials/_teams-page.scss */
+/* line 54, ../_scss/partials/_teams-page.scss */
 #teams-list a > i:hover {
   color: white; }
-/* line 53, ../_scss/partials/_teams-page.scss */
+/* line 58, ../_scss/partials/_teams-page.scss */
 #teams-list a > i.foundicon-checkmark {
   color: green; }
-/* line 57, ../_scss/partials/_teams-page.scss */
+/* line 62, ../_scss/partials/_teams-page.scss */
 #teams-list a > i.foundicon-remove {
   color: #9c0012; }
 
-/* line 67, ../_scss/partials/_teams-page.scss */
+/* line 72, ../_scss/partials/_teams-page.scss */
 input[type=submit] {
   margin-top: 0.6em;
   background-color: #9c0012;
   padding: 10px;
   color: white; }
 
-/* line 74, ../_scss/partials/_teams-page.scss */
+/* line 79, ../_scss/partials/_teams-page.scss */
 input[type=submit]:hover {
   background-color: #69000c; }
 
-/* line 78, ../_scss/partials/_teams-page.scss */
+/* line 83, ../_scss/partials/_teams-page.scss */
 .box {
   width: 360px;
   height: 175px;
@@ -5872,24 +5876,24 @@ input[type=submit]:hover {
   background-color: #9c0012;
   position: relative; }
 
-/* line 92, ../_scss/partials/_teams-page.scss */
+/* line 97, ../_scss/partials/_teams-page.scss */
 .box:hover {
   background-color: #69000c; }
 
-/* line 96, ../_scss/partials/_teams-page.scss */
+/* line 101, ../_scss/partials/_teams-page.scss */
 .add-team-box {
   width: 190px;
   height: 170px; }
 
-/* line 101, ../_scss/partials/_teams-page.scss */
+/* line 106, ../_scss/partials/_teams-page.scss */
 .gray {
   background-color: #cccccc; }
 
-/* line 105, ../_scss/partials/_teams-page.scss */
+/* line 110, ../_scss/partials/_teams-page.scss */
 a#add-team {
   font-size: 150px; }
 
-/* line 110, ../_scss/partials/_teams-page.scss */
+/* line 115, ../_scss/partials/_teams-page.scss */
 .caption {
   position: absolute;
   width: 150px;
@@ -5900,16 +5904,16 @@ a#add-team {
   margin-top: -25px;
   /*z-index: 100; */ }
 
-/* line 122, ../_scss/partials/_teams-page.scss */
+/* line 127, ../_scss/partials/_teams-page.scss */
 li p {
   color: white;
   font-size: 2.5em; }
 
-/* line 127, ../_scss/partials/_teams-page.scss */
+/* line 132, ../_scss/partials/_teams-page.scss */
 .centered {
   text-align: center; }
 
-/* line 131, ../_scss/partials/_teams-page.scss */
+/* line 136, ../_scss/partials/_teams-page.scss */
 .centered-div {
   position: fixed;
   /*z-index: 100;  */
@@ -5919,31 +5923,31 @@ li p {
   width: 200px;
   height: 200px; }
 
-/* line 141, ../_scss/partials/_teams-page.scss */
+/* line 146, ../_scss/partials/_teams-page.scss */
 #gender {
   margin-bottom: 40px; }
 
-/* line 144, ../_scss/partials/_teams-page.scss */
+/* line 149, ../_scss/partials/_teams-page.scss */
 #myModal {
   background-color: #efefef; }
 
-/* line 148, ../_scss/partials/_teams-page.scss */
+/* line 153, ../_scss/partials/_teams-page.scss */
 .upimage {
   max-width: 150px; }
 
-/* line 152, ../_scss/partials/_teams-page.scss */
+/* line 157, ../_scss/partials/_teams-page.scss */
 #ape-nav li ul {
   display: none; }
 
-/* line 155, ../_scss/partials/_teams-page.scss */
+/* line 160, ../_scss/partials/_teams-page.scss */
 #side-nav li ul {
   display: none; }
 
-/* line 159, ../_scss/partials/_teams-page.scss */
+/* line 164, ../_scss/partials/_teams-page.scss */
 [contenteditable="true"] {
   outline: 3px dashed #CCC; }
 
-/* line 163, ../_scss/partials/_teams-page.scss */
+/* line 168, ../_scss/partials/_teams-page.scss */
 [contenteditable="false"] {
   outline: none; }
 
@@ -6155,19 +6159,20 @@ span.metric-measurement {
 
 /* line 104, ../_scss/screen.scss */
 .athlete-info dl {
-  line-height: .75em; }
+  line-height: .75em;
+  font-size: 0.9em; }
 
-/* line 107, ../_scss/screen.scss */
+/* line 108, ../_scss/screen.scss */
 .athlete-info dl dt {
   float: left;
   font-weight: bold;
   margin-right: 10px; }
 
-/* line 113, ../_scss/screen.scss */
+/* line 114, ../_scss/screen.scss */
 .roster-subnav {
   background-color: #F2F2F2; }
 
-/* line 119, ../_scss/screen.scss */
+/* line 120, ../_scss/screen.scss */
 .name-style {
   font-family: 'helvetica neue', helvetica, arial;
   font-size: 20px;
@@ -6175,67 +6180,87 @@ span.metric-measurement {
   letter-spacing: 1px;
   text-shadow: #262729 0 -1px 0; }
 
-/* line 127, ../_scss/screen.scss */
+/* line 128, ../_scss/screen.scss */
 .bold {
   font-weight: bolder; }
 
-/* line 131, ../_scss/screen.scss */
+/* line 132, ../_scss/screen.scss */
 .sub-nav {
   margin-bottom: 0em;
   margin-top: 1em;
   margin-left: 0em; }
 
-/* line 137, ../_scss/screen.scss */
+/* line 138, ../_scss/screen.scss */
 .sub-nav dd.active a {
   background: #9C0012; }
 
-/* line 145, ../_scss/screen.scss */
+/* line 146, ../_scss/screen.scss */
 input[type=submit] {
   background-color: #9c0012;
   padding: 10px;
   color: white; }
 
-/* line 151, ../_scss/screen.scss */
+/* line 152, ../_scss/screen.scss */
 input[type=submit]:hover {
   background-color: #69000c; }
 
-/* line 160, ../_scss/screen.scss */
+/* line 161, ../_scss/screen.scss */
 h5 {
   text-transform: uppercase; }
 
 /* ****************************************** */
-/* line 168, ../_scss/screen.scss */
+/* line 169, ../_scss/screen.scss */
 .athlete-canvas {
   background: #f2f2f2; }
 
-/* line 172, ../_scss/screen.scss */
+/* line 173, ../_scss/screen.scss */
 .display {
   margin-top: 20px;
   margin-bottom: 20px; }
 
-/* line 178, ../_scss/screen.scss */
+/* line 179, ../_scss/screen.scss */
 .row.athlete-canvas h4 {
   font-size: 1.2375em;
   font-weight: 500; }
 
-/* line 186, ../_scss/screen.scss */
+/* line 187, ../_scss/screen.scss */
 .athlete-canvas-metrics .large-2.columns {
   width: 20%;
   text-transform: uppercase;
   text-align: center; }
-/* line 192, ../_scss/screen.scss */
+/* line 193, ../_scss/screen.scss */
 .athlete-canvas-metrics h2 {
   margin-bottom: 0.2em;
   font-size: 3em;
   position: relative;
   top: -0.3em;
   font-weight: 400; }
-/* line 200, ../_scss/screen.scss */
+/* line 201, ../_scss/screen.scss */
 .athlete-canvas-metrics i {
   margin-bottom: 0;
   display: block;
   font-size: 3.9em;
   font-weight: 100; }
-/* line 206, ../_scss/screen.scss */
+/* line 207, ../_scss/screen.scss */
 .athlete-canvas-metrics .positive {
   color: #458b00; }
+
+/* ***************  Edit Metric Values ***************** */
+/* line 216, ../_scss/screen.scss */
+table.edit-metric-data-table {
+  overflow-y: scroll;
+  width: 100%; }
+  /* line 220, ../_scss/screen.scss */
+  table.edit-metric-data-table caption {
+    margin-bottom: 1.5em;
+    font-weight: bold; }
+  /* line 227, ../_scss/screen.scss */
+  table.edit-metric-data-table i.foundicon-checkmark {
+    color: green;
+    /* Over specified? Perhaps make this global */ }
+  /* line 231, ../_scss/screen.scss */
+  table.edit-metric-data-table i.foundicon-add-doc {
+    color: gray; }
+  /* line 235, ../_scss/screen.scss */
+  table.edit-metric-data-table tbody tr:hover {
+    background: rgba(156, 0, 18, 0.4); }
