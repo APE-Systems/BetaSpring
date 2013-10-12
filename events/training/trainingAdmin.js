@@ -58,21 +58,25 @@ var trainingAdminEvts = {
   },
 
   createMetric: function(req, res, next) {
-    console.log('Event: updateAthlete');
+    console.log('Event: createMetric');
 
-    trnadmOps.updateAthlete(req, function(err, athlete) {
+    trnadmOps.createMetric(req, function(err, mtr) {
       if (err) {
-        console.log("updateAthlete: Error\n", err.name);
+        console.log("createMetric: Error\n", err.name);
         res.json(err.rescode, {
           error: {
             id: err.id,
             msg: err.msg,
-            value: req.params.id
+            value: req.body
           }
         });
       } else {
-        console.log('updateAthlete: Success\n');
-        res.json(200, {id: athlete._id, name: athlete.name});
+        console.log('createMetric: Success\n');
+        res.json(200, {
+          id: mtr._id,
+          name: mtr.name,
+          meta: mtr.meta
+        });
       }
     });
   },
