@@ -65,8 +65,8 @@ module.exports = function(app) {
   app.put('/:school/:team-:gender/training/admin/metriccat/:id', trnAdmEvts.updateMetricCat);
   app.delete('/:school/:team-:gender/training/admin/metriccat/:id', trnAdmEvts.deleteMetricCat);
 
-  //   //METRICS
-  // app.post();
+    //METRICS
+  app.post('/:school/:team-:gender/training/admin/metric', trnAdmEvts.createMetric);
   // app.put();
   // app.delete();
 
