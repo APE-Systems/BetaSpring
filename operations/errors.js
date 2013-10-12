@@ -27,10 +27,17 @@ function cliErrors(err) {
     },
     "invalidIDinput": {
         id: errorId(),
-        code: "val03v1",
+        code: "val04v1",
         msg: "Not a valid id",
         rescode: 422,
         name: "invalidIDinput"
+    },
+    "Required": {
+        id: errorId(),
+        code: "val05v1",
+        msg: "Missing Required Field",
+        rescode: 400,
+        name: "Required"
     }
   };
 
