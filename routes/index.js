@@ -34,8 +34,8 @@ module.exports = function(app) {
   
     //TEAMS
   app.post('/:school/teams/:team-:gender', tmEvts.createTeam);
-  app.put('/:school/:team-:gender', tmEvts.updateTeam);
-  app.delete('/:school/:team-:gender', tmEvts.deleteTeam);
+  app.put('/:school/teams/:team-:gender', tmEvts.updateTeam);
+  app.delete('/:school/teams/:team-:gender', tmEvts.deleteTeam);
 
 //Rosters Page
   app.get('/:school/:team-:gender/roster', rosEvts.getRostersPage);
@@ -57,6 +57,12 @@ module.exports = function(app) {
       nav: 'University of Southern California'
     })
   });
+
+  app.get('/testAdmin', function(req, res) {
+    res.render('test-admin', {
+      nav: 'University of Southern California'
+    })
+  });
   
     //ATHLETES
   app.post('/:school/:team-:gender/roster/athlete', rosEvts.createAthlete);
@@ -73,6 +79,13 @@ module.exports = function(app) {
   app.post('/:school/:team-:gender/roster/group/:id/pullathletes', rosEvts.pullAthletesFromGroups);
 
 //Training Page
+
+  app.get('/testAdmin', function(req, res) {
+    res.render('testAdmin', {
+      nav: 'University of Southern California'
+    })
+  });
+
   app.get('/:school/:team-:gender/training', trnEvts.getTrainingPage);
     //SELECTIONS
   app.get('/:school/:team-:gender/training/group/:grp/metriccat/:mcat', trnEvts.onSelection);

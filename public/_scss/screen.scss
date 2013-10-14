@@ -24,6 +24,17 @@ hr {
 	margin-bottom: 2.25em;
 }
 
+table {
+	border-spacing: 0.3em;
+	width: 100%;
+	overflow-y: scroll;
+
+  tbody tr:hover {
+    background-color: rgba(156, 0, 18, .3);
+  }
+}
+
+
 /* THE STUFF BELOW IS FROM THE OLD _CSS/ROSTER.CSS PAGE. REFACTOR*/
 .roster-table {
 	width: 100%;
@@ -236,3 +247,27 @@ table.edit-metric-data-table {
 		background: $light-red;
 	}
 }
+
+  /************* Test Admin ************************ */
+  .metric-panel {
+  	margin-top: 20px;
+    background-color: #f2f2f2;
+  
+  	dl {
+  		line-height: 0.7em;
+  	}
+    dl dt {
+    	float: left;
+    	font-weight: bold;
+    	margin-right: 1em;
+    
+    	&:after {
+    	content: ":";
+    	}
+    }
+  }
+
+  .metric-panel-subnav {
+  	margin-top: 10px;
+  }
+

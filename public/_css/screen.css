@@ -6092,13 +6092,22 @@ hr {
 .large-centered {
   margin-bottom: 2.25em; }
 
+/* line 27, ../_scss/screen.scss */
+table {
+  border-spacing: 0.3em;
+  width: 100%;
+  overflow-y: scroll; }
+  /* line 32, ../_scss/screen.scss */
+  table tbody tr:hover {
+    background-color: rgba(156, 0, 18, 0.3); }
+
 /* THE STUFF BELOW IS FROM THE OLD _CSS/ROSTER.CSS PAGE. REFACTOR*/
-/* line 28, ../_scss/screen.scss */
+/* line 39, ../_scss/screen.scss */
 .roster-table {
   width: 100%; }
 
 /* TEAMS PAGE */
-/* line 36, ../_scss/screen.scss */
+/* line 47, ../_scss/screen.scss */
 .all-teams ul li button {
   display: block; }
 
@@ -6113,26 +6122,26 @@ LIGHT RED:; #9C0012;
 
 */
 /* TYPOGRAPHY */
-/* line 60, ../_scss/screen.scss */
+/* line 71, ../_scss/screen.scss */
 .athlete-photo img {
   display: block;
   width: 100%; }
 
-/* line 64, ../_scss/screen.scss */
+/* line 75, ../_scss/screen.scss */
 .vanity-plate {
   background-color: #f2f2f2;
   padding-top: 0.5em; }
 
-/* line 70, ../_scss/screen.scss */
+/* line 81, ../_scss/screen.scss */
 .athlete-photo button {
   display: block;
   width: 100%; }
 
-/* line 75, ../_scss/screen.scss */
+/* line 86, ../_scss/screen.scss */
 .athlete-metrics {
   text-align: center; }
 
-/* line 78, ../_scss/screen.scss */
+/* line 89, ../_scss/screen.scss */
 .athlete-metrics h3 {
   font-family: 'helvetica neue', helvetica, arial;
   font-size: 1.5em;
@@ -6140,39 +6149,39 @@ LIGHT RED:; #9C0012;
   letter-spacing: 1px;
   text-shadow: #262729 0 -1px 0; }
 
-/* line 86, ../_scss/screen.scss */
+/* line 97, ../_scss/screen.scss */
 .athlete-metrics span {
   display: block; }
 
-/* line 89, ../_scss/screen.scss */
+/* line 100, ../_scss/screen.scss */
 span.metric-value {
   font-size: 4.5em;
   font-weight: normal;
   line-height: 1; }
 
-/* line 96, ../_scss/screen.scss */
+/* line 107, ../_scss/screen.scss */
 span.metric-measurement {
   padding-top: 0.5em;
   font-size: 1.5em;
   line-height: 1;
   font-weight: 100; }
 
-/* line 104, ../_scss/screen.scss */
+/* line 115, ../_scss/screen.scss */
 .athlete-info dl {
   line-height: .75em;
   font-size: 0.9em; }
 
-/* line 108, ../_scss/screen.scss */
+/* line 119, ../_scss/screen.scss */
 .athlete-info dl dt {
   float: left;
   font-weight: bold;
   margin-right: 10px; }
 
-/* line 114, ../_scss/screen.scss */
+/* line 125, ../_scss/screen.scss */
 .roster-subnav {
   background-color: #F2F2F2; }
 
-/* line 120, ../_scss/screen.scss */
+/* line 131, ../_scss/screen.scss */
 .name-style {
   font-family: 'helvetica neue', helvetica, arial;
   font-size: 20px;
@@ -6180,87 +6189,108 @@ span.metric-measurement {
   letter-spacing: 1px;
   text-shadow: #262729 0 -1px 0; }
 
-/* line 128, ../_scss/screen.scss */
+/* line 139, ../_scss/screen.scss */
 .bold {
   font-weight: bolder; }
 
-/* line 132, ../_scss/screen.scss */
+/* line 143, ../_scss/screen.scss */
 .sub-nav {
   margin-bottom: 0em;
   margin-top: 1em;
   margin-left: 0em; }
 
-/* line 138, ../_scss/screen.scss */
+/* line 149, ../_scss/screen.scss */
 .sub-nav dd.active a {
   background: #9C0012; }
 
-/* line 146, ../_scss/screen.scss */
+/* line 157, ../_scss/screen.scss */
 input[type=submit] {
   background-color: #9c0012;
   padding: 10px;
   color: white; }
 
-/* line 152, ../_scss/screen.scss */
+/* line 163, ../_scss/screen.scss */
 input[type=submit]:hover {
   background-color: #69000c; }
 
-/* line 161, ../_scss/screen.scss */
+/* line 172, ../_scss/screen.scss */
 h5 {
   text-transform: uppercase; }
 
 /* ****************************************** */
-/* line 169, ../_scss/screen.scss */
+/* line 180, ../_scss/screen.scss */
 .athlete-canvas {
   background: #f2f2f2; }
 
-/* line 173, ../_scss/screen.scss */
+/* line 184, ../_scss/screen.scss */
 .display {
   margin-top: 20px;
   margin-bottom: 20px; }
 
-/* line 179, ../_scss/screen.scss */
+/* line 190, ../_scss/screen.scss */
 .row.athlete-canvas h4 {
   font-size: 1.2375em;
   font-weight: 500; }
 
-/* line 187, ../_scss/screen.scss */
+/* line 198, ../_scss/screen.scss */
 .athlete-canvas-metrics .large-2.columns {
   width: 20%;
   text-transform: uppercase;
   text-align: center; }
-/* line 193, ../_scss/screen.scss */
+/* line 204, ../_scss/screen.scss */
 .athlete-canvas-metrics h2 {
   margin-bottom: 0.2em;
   font-size: 3em;
   position: relative;
   top: -0.3em;
   font-weight: 400; }
-/* line 201, ../_scss/screen.scss */
+/* line 212, ../_scss/screen.scss */
 .athlete-canvas-metrics i {
   margin-bottom: 0;
   display: block;
   font-size: 3.9em;
   font-weight: 100; }
-/* line 207, ../_scss/screen.scss */
+/* line 218, ../_scss/screen.scss */
 .athlete-canvas-metrics .positive {
   color: #458b00; }
 
 /* ***************  Edit Metric Values ***************** */
-/* line 216, ../_scss/screen.scss */
+/* line 227, ../_scss/screen.scss */
 table.edit-metric-data-table {
   overflow-y: scroll;
   width: 100%; }
-  /* line 220, ../_scss/screen.scss */
+  /* line 231, ../_scss/screen.scss */
   table.edit-metric-data-table caption {
     margin-bottom: 1.5em;
     font-weight: bold; }
-  /* line 227, ../_scss/screen.scss */
+  /* line 238, ../_scss/screen.scss */
   table.edit-metric-data-table i.foundicon-checkmark {
     color: green;
     /* Over specified? Perhaps make this global */ }
-  /* line 231, ../_scss/screen.scss */
+  /* line 242, ../_scss/screen.scss */
   table.edit-metric-data-table i.foundicon-add-doc {
     color: gray; }
-  /* line 235, ../_scss/screen.scss */
+  /* line 246, ../_scss/screen.scss */
   table.edit-metric-data-table tbody tr:hover {
     background: rgba(156, 0, 18, 0.4); }
+
+/************* Test Admin ************************ */
+/* line 252, ../_scss/screen.scss */
+.metric-panel {
+  margin-top: 20px;
+  background-color: #f2f2f2; }
+  /* line 256, ../_scss/screen.scss */
+  .metric-panel dl {
+    line-height: 0.7em; }
+  /* line 259, ../_scss/screen.scss */
+  .metric-panel dl dt {
+    float: left;
+    font-weight: bold;
+    margin-right: 1em; }
+    /* line 264, ../_scss/screen.scss */
+    .metric-panel dl dt:after {
+      content: ":"; }
+
+/* line 270, ../_scss/screen.scss */
+.metric-panel-subnav {
+  margin-top: 10px; }

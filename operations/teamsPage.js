@@ -125,6 +125,7 @@ var teamsPageOps = {
       newGen: req.body["edit-team-gender"]
     };
 
+    console.log("val: " + val);
     validateInput(val, editTeam);
 
     function editTeam(err, team) {
@@ -141,6 +142,7 @@ var teamsPageOps = {
 
       var cond = {name: team.oldName, gender: team.oldGen};
       var update = {$set: {name: team.newName, gender: team.newGen}};
+      console.log(cond, '\n', update);
       info.Mods.Teams.findOneAndUpdate(cond, update, {new: true}, function(err, upDoc) {
         if (err) return evtCallback(dbErrors(err), null);
 

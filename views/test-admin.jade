@@ -1,0 +1,59 @@
+extends layout
+
+block content
+  include includes/mixins/mixins
+
+  .row
+    .small-12.columns.metric-panel
+      h4 Bench Press
+      dl
+        dt Metric Category
+        dd Strength
+        dt Measurement Types
+        dd Weight
+        dt Units
+        dd lbs
+
+  .row
+    .small-12.columns.metric-panel-subnav
+      .row
+        .small-4.columns
+          ul.button-group.radius
+            li
+              a.small.button.secondary(href='#', data-reveal-id='create-metric-modal') Create Metric
+            form.custom
+              select.medium(id='metric-category-dropdown')
+                option All
+                option Biometrics
+                option Strength
+                option Power
+                option Speed
+
+        .small-8.columns
+          ul.button-group.radius.right
+            li
+              a.small.button.secondary.disabled(href='#') Remove from Category
+            li
+              a.small.button.secondary(href='#') Create Metric Category
+
+    .small-12.columns
+      table
+        col(style='width: 10%')
+        col(style='width: 90%')
+        thead
+          tr
+            th &nbsp;
+            th Metric Name
+        tbody
+          +test-admin-row('Bench Press')
+          +test-admin-row('Back Squat')
+          +test-admin-row('Body Row')
+          +test-admin-row('Body Weight')
+          +test-admin-row('Body Fat %')
+          +test-admin-row('Barbell Row')
+          +test-admin-row('Neck Girth')
+          +test-admin-row('40 Yard Spring')
+          +test-admin-row('Power Clean')
+          +test-admin-row('Hang Clean')
+
+

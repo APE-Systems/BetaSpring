@@ -12,10 +12,17 @@ $(function() {
     toggleContentEditable(team);
 
     if (contentIsEditable(team)) {
+
+      var oldTeam = $(this).closest('li').find('h3').text();
+      var oldGender = $(this).closest('li').find('span').text();
+
       $(this).closest('li').find('.team-buttons').hide();
       $(this).closest('li').find('.team-edits').show();
+
+      propagateEdit(oldTeam, oldGender);
     }
   });
+
 
   function contentIsEditable(el) {
     if (el.attr('contenteditable') == 'true') {
@@ -39,22 +46,36 @@ $(function() {
     $(this).closest('li').find('.team-edits').hide();
   });
 
+  function propagateEdit(oldTeam, oldGender) {
 
-  $('a.save-team').on('click', function() {
+    $('a.save-team').off('click').on('click', function() {
+
     var school = $("#school-name").text();
     var team = $(this).closest('li').find('h3').text();
     var gender = $(this).closest('li').find('span').text();
     console.log('school: ' + school + '\n team: ' + 'team' + '\n gender: ' + gender)
     $.ajax({
-      url: '/',
-      data: data,
-      type: 'post'
+      url: '/' + school + '/teams/' + oldTeam + '-' + oldGender,
+      data: {"edit-team-name" : team, "edit-team-gender" : gender},
+      dataType: 'json',
+      type: 'put'
+    })
+    .done(function() {
+        console.log('save new team name successful');
+    })
+      .fail(function(err) {
+        console.log('save new team name failed');
+    })
+      .always(function() {
+        console.log('end save-team function');
     });
 
     $(this).closest('li').find('h3').attr('contenteditable', 'false');
     $(this).closest('li').find('.team-buttons').show();
     $(this).closest('li').find('.team-edits').hide();
   });
+  }
+
 
 
   //* DELETE TEAM EVENT LISTENER ************ /
@@ -71,7 +92,7 @@ $(function() {
     school = $("#school-name").text();
     team = self.closest('li').find('h3').text();
     gender = self.closest('li').find('span').text();
-    url = '/' + school + '/' + team + '-' + gender;
+    url = '/' + school + '/teams/' + team + '-' + gender;
     console.log('url:\n', url);
 
     
@@ -96,8 +117,7 @@ $(function() {
           self.parent().remove();
       })
       .fail(function(err) {
-        console.log('error:\n', err);
-        alert('error:\n', err);
+
       })
       .always(function() {
         $('a.close-reveal-modal').trigger('click');
@@ -133,9 +153,10 @@ $(function() {
     
     }).done(function(data) {
       console.log("data saved: " + data);
-      $("#teams-list").append("<li><h3 class='capitalize'>" + 
-        data.name + "</h3><span class='capitalize'>" + 
-        data.gender + "</span></li>");
+      window.location.reload()
+      //$("#teams-list").append("<li><h3 class='capitalize'>" + 
+      //  data.name + "</h3><span class='capitalize'>" + 
+      //  data.gender + "</span></li>");
       $('a.close-reveal-modal').trigger('click');
     
     }).fail(function(data) {
@@ -145,7 +166,7 @@ $(function() {
     }).always(function() {
       
     }); // ajax
-
+    event.preventDefault();
   }); // create form on subsmit
 
 });
