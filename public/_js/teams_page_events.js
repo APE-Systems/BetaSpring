@@ -1,9 +1,9 @@
-$(function() {
+(function ($) {
 
 
   $('.team-edits').hide();
 
-  $('ul#teams-list').on('click', 'a.edit-team', function(event) {
+  $('ul#teams-list').on('click', 'a.edit-team', function (event) {
     var self = $(this);
     console.log(self);
     var team = $(this).closest('li').find('h3');
@@ -80,10 +80,10 @@ $(function() {
     doesThisWork(self, url);
   });//DELETE TEAM END
 
-  function doesThisWork(self, url) {
+  function doesThisWork (self, url) {
 
     //EVENT LISTENER ON YES
-    $('form#delete-team-form').off('click').on('click', function(event) {
+    $('form#delete-team-form').off('click').on('click', function (event) {
       // event.preventDefault();
       console.log('delete-team confirmed');
       $.ajax({
@@ -91,15 +91,15 @@ $(function() {
         type: "DELETE",
         dataType: "json"
       })
-      .done(function() {
-          console.log('delete successful');
-          self.parent().remove();
+      .done(function () {
+        console.log('delete successful');
+        self.parent().remove();
       })
-      .fail(function(err) {
+      .fail(function (err) {
         console.log('error:\n', err);
         alert('error:\n', err);
       })
-      .always(function() {
+      .always(function () {
         $('a.close-reveal-modal').trigger('click');
       });
 
@@ -107,20 +107,20 @@ $(function() {
   }
 
   /* Lists teams on page to check against before creating new team */
-  var teamsArray = $('#teams-list h3').map(function() {
+  var teamsArray = $('#teams-list h3').map(function () {
     return $(this).text();
   }).get();
-  
+
   var school = $('#school-name').text();
 
-  $('#create-team-submit').on("click", function(event) {
-    console.log("clicked from " + this );
+  $('#create-team-submit').on("click", function (event) {
+    console.log("clicked from " + this);
 
     var self, name, gender, url;
     self = $(this);
     name = $('#team-name').val();
     gender = $('#team-gender').val();
-    url = '/'+ school + '/teams/' + name + '-' + gender;
+    url = '/' + school + '/teams/' + name + '-' + gender;
 
     console.log("teamsArray:" + teamsArray);
     console.log($.inArray(name, teamsArray));
@@ -130,22 +130,22 @@ $(function() {
       type: 'POST',
       contentType: "application/x-www-form-urlencoded; charset=UTF-8",
       dataType: 'json'
-    
-    }).done(function(data) {
+
+    }).done(function (data) {
       console.log("data saved: " + data);
-      $("#teams-list").append("<li><h3 class='capitalize'>" + 
-        data.name + "</h3><span class='capitalize'>" + 
+      $("#teams-list").append("<li><h3 class='capitalize'>" +
+        data.name + "</h3><span class='capitalize'>" +
         data.gender + "</span></li>");
       $('a.close-reveal-modal').trigger('click');
-    
-    }).fail(function(data) {
+
+    }).fail(function (data) {
       console.log("failure: " + data);
       console.dir(data);
-    
-    }).always(function() {
-      
+
+    }).always(function () {
+
     }); // ajax
 
   }); // create form on subsmit
 
-});
+})(jQuery);

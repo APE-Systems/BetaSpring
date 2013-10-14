@@ -8,3 +8,11 @@ middleware/sessions.js
 cm
 README2.md
 */[a-zA-Z]*-ck.js
+
+.sass-cache
+codekit-config.json
+config.rb
+routes/codekit-ignore
+middleware/codekit-ignore
+events/codekit-ignore
+controllers/[a-zA-Z]*-ck.js
