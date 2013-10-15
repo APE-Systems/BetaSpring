@@ -9,30 +9,30 @@ block content
   include includes/mixins/mixins
   
   .row.dropdowns
-    form.custom
-      section#dropdown-selection
-        .groupDropdown
+    .small-10.small-centered.columns
+      form.custom
+        .small-2.columns.groupDropdown
           label(for='groupDropdown') Group
           select.medium(id='groupDropdown')
             option All
             option Group 1
             option Group 2
-        .categoryDropdown
+        .small-2.columns.categoryDropdown
           label(for='categoryDropdown') Category
           select.medium(id='categoryDropdown')
             option Strength
             option Power
             option Whatevs
-        .metricDropdown
+        .small-4.columns.metricDropdown
           label(for='metricDropdown') Metric
           select.medium(id='metricDropdown')
             option Power Clean
-        .unitTypeDropdown
+        .small-2.columns.unitTypeDropdown
           label(for='unitTypeDropdown') Unit Type
           select.medium(id='unitTypeDropdown')
             option kg
             option lb
-        .dateDropdown
+        .small-2.columns.dateDropdown
           label(for='dp') Date
           input(type='text', value='10/20/2013', id='dp') Test
 
