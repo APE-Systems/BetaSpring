@@ -34,7 +34,7 @@ block content
             li
               a.small.button.secondary.disabled(href='#') Remove from Category
             li
-              a.small.button.secondary(href='#') Create Metric Category
+              a.small.button.secondary(href='#', data-reveal-id='create-metric-category-modal') Create Metric Category
 
     .small-12.columns
       table
@@ -55,5 +55,14 @@ block content
           +test-admin-row('40 Yard Spring')
           +test-admin-row('Power Clean')
           +test-admin-row('Hang Clean')
+
+prepend scripts
+
+  #create-metric-category-modal.reveal-modal.small
+    h4 Create Metric Category
+    a.close-reveal-modal &#215;
+    form#create-metric-category-form(action='#', method='post', data-abide)
+      input#metric-category-name(type='text', name='metric-category-name', placeholder='Metric Category')
+      input#metric-category-name-submit(type='submit', value='Create')
 
 
