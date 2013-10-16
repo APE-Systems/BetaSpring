@@ -7,6 +7,7 @@ $light-gray: #f2f2f2;
 @import "foundation";
 @import "partials/teams-page";
 @import "partials/training-test";
+
 .red-button {
   @include button($button-med, #9C0012, false, false, false, false);
 }
@@ -19,6 +20,9 @@ hr {
   height: 0;
 }
 
+h5 {
+  text-transform: uppercase;
+}
 
 .large-centered {
 	margin-bottom: 2.25em;
@@ -145,10 +149,6 @@ span.metric-measurement {
 	background: #9C0012;
 }
 
-
-
-
-
 input[type=submit] {
   background-color: #9c0012;
   padding: 10px;
@@ -158,16 +158,6 @@ input[type=submit] {
 input[type=submit]:hover {
   background-color: #69000c;
 }
-
-
-
-
-
-
-h5 {
-	text-transform: uppercase;
-}
-
 
 
 
@@ -249,6 +239,7 @@ table.edit-metric-data-table {
     background-color: #f2f2f2;
   
   	dl {
+      width:300px;
   		line-height: 0.7em;
   	}
     dl dt {
