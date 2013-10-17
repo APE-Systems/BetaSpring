@@ -50,38 +50,11 @@ block content
           th Last Record
           th Input Data
       tbody
-        tr
-          td Kristopher 
-          td Washington
-          td 90
-            a(href='#', data-reveal-id='editDataModal'): i.foundicon-edit
-          td
-            input(type='text') 
-            a.medium.button.success.radius(href='#') Update
-        tr
-          td Douglas
-          td Bogie
-          td 67
-            a(href='#', data-reveal-id='editDataModal'): i.foundicon-edit
-          td
-            input(type='text') 
-            a.medium.button.success.radius(href='#') Update
-        tr
-          td Reggie
-          td Wayne
-          td 90
-            a(href='#'): i.foundicon-edit
-          td
-            input(type='text') 
-            a.medium.button.success.radius(href='#') Update
-        tr
-          td Isaiah
-          td T.Billings-Clyde
-          td 83
-            a(href='#'): i.foundicon-edit
-          td
-            input(type='text') 
-            a.medium.button.success.radius(href='#') Update
+        +training-test-row('Kristopher', 'Washington', '90')
+        +training-test-row('Douglas', 'Bogie', '67')
+        +training-test-row('Reggie', 'Wayne', '90')
+        +training-test-row('Isaiah', 'T-Billings Clyde', '83')
+ 
 
 prepend scripts
 

@@ -1,9 +1,9 @@
-mixin roster-row(first_name, last_name, position, group)
+mixin roster-row(firstName, lastName, position, group)
   tr
     td
       input(type='checkbox')
-    td #{first_name}
-    td #{last_name}
+    td #{firstName}
+    td #{lastName}
     td #{position}
     td #{group}
 
@@ -26,3 +26,14 @@ mixin edit-data-row(date, value)
     td
       a
         i.foundicon-add-doc
+
+
+mixin training-test-row(firstName, lastName, lastRecord)
+  tr
+    td #{firstName}
+    td #{lastName}
+    td #{lastRecord}
+      a(href='#'): i.foundicon-edit
+    td
+      input(type='text')
+      a.small.button.success.radius(href='#') Update

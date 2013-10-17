@@ -116,14 +116,10 @@
         console.log('delete successful');
         self.parent().remove();
       })
-<<<<<<< HEAD
-      .fail(function(err) {
 
-=======
       .fail(function (err) {
         console.log('error:\n', err);
         alert('error:\n', err);
->>>>>>> a554f0604e387616e23168d93c87a2e90aff1295
       })
       .always(function () {
         $('a.close-reveal-modal').trigger('click');
@@ -159,16 +155,12 @@
 
     }).done(function (data) {
       console.log("data saved: " + data);
-<<<<<<< HEAD
-      window.location.reload()
+
+      window.location.reload();
       //$("#teams-list").append("<li><h3 class='capitalize'>" + 
       //  data.name + "</h3><span class='capitalize'>" + 
       //  data.gender + "</span></li>");
-=======
-      $("#teams-list").append("<li><h3 class='capitalize'>" +
-        data.name + "</h3><span class='capitalize'>" +
-        data.gender + "</span></li>");
->>>>>>> a554f0604e387616e23168d93c87a2e90aff1295
+
       $('a.close-reveal-modal').trigger('click');
 
     }).fail(function (data) {
