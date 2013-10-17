@@ -257,14 +257,14 @@ var trainingAdminOps = {
       // console.log('newMtr:\n', newMtr);
       // return evtCallback(null, newMtr);
       info.metric = newMtr;
-      return propagateMetricCreate(info, evtCallback);
-      // newMtr.save(function(err) {
-      //   if (err) return evtCallback(dbErrors(err), null);
-      //   console.log('MCat saved:\n', newMtr.name);
+      // return propagateMetricCreate(info, evtCallback);
+      newMtr.save(function(err) {
+        if (err) return evtCallback(dbErrors(err), null);
+        console.log('Metric saved:\n', newMtr.name);
 
-      //   info.mCat = newMtr;
-      //   return propagateMCatCreate(info, evtCallback);
-      // });
+        info.mCat = newMtr;
+        return propagateMetricCreate(info, evtCallback);
+      });
     }
   },
 
@@ -272,8 +272,47 @@ var trainingAdminOps = {
 
   },
 
-  deleteMetric: function() {
+  deleteMetric: function(req, evtCallback) {
+    console.log('Operation: deleteMetric');
+    //Note:
+    //  delete metric only if a parent metric category accompanies it 
+    var val = {
+      tname: req.params.team,
+      gender: req.params.gender,
+      mid: req.params.id,
+      mcat: req.body.mcat
+    };
 
+    return validateInput(val, removeMetric);
+
+    function removeMetric(err, input) {
+      if (err) return evtCallback(err, null);
+
+      var info = {
+        team: {name: input.tname, gender: input.gender},
+        sess: req.sess,
+        Mods: req.models,
+        mid: input.mid,
+        mcat: input.mcat
+      };
+      var cond = {
+        school: info.sess.school,
+        'teams.name': info.team.name,
+        'teams.gender': info.team.gender,
+        _id: info.mid
+      };
+      // var update = {
+      //   $set: {removed: true}
+      // };
+
+      info.Mods.Metrics.findOneAndRemove(cond, function(err, rmDoc) {
+        if (err) return evtCallback(dbErrors(err), null);
+      console.log('Metric removed:\n', rmDoc.name);
+
+      info.metric = rmDoc;
+      return propagateMetricDelete(info, evtCallback);
+      });
+    }
   },
 
   pushMetricToMCat: function(req, evtCallback) {
@@ -437,11 +476,10 @@ var trainingAdminOps = {
 
 /*
   ------ HELPER FUNCTIONS ------
- */
+*/
 
 
   // ---- METRIC CATEGORY ---- //
-
 function propagateMCatUpdate(info, evtCallback) {
   console.info('propagating metric category');
 
@@ -560,48 +598,68 @@ function propagateMCatCreate(info, evtCallback) {
 
 
   // ---- METRIC ---- //
+function propagateMetricDelete(delMetric, evtCallback) {
+  console.info('propagating delMetric');
+  deleteMCatMetric();
 
-function propagateMetricDelete(delGroup, evtCallback) {
-  console.info('propagating delGroup');
-  deleteCoachGroup(delGroup);
+  function deleteMCatMetric() {
+    console.log('deleteMCatMetric');
 
-  function deleteCoachGroup(delGroup) {
-    console.log('deleteCoachGroup');
-
-    //TODO:
-    //  delete a single coach group rather all coaches?
-    var cond = {school: delGroup.sess.school, "groups.name": delGroup.name};
-    delGroup.Mods.Coaches.update(cond, delGroup.update, function(err, numUp) {
+    var cond = {
+      school: delMetric.sess.school,
+      team: delMetric.team,
+      "metrics.name": delMetric.metric.name,
+      name: delMetric.mcat
+      };
+    var update = {
+      $pull: {metrics: {name: delMetric.metric.name}}
+    };
+    delMetric.Mods.MetricCats.update(cond, update, function(err, numUp, raw) {
       if (err) return evtCallback(dbErrors(err), null);
-      console.log('coach:\n', numUp);
+      console.log('MCat:\n', numUp, raw);
 
-      deleteTeamGroup(delGroup);
+      deleteTeamMetric();
       return;
     });
   }
 
-  function deleteTeamGroup(delGroup) {
-    console.log('deleteTeamGroup');
+  function deleteTeamMetric() {
+    console.log('deleteTeamMetric');
 
-    var cond = {school: delGroup.sess.school, name: delGroup.team.name, gender: delGroup.team.gender, "groups.name": delGroup.name};
-    delGroup.Mods.Teams.update(cond, delGroup.update, function(err, numUp) {
+    var cond = {
+      school: delMetric.sess.school,
+      name: delMetric.team.name,
+      gender: delMetric.team.gender,
+      "mtrcats.name": delMetric.mcat
+    };
+    var update = {
+      $pull:{'mtrcats.$.metrics': {name: delMetric.metric.name}}
+    };
+    delMetric.Mods.Teams.update(cond, update, function(err, numUp, raw) {
       if (err) return evtCallback(dbErrors(err), null);
-      console.log('team:\n', numUp);
+      console.log('Team:\n', numUp, raw);
 
-      updateMetricCatGroup(delGroup);
+      deleteAthleteMetric();
       return;
     });
   }
 
-  function updateMetricCatGroup(delGroup) {
-    console.log('updateMetricCatGroup');
+  function deleteAthleteMetric() {
+    console.log('deleteAthleteMetric');
 
-    var cond = {school: delGroup.sess.school, team: delGroup.team, "groups.name": delGroup.name};
-    delGroup.Mods.Athletes.update(cond, delGroup.update, {multi:true}, function(err, numUp) {
+    var cond = {
+      school: delMetric.sess.school,
+      team: delMetric.team,
+      "mtrcats.name": delMetric.mcat
+    };
+    var update = {
+      $pull:{'mtrcats.$.metrics': {name: delMetric.metric.name}}
+    };
+    delMetric.Mods.Athletes.update(cond, update, {multi:true}, function(err, numUp, raw) {
       if (err) return evtCallback(dbErrors(err) , null);
-      console.log('athlete:\n', numUp);
+      console.log('Athletes:\n', numUp, raw);
 
-      return evtCallback(null, delGroup.doc);
+      return evtCallback(null);
     });
   }
 }//END
@@ -657,14 +715,14 @@ function propagateMetricCreate(info, evtCallback) {
 
   function insertTeamMetricMCat() {
     console.log('Inserting into Team');
-    console.log(info);
+    // console.log(info);
     var cond = {name: info.team.name, gender: info.team.gender, 'mtrcats.name': info.mcat};
     var update = {$push: {'mtrcats.$.metrics': {_id: info.metric._id, name: info.metric.name}}};
 
-    info.Mods.Teams.findOne(cond, function(err, numUp) {
-    // info.Mods.Teams.update(cond, update, function(err, numUp) {
+    // info.Mods.Teams.findOne(cond, function(err, numUp) {
+    info.Mods.Teams.update(cond, update, function(err, numUp) {
       if (err) return evtCallback(dbErrors(err), null);
-      console.log(numUp);
+      console.log('Team:\n', numUp);
 
       return insertMCatMetric();
     });
@@ -675,10 +733,10 @@ function propagateMetricCreate(info, evtCallback) {
     var cond = {team: info.team, name: info.mcat};
     var update= {$push: {metrics: {_id: info.metric._id, name: info.metric.name}}};
 
-    info.Mods.MetricCats.findOne(cond, function(err, numUp) {
-    // info.Mods.MetricCats.update(cond, update, function(err, numUp) {
+    // info.Mods.MetricCats.findOne(cond, function(err, numUp) {
+    info.Mods.MetricCats.update(cond, update, function(err, numUp) {
       if (err) return evtCallback(dbErrors(err), null);
-      console.log(numUp);
+      console.log('MCAT:\n', numUp);
 
       return evtCallback(null, info.metric);
     });

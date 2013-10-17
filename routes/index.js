@@ -60,6 +60,7 @@ module.exports = function(app) {
 
 //Training Admin
   app.get('/:school/:team-:gender/training/admin', trnAdmEvts.getTrainingAdmin);
+
     //METRICCATS
   app.post('/:school/:team-:gender/training/admin/metriccat', trnAdmEvts.createMetricCat);
   app.put('/:school/:team-:gender/training/admin/metriccat/:id', trnAdmEvts.updateMetricCat);
@@ -68,7 +69,7 @@ module.exports = function(app) {
     //METRICS
   app.post('/:school/:team-:gender/training/admin/metric', trnAdmEvts.createMetric);
   // app.put();
-  // app.delete();
+  app.delete('/:school/:team-:gender/training/admin/metric/:id', trnAdmEvts.deleteMetric);
 
   //   //METRICCATS + METRICS
   // app.post();

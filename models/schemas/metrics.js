@@ -46,6 +46,7 @@ var MetricSchema = module.exports = new Schema({
     , instructions: [String]
     , video: [String]
     }
+  , removed: {type: Boolean, default: false}
 },
   {
     collection: 'metrics',

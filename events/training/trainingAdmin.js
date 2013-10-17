@@ -57,30 +57,6 @@ var trainingAdminEvts = {
     });
   },
 
-  createMetric: function(req, res, next) {
-    console.log('Event: createMetric');
-
-    trnadmOps.createMetric(req, function(err, mtr) {
-      if (err) {
-        console.log("createMetric: Error\n", err.name);
-        res.json(err.rescode, {
-          error: {
-            id: err.id,
-            msg: err.msg,
-            value: req.body
-          }
-        });
-      } else {
-        console.log('createMetric: Success\n');
-        res.json(200, {
-          id: mtr._id,
-          name: mtr.name,
-          meta: mtr.meta
-        });
-      }
-    });
-  },
-
   updateMetricCat: function(req, res, next) {
     console.log('Event: updateMetricCat');
 
@@ -97,26 +73,6 @@ var trainingAdminEvts = {
       } else {
         console.log('updateMetricCat: Success');
         res.json(200, {_id: mcat.id, name: mcat.name});
-      }
-    });
-  },
-
-  updateMetric: function(req, res, next) {
-    console.log('Event: createGroup');
-
-    trnadmOps.createGroup(req, function(err, group) {
-      if (err) {
-        console.log("createGroup: Error\n", err.name);
-        res.json(err.rescode, {
-          error: {
-            id: err.id,
-            msg: err.msg,
-            value: req.params.group
-          }
-        });
-      } else {
-        console.log('createGroup: Success\n');
-        res.json(201, {id: group._id, name: group.name});
       }
     });
   },
@@ -141,12 +97,36 @@ var trainingAdminEvts = {
     });
   },
 
-  deleteMetric: function(req, res, next) {
-    console.log('Event: deleteGroup');
+  createMetric: function(req, res, next) {
+    console.log('Event: createMetric');
 
-    trnadmOps.deleteGroup(req, function(err, group) {
+    trnadmOps.createMetric(req, function(err, mtr) {
       if (err) {
-        console.log("deleteGroup: Error\n", err.name);
+        console.log("createMetric: Error\n", err.name);
+        res.json(err.rescode, {
+          error: {
+            id: err.id,
+            msg: err.msg,
+            value: req.body
+          }
+        });
+      } else {
+        console.log('createMetric: Success\n');
+        res.json(200, {
+          id: mtr._id,
+          name: mtr.name,
+          meta: mtr.meta
+        });
+      }
+    });
+  },
+
+  updateMetric: function(req, res, next) {
+    console.log('Event: createGroup');
+
+    trnadmOps.createGroup(req, function(err, group) {
+      if (err) {
+        console.log("createGroup: Error\n", err.name);
         res.json(err.rescode, {
           error: {
             id: err.id,
@@ -155,7 +135,27 @@ var trainingAdminEvts = {
           }
         });
       } else {
-        console.log('deleteGroup: Success\n');
+        console.log('createGroup: Success\n');
+        res.json(201, {id: group._id, name: group.name});
+      }
+    });
+  },
+
+  deleteMetric: function(req, res, next) {
+    console.log('Event: deleteMetric');
+
+    trnadmOps.deleteMetric(req, function(err, group) {
+      if (err) {
+        console.log("deleteMetric: Error\n", err.name);
+        res.json(err.rescode, {
+          error: {
+            id: err.id,
+            msg: err.msg,
+            value: req.params.group
+          }
+        });
+      } else {
+        console.log('deleteMetric: Success\n');
         res.send(204);
       }
     });
