@@ -732,21 +732,13 @@ function propagateMetricUpdate(upMetric, evtCallback) {
   }
 
   function updateTeamMetric() {
-    console.log('updateTeamMetric');
+    console.log('\nupdateTeamMetric');
 
     var cond = {
       school: upMetric.sess.school,
       name: upMetric.tname,
       gender: upMetric.gender,
       'mtrcats.name': upMetric.mcat
-    };
-    console.log('condition\n', cond);
-    var update = {
-      $pull: {mtrcats: {'metrics.$.name':upMetric.mname}},
-      $push: {mtrcats: {'metrics.$.name':{
-        _id: upMetric.metric._id,
-        name: upMetric.metric.name
-      }}}
     };
 
     upMetric.Mods.Teams.findOne(cond, {mtrcats:1}, function(err, team) {
@@ -770,7 +762,7 @@ function propagateMetricUpdate(upMetric, evtCallback) {
               // console.log(el.metrics[sind]);
               team.save(function(err) {
                 if (err) return evtCallback(dbErrors(err), null);
-                console.log('saved team edits');
+                console.log('saved team edits:', team._id);
                 return updateAthleteMetric(null, upMetric.metric);
               });
             }
@@ -781,23 +773,53 @@ function propagateMetricUpdate(upMetric, evtCallback) {
   }
 
   function updateAthleteMetric() {
-    console.log('updateAthleteMetric');
+    console.log('\nupdateAthleteMetric');
 
     var cond = {
       school: upMetric.sess.school,
-      "coaches.username": upMetric.sess.username,
-      "coaches.name": upMetric.sess.name,
-      "groups.name": upMetric.oldGroup
-    };
-    var update = {
-      $set: {'groups.$.name': upMetric.newMetric}
+      team: {
+        name: upMetric.tname,
+        gender: upMetric.gender,
+      },
+      'mtrcats.name': upMetric.mcat
     };
 
-    upMetric.Mods.Athletes.update(cond, update, {multi: true}, function(err, numUp) {
+    upMetric.Mods.Athletes.find(cond, {mtrcats:1}, function(err, athletes) {
       if (err) return evtCallback(dbErrors(err), null);
-      console.log('athletes:', numUp);
 
-      evtCallback(null, upMetric.doc);
+      if (!athletes)
+        return evtCallback(cliErrors('notFound'), null);
+
+      var count = 0;
+      var total = athletes.length;
+      athletes.forEach(function(athlete, ix, ax) {
+        athlete.mtrcats.forEach(function(el, ind, arr) {
+          if (el.name === upMetric.mcat) {
+            el.metrics.forEach(function(sel, sind, arr) {
+              if (sel.name === upMetric.oldName) {
+                // console.log(el.metrics[sind].name);
+                el.metrics[sind].name = upMetric.metric.name;
+                // console.log(el.metrics[sind]);
+                athlete.save(function(err) {
+                  if (err) {
+                    console.log('\n------')
+                    console.log('error saving an athlete:', err);
+                    console.log('athletes:\n', athletes);
+                    console.log('\n------')
+                    return evtCallback(dbErrors(err), null);
+                  }
+                  console.log('saved athlete edits:', athlete._id);
+                  count++
+                  if (count === total) {
+                    console.log('done');
+                    return evtCallback(null, upMetric.metric);
+                  }
+                });
+              }
+            });
+          }
+        });
+      });
     });
   }
 }//END
