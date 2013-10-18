@@ -122,11 +122,11 @@ var trainingAdminEvts = {
   },
 
   updateMetric: function(req, res, next) {
-    console.log('Event: createGroup');
+    console.log('Event: updateMetric');
 
-    trnadmOps.createGroup(req, function(err, group) {
+    trnadmOps.updateMetric(req, function(err, metric) {
       if (err) {
-        console.log("createGroup: Error\n", err.name);
+        console.log("updateMetric: Error\n", err.name);
         res.json(err.rescode, {
           error: {
             id: err.id,
@@ -135,8 +135,8 @@ var trainingAdminEvts = {
           }
         });
       } else {
-        console.log('createGroup: Success\n');
-        res.json(201, {id: group._id, name: group.name});
+        console.log('updateMetric: Success\n');
+        res.json(200, {id: metric._id, name: metric.name});
       }
     });
   },

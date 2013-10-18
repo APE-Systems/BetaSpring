@@ -68,7 +68,7 @@ module.exports = function(app) {
 
     //METRICS
   app.post('/:school/:team-:gender/training/admin/metric', trnAdmEvts.createMetric);
-  // app.put();
+  app.put('/:school/:team-:gender/training/admin/metric/:id', trnAdmEvts.updateMetric);
   app.delete('/:school/:team-:gender/training/admin/metric/:id', trnAdmEvts.deleteMetric);
 
   //   //METRICCATS + METRICS

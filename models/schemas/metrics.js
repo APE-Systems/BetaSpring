@@ -13,18 +13,19 @@ var MetricSchema = module.exports = new Schema({
     createdBy: {type: ObjIdType, required: true}
   , createdOn: {type: Date, required: true, default: Date.now}
   , school: {type: String, required: true}
-  , teams: [{
+  , team:{
       name: {type: String, required: true}
     , gender: {type: String, required: true}
-    }]
+    }
 
     //LO
   , athletes: [{
       name: {type: String, required: true}
     }]
-  , mtrcats: [{
-      name: {type: String, required: true}
-    }]
+  , mtrcat: {
+      _id: {type: ObjIdType, required: true}
+    , name: {type: String, required: true}
+    }
   , groups: [{
       name: {type: String, required: true}
     }]
@@ -40,11 +41,11 @@ var MetricSchema = module.exports = new Schema({
     }
   , code: {type: String, required: true, index: {unique: true}}
   , meta: {
-      mtype: [{type: String, required: true}]
-    , units: [{type: String, required: true}]
+      mtype: {type: String, required: true}
+    , units: {type: String, required: true}
     , ttmetric: Boolean
-    , instructions: [String]
-    , video: [String]
+    , instructions: String
+    , video: String
     }
   , removed: {type: Boolean, default: false}
 },
