@@ -66,6 +66,7 @@ function dbErrors(err) {
     return Errors[err.code](err);
   }
   else {
+    console.log(err);
     err.id = errorId();
     err.msg = "Database error";
     err.rescode = 500;
