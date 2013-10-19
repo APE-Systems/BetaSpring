@@ -39,6 +39,7 @@ var GroupSchema = module.exports = new Schema({
     //properties
   , name: {type: String, required: true}
   , notes: [String]
+  , removed: {type: Boolean, default: false}
 },
   {
     collection: 'groups',

@@ -48,6 +48,7 @@ var AthleteSchema = module.exports = new Schema({
   , groups: [{
       name: {type: String, required: true}
     }]
+  , removed: {type: Boolean, default: false}
   }
 , {
     collection: 'athletes'

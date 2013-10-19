@@ -36,6 +36,7 @@ var CoachSchema = module.exports = new mongoose.Schema({
   , username: {type: String, required: true, index: {unique: true}}
   , name: {type: String, required: true, index: true}
   , admin: {type: String, required: true}
+  , removed: {type: Boolean, default: false}
   }
 , {
     collection: 'coaches'

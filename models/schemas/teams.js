@@ -43,7 +43,7 @@ var TeamSchema = module.exports = new Schema({
   , athletes: [{
       name: {type: String, required: true}
     }]
-  
+  , removed: {type: Boolean, default: false} 
   }
 , {
     collection: 'teams'

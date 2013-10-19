@@ -15,18 +15,19 @@ var AthMetricSchema = module.exports = new Schema({
   , createdOn: {type: Date, required: true, default: Date.now}
   , school: {type: String, required: true}
   , team: {
-      name: {type: String, required: true}
-    , gender: {type: String, required: true}
+      name: {type: String, required: true,index:true}
+    , gender: {type: String, required: true,index:true}
     }
 
     //LO
   , athlete: {
-      _id: {type: ObjIdType, required: true}
-    , name: {type: String, required: true, index: true}
+      _id: {type: ObjIdType, required: true,index:true}
+    , name: {type: String, required: true}
     }
-  , mtrcats: [{
-      name: {type: String, required: true}
-    }]
+  , mtrcat: {
+      _id: {type: ObjIdType, required: true,index:true}
+    , name: {type: String, required: true}
+    }
   , groups: [{
       name: {type: String, required: true}
     }]
@@ -38,22 +39,15 @@ var AthMetricSchema = module.exports = new Schema({
     }]
 
     //properties
-  , name: {type: String, required: true, index: true}
-  , code: {type: String, required: true}
-  , meta: {
-      mtype: [{type: String, required: true}]
-    , units: [{type: String, required: true}]
-    , ttmetric: Boolean
-    , instructions: [String]
-    , video: [String]
+  , metric: {
+      _id: {type: ObjIdType, required: true, index:true}
+    , name: {type: String, required: true}
     }
-  , data: [{
-      val: {type: String, required: true}
-    , dt: {type: Date, required: true}
-    , units: {type: String, required: true}
-    , note: String
-    , grp: String
-    }]
+  , data: {type: String, required: true, index:true}
+  , dt: {type: Date, required: true}
+  , units: {type: String, required: true}
+  , note: String
+  , grp: String
   },
   {
     collection: 'athmetrics',
@@ -67,7 +61,6 @@ AthMetricSchema.virtual('ATHMID').get(function() {
 });
 
 // compound indexes
-AthMetricSchema.index({'data.dt': 1});
-AthMetricSchema.index({"athlete._id": 1, name: 1}, {unique: true});
-AthMetricSchema.index({"team.name": 1, 'team.gender': 1});
-AthMetricSchema.index({"team.name": 1, 'team.gender': -1, name: 1, 'athlete.name': 1});
+AthMetricSchema.index({"team.name": 1, 'team.gender': -1, 'athlete._id':1, 'mtrcat._id':1, 'metric._id':1, dt:1}, {unique: true});
+AthMetricSchema.index({"team.name": 1, 'team.gender': -1, 'athlete._id':1, 'mtrcat._id':1, 'metric._id':1});
+AthMetricSchema.index({"team.name": 1, 'team.gender': -1, metric: 1});
