@@ -161,12 +161,19 @@ var trainingAdminEvts = {
     });
   },
 
+  //NOTE:
+  //  the following functions are not active
+  //  the create/update/delete of a metric by default
+  //  pushes and pulls into/from the models
+  //TODO:
+  //  create/update/delete a metric without needing
+  //  to have a parent
   pushMetricToMCat: function(req, res, next) {
-    console.log('EVENT: pushAthletesToGroups');
+    console.log('EVENT: pushMetricToMCats');
 
-    trnadmOps.pushAthletesToGroups(req, function(err) {
+    trnadmOps.pushMetricToMCats(req, function(err, metric) {
       if (err) {
-        console.log("pushAthletesToGroups: Error\n", err.name);
+        console.log("pushMetricToMCats: Error\n", err.name);
         res.json(err.rescode, {
           error: {
             id: err.id,
@@ -175,8 +182,12 @@ var trainingAdminEvts = {
           }
         });
       } else {
-        console.log('pushAthletesToGroups: Success\n');
-        res.send(204);
+        console.log('pushMetricToMCats: Success\n');
+        res.json({
+          _id: metric._id,
+          catName: metric.mtrcats.name,
+          mtrName: metric.name
+        });
       }
     });
   },
