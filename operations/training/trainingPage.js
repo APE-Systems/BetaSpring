@@ -12,7 +12,8 @@ var trainingPageOps = {
   getTrainingPage: function(req, evtCallback) {
     console.log('Operation: getTrainingPage');
 
-    var pgload = {
+    var pgload = {};
+    var info = {
       team: {
         name: req.params.team,
         gender: req.params.gender
@@ -21,51 +22,96 @@ var trainingPageOps = {
       Mods: req.models
     };
 
-    return getTeam(pgload);
+    return getTeam();
 
-    function getTeam(pgload) {
+    function getTeam() {
       //NOTE:
       //  assuming that all metricics belong to a metricCat
-      var query = {name: pgload.team.name, gender: pgload.team.gender};
+      var query = {name: info.team.name, gender: info.team.gender};
       var proj = {name:1,gender:1,groups:1,mtrcats:1,athletes:1}
-      pgload.Mods.Teams.findOne(query, proj, function(err, team) {
+      info.Mods.Teams.findOne(query, proj, function(err, team) {
         if (err) return evtCallback(dbErrors(err), null);
 
         if (!team)
           return evtCallback(cliErrors("notFound"), null);
 
-        return evtCallback(null, team);
+        return dataSort(team);
       });
     }//END
 
-    function getAthletesAndGroups(pgload) {
-      var query = {school: pgload.sess.school, team: pgload.team};
-      var proj = {name:1, position:1, year:1};
+    //NOTE:
+    //  sort the athletes, mtrcats and groups
+    function dataSort(team) {
+      console.log('sorting data');
+      team.athletes.sort(function (a, b) {
+        if (a.name > b.name)
+          return 1;
+        if (a.name < b.name)
+          return -1;
+        // a must be equal to b
+        return 0;
+      });
+      team.mtrcats.sort(function (a, b) {
+        if (a.name > b.name)
+          return 1;
+        if (a.name < b.name)
+          return -1;
+        // a must be equal to b
+        return 0;
+      });
+      team.groups.sort(function (a, b) {
+        if (a.name > b.name)
+          return 1;
+        if (a.name < b.name)
+          return -1;
+        // a must be equal to b
+        return 0;
+      });
+      pgload.team = team;
+      pgload.Today = new Date();
+      return getUnits(pgload);
+    }//END
 
-      pgload.Mods.Athletes.find(query, proj, function(err, athletes) {
+    //NOTE:
+    //  get the units associated with the first metric to display
+    function getUnits(pgload) {
+      var metric = pgload.team.mtrcats[0].metrics[0];
+      var query = {_id:metric._id};
+      var proj = {'meta.units':1}
+      info.Mods.Metrics.findOne(query, proj, function(err, mtr) {
         if (err) return evtCallback(dbErrors(err), null);
 
-        dataLoad.athletes = athletes;
-        return getTeamGroups(pgload);
+        pgload.units = mtr.meta.units;
+        // console.log(pgload);
+        return getAthmetrics(metric, pgload);
       });
     }//END
 
-    function getTeamGroups(pgload) {
-      var query = {school: pgload.sess.school, name: pgload.team.name, gender: pgload.team.gender};
-      var proj = {groups:1}
+    function getAthmetrics(metric, pgload) {
+      console.log('getting athmetrics');
+      //NOTE:
+      //  this grabs all athletes since 'all' groups is the default
+      var query = {
+        'team.name': pgload.team.name,
+        'team.gender': pgload.team.gender,
+        'metric.name': metric.name
+      };
+      var proj = 'athletes data dt';
+      info.Mods.Athmetrics.find(query).select(proj).exec(function(err, athm) {
+        console.log(athm);
+        if (err) return evtCallback(dbErrors(err), null);
 
-      pgload.Mods.Teams.findOne(query, proj, function(err, team) {
-        if (err) return evtCallback(dbErrors(err));
-
-        dataLoad.groups = team.groups;
-        return getAPElib(pgload);
+        return evtCallback(null, pgload);
       });
     }//END
 
-    function getAPElib(pgload) {
+    function getAPElib() {
       var apeLibPackage = {};
       var query = {};
-      var proj = {name:1, metrics:1};
+      var proj = {
+        name:1,
+        metrics:1
+      };
       APE.MetricCats.find(query, proj, function(err, mcs) {
         if (err) return evtCallback(dbErrors(err), null);
 
