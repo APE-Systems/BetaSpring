@@ -265,13 +265,13 @@ var rostersPageOps = {
   createGroup: function(req, evtCallback) {
     console.log('Operation: createGroup');
 
-    validateInput(req.params.group, insertGroup);
+    validateInput({name: req.params.group}, insertGroup);
 
     function insertGroup(err, group) {
       if (err) return evtCallback(err, null);
 
       var newGroup = {
-        name: req.params.group,
+        name: group.name,
         team: {name: req.params.team, gender: req.params.gender},
         sess: req.sess,
         Mods: req.models
