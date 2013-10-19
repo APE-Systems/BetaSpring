@@ -71,8 +71,6 @@ module.exports = function(app) {
   app.put('/:school/:team-:gender/training/admin/metric/:id', trnAdmEvts.updateMetric);
   app.delete('/:school/:team-:gender/training/admin/metric/:id', trnAdmEvts.deleteMetric);
 
-  //   //METRICCATS + METRICS
-  // app.post();
 
 //APE Library
     //Drag'N Drop
