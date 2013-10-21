@@ -1,15 +1,13 @@
-script(type='text/javascript', src='/_js/vendor/custom.modernizr.js')
-script(type='text/javascript', src='/_js/vendor/jquery/jquery-1.10.1.js')
-script(type='text/javascript', src='/_js/vendor/foundation/foundation.min.js')
-script(type='text/javascript', src='/_js/vendor/sidr/jquery.sidr.js')
-script(type='text/javascript', src='/_js/vendor/accordion/jquery.cookie.js')
-script(type='text/javascript', src='/_js/vendor/accordion/jquery.hoverIntent.minified.js')
-script(type='text/javascript', src='/_js/vendor/accordion/jquery.dcjqaccordion.2.7.min.js')
-script(type='text/javascript', src='/_js/vendor/foundation-datepicker.js')
 
-//-script(type='text/javascript', src='../_js/fetchAthlete.js')
-//-script(type='text/javascript', src='../_js/createTeams.js')
-script.
+<script type="text/javascript" src="/_js/vendor/custom.modernizr.js"></script>
+<script type="text/javascript" src="/_js/vendor/jquery/jquery-1.10.1.js"></script>
+<script type="text/javascript" src="/_js/vendor/foundation/foundation.min.js"></script>
+<script type="text/javascript" src="/_js/vendor/sidr/jquery.sidr.js"></script>
+<script type="text/javascript" src="/_js/vendor/accordion/jquery.cookie.js"></script>
+<script type="text/javascript" src="/_js/vendor/accordion/jquery.hoverIntent.minified.js"></script>
+<script type="text/javascript" src="/_js/vendor/accordion/jquery.dcjqaccordion.2.7.min.js"></script>
+<script type="text/javascript" src="/_js/vendor/foundation-datepicker.js"></script>
+<script>
   $(document).foundation();
   $(document).ready(function() {
   $('.roster-list').find('tr:first').addClass('highlight-table-row');
@@ -40,9 +38,9 @@ script.
     });
   $('#dp').fdatepicker(
     {format: 'mm-dd-yyyy'});
-
-
-
+    
+    
+    
   $('#create-group-form').on("submit", function(event) {
     console.log('clicked!');
     event.preventDefault();
@@ -61,9 +59,10 @@ script.
       console.log(msg);
     }).done(function(msg) {
       alert("data saved: " + msg);
-  
+      
     }).always(function() {
       $('a.close-reveal-modal').trigger('click');
     }); 
   }); //on submit - create group form
   }); // document ready
+</script>

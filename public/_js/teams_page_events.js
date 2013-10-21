@@ -1,6 +1,5 @@
 (function ($) {
 
-
   $('.team-edits').hide();
 
   $('ul#teams-list').on('click', 'a.edit-team', function (event) {
@@ -12,7 +11,6 @@
     toggleContentEditable(team);
 
     if (contentIsEditable(team)) {
-
       var oldTeam = $(this).closest('li').find('h3').text();
       var oldGender = $(this).closest('li').find('span').text();
 
