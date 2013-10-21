@@ -37,3 +37,37 @@ mixin training-test-row(firstName, lastName, lastRecord)
     td
       input(type='text')
       a.small.button.success.radius(href='#') Update
+
+
+mixin athlete-canvas-metric-row(metric, unit, date, latestRecord, latestTeamAvg, delta)
+  .row.athlete-canvas
+    .large-6.columns
+      h4 #{metric} (#{unit})
+    .large-6.columns
+      h4.right Last Record: #{date}
+    .large-12.spacer
+      hr
+    .row
+      .large-10.large-centered.columns.athlete-canvas-metrics
+        .row
+          .large-2.columns.latest-record
+            h2 #{latestRecord}
+            span Latest Record
+
+          .large-2.columns.latest-team-avg
+            h2 #{latestTeamAvg}
+            span Latest Team Avg.
+
+          .large-2.columns.delta
+            h2 #{delta}
+            span Delta Since Last
+
+          .large-2.columns.view-graph
+            a(href='#', data-reveal-id='viewGraphModal')
+              i.fi-graph-bar
+            span View Graph
+
+          .large-2.columns.edit-data
+            a(href='#', data-reveal-id='editDataModal')
+              i.fi-pencil
+            span Edit Data
