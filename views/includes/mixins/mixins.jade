@@ -33,7 +33,7 @@ mixin training-test-row(firstName, lastName, lastRecord)
     td #{firstName}
     td #{lastName}
     td #{lastRecord}
-      a(href='#'): i.foundicon-edit
+      a(href='#'): i.fi-pencil
     td
       input(type='text')
       a.small.button.success.radius(href='#') Update
@@ -59,7 +59,7 @@ mixin athlete-canvas-metric-row(metric, unit, date, latestRecord, latestTeamAvg,
             span Latest Team Avg.
 
           .large-2.columns.delta
-            h2 #{delta}
+            h2.positive #{delta}
             span Delta Since Last
 
           .large-2.columns.view-graph

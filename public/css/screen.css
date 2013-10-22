@@ -5098,7 +5098,7 @@ input[type=submit]:hover {
   top: -0.3em;
   font-weight: 400; }
 .athlete-canvas-metrics i {
-  margin-bottom: 0;
+  margin-bottom: 0.375em;
   display: block;
   font-size: 3.9em;
   font-weight: 100; }
