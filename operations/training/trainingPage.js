@@ -105,10 +105,10 @@ var trainingPageOps = {
           'metric.name': metric.name,
           'athlete._id': athID
         };
-        var proj = 'data dt';
+        var proj = 'athlete data dt';
         info.Mods.Athmetrics.find(query).exists('dt').select(proj).sort({dt:1}).limit(1).exec(function(err, athm) {
-        // info.Mods.Athmetrics.find(query).select(proj).sort({dt:1}).limit(1).exec(function(err, athm) {
-          console.log('athmetrics\n', athm);
+
+          // console.log('athmetrics\n', athm);
           if (err) return evtCallback(dbErrors(err), null);
 
           if (athm.length === 0) {
@@ -120,8 +120,9 @@ var trainingPageOps = {
           } else {
             // console.log('found\n', query, athm);
             pgload.athmetrics[athID] = {
-              data: athm.data,
-              date: athm.dt
+              data: athm[0].data,
+              date: athm[0].dt,
+              name: athm[0].athlete.name
             };
             count++
             if (count === num)
@@ -129,7 +130,6 @@ var trainingPageOps = {
           }
         });
       }
-
     }//END
 
     function getAPElib() {
