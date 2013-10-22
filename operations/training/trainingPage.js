@@ -89,45 +89,72 @@ var trainingPageOps = {
 
     function getAthmetrics(metric, pgload) {
       console.log('getting athmetrics');
-      //NOTE:
-      //  this grabs all athletes since 'all' groups is the default
-      var query = {
-        'team.name': pgload.team.name,
-        'team.gender': pgload.team.gender,
-        'metric.name': metric.name
-      };
-      var proj = 'athletes data dt';
-      info.Mods.Athmetrics.find(query).select(proj).exec(function(err, athm) {
-        console.log(athm);
-        if (err) return evtCallback(dbErrors(err), null);
+      pgload.athmetrics = {};
+      var num = pgload.team.athletes.length;
+      var count = 0;
 
-        return evtCallback(null, pgload);
+      pgload.team.athletes.forEach(function(el, ind, arr) {
+        // console.log('athlete id', el._id);
+        getAthleteLastRecord(el._id);
       });
+
+      function getAthleteLastRecord(athID) {
+        var query = {
+          'team.name': pgload.team.name,
+          'team.gender': pgload.team.gender,
+          'metric.name': metric.name,
+          'athlete._id': athID
+        };
+        var proj = 'data dt';
+        info.Mods.Athmetrics.find(query).exists('dt').select(proj).sort({dt:1}).limit(1).exec(function(err, athm) {
+        // info.Mods.Athmetrics.find(query).select(proj).sort({dt:1}).limit(1).exec(function(err, athm) {
+          console.log('athmetrics\n', athm);
+          if (err) return evtCallback(dbErrors(err), null);
+
+          if (athm.length === 0) {
+            // console.log('not found\n', query);
+            pgload.athmetrics[athID] = athm;
+            count++;
+            if (count === num)
+              return evtCallback(null, pgload);
+          } else {
+            // console.log('found\n', query, athm);
+            pgload.athmetrics[athID] = {
+              data: athm.data,
+              date: athm.dt
+            };
+            count++
+            if (count === num)
+              return evtCallback(null, pgload);
+          }
+        });
+      }
+
     }//END
 
     function getAPElib() {
-      var apeLibPackage = {};
-      var query = {};
-      var proj = {
-        name:1,
-        metrics:1
-      };
-      APE.MetricCats.find(query, proj, function(err, mcs) {
-        if (err) return evtCallback(dbErrors(err), null);
-
-        apeLibPackage.mtrcats = mcs;
-        APE.Metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
+        var apeLibPackage = {};
+        var query = {};
+        var proj = {
+          name:1,
+          metrics:1
+        };
+        APE.MetricCats.find(query, proj, function(err, mcs) {
           if (err) return evtCallback(dbErrors(err), null);
 
-          apeLibPackage.metrics = mtrs;
-          // console.log('apeLibPackage:\n', apeLibPackage);
-          dataLoad.apeLibPackage = apeLibPackage;
-          // console.log('dataLoad\n', dataLoad);
-          
-          evtCallback(null, dataLoad);
-          return;
+          apeLibPackage.mtrcats = mcs;
+          APE.Metrics.find({"mtrcats.name": {$exists: false}}, {name:1}, function(err, mtrs) {
+            if (err) return evtCallback(dbErrors(err), null);
+
+            apeLibPackage.metrics = mtrs;
+            // console.log('apeLibPackage:\n', apeLibPackage);
+            dataLoad.apeLibPackage = apeLibPackage;
+            // console.log('dataLoad\n', dataLoad);
+            
+            evtCallback(null, dataLoad);
+            return;
+          });
         });
-      });
     }//END
   },
 

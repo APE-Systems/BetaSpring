@@ -27,9 +27,10 @@ var trainingPageEvts = {
         console.log('getTrainingPage: Success');
         res.json(200, {
           nav: req.sess.school,
-          athletes: payload.athletes,
-          groups: payload.groups,
-          metricCat: payload.mtrcats
+          athletes: payload.team.athletes,
+          groups: payload.team.groups,
+          metricCat: payload.team.mtrcats,
+          athmetrics: payload.athmetrics
         });
       }
     });
