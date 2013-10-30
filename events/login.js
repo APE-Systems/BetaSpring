@@ -1,11 +1,17 @@
 ;"use strict";
+/*
+  EVENTS: LoginPage
+*/
 
+var loginOps = require('../operations').Login;
 
-module.exports = exports = {
+var loginEvts = {
 
   displayLogin: function(req, res, next) {
-    console.log('event: display login');
+    console.log('Event: displayLogin');
     res.render('login');
   }
 
 }
+
+module.exports = exports = loginEvts;

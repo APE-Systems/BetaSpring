@@ -1,29 +1,31 @@
 .contain-to-grid
-  nav.top-bar
-    ul.title-area
-      li.companyName
-        h1
-          a(href='/')
-      li.toggle-topbar.menu-icon
-        a(href='#')
-          span Menu
-    section.top-bar-section
-      ul.left
-        li.has-form
-          form
-            .row.collapse
-              .large-12.columns
-                li
-                  a(href='#') #{nav}
+  - if (typeof(nav) !== 'undefined') {
+    nav.top-bar
+      ul.title-area
+        li.companyName
+          h1
+            a(href='/')
+        li.toggle-topbar.menu-icon
+          a(href='#')
+            span Menu
+      section.top-bar-section
+        ul.left
+          li.has-form
+            form
+              .row.collapse
+                .large-12.columns
+                  li
+                    a(href='#') #{nav}
 
-      ul.right
-        li
-          a.white.hide-for-medium-down(href='#', id="school-name") #{nav}
-        li
-          a#left-menu(href='#left-menu') Side Nav
-        li
-          a#right-menu(href='#right-menu') Ape Library
-        li
-          a(href='/settings') Settings
-        li
-          a(href='/logout') Logout
+        ul.right
+          li
+            a.white.hide-for-medium-down(href='#', id="school-name") #{nav}
+          li
+            a#left-menu(href='#left-menu') Side Nav
+          li
+            a#right-menu(href='#right-menu') Ape Library
+          li
+            a(href='/settings') Settings
+          li
+            a(href='/logout') Logout
+  - }
