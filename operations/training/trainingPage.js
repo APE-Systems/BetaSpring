@@ -124,7 +124,7 @@ var trainingPageOps = {
               date: athm[0].dt,
               name: athm[0].athlete.name
             };
-            count++
+            count++;
             if (count === num)
               return evtCallback(null, pgload);
           }

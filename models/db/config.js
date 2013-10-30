@@ -7,6 +7,7 @@ console.info('connected to APEdb');
 ape.on('error', APEconnectionError);
 
 module.exports.apeMods = apeMods = {
+  Accounts: ape.model('accounts', require('../schemas/accounts')),
   MetricCats: ape.model('metriccats', require('../schemas/metricCategories')),
   Metrics: ape.model('metrics', require('../schemas/metrics')),
   dbCodes: ape.model('dbcodes', require('../schemas/dbcodes')),
