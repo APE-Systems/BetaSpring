@@ -1,7 +1,7 @@
 ;"use strict";
 /*
   EVENTS: rostersPage
- */
+*/
 
 var rospgOps = require('../operations').RostersPageOps;
 

@@ -5,7 +5,7 @@
   "author": {
     "name": "APE Systems, Inc",
     "email": "rbfuentes@ape-system.com"
-    },
+  },
   "scripts": {
     "start": "node app.js"
   },
@@ -15,9 +15,11 @@
     "mongoose": "3.6.19",
     "moment": "2.0.0",
     "express-validator": "0.3.2",
-    "connect-redis": "1.4.5"
+    "connect-redis": "1.4.5",
+    "passport": "~0.1.17",
+    "connect-flash": "~0.1.1"
   },
-  "repository" : {
+  "repository": {
     "type": "git",
     "url": "https://github.com/APE-Systems/BetaSpring"
   },
@@ -26,5 +28,5 @@
   },
   "bugs": {
     "url": "https://github.com/APE-Systems/BetaSpring/issues"
-    }
+  }
 }
