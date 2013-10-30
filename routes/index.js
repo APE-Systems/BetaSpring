@@ -1,5 +1,6 @@
 ;"use strict";
-var mid = require('../middleware').middle
+var passport = require('passport')
+  , mid = require('../middleware').middle
   , gbl = require('../middleware').globals
   , controllers = require('../controllers')
   , user = controllers.User
@@ -8,6 +9,7 @@ var mid = require('../middleware').middle
   , teams = controllers.Teams
 
   , fs = require('fs')
+  , loginEvts = require('../events').Login
   , tmEvts = require('../events').TeamsPageEvts
   , rosEvts = require('../events').RostersPageEvts
   , trnEvts = require('../events').TrainingPageEvts
@@ -22,7 +24,13 @@ module.exports = function(app) {
   });
 
   //Login
-  // app.get('/login', loginEvts.displayLogin);
+  app.get('/login', loginEvts.displayLogin);
+  app.post('/login',
+    passport.authenticate('local'), 
+      function(req, res) {
+        //authentication was successful
+        res.redirect('/' + req.sess.school + '/teams');
+      });
   // app.post('/login', sanitize, authenticate, authorize, redirect);
 
   //Logout

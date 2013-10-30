@@ -6,6 +6,8 @@ var routes = require('./routes')
   , http = require('http')
   , path = require('path')
   , expressValidator = require('express-validator')
+  , passport = require('passport')
+  , flash = require('connect-flash')
   , sessions = require('./middleware').Sessions
   , models = require('./middleware').schoolModels;
 
@@ -26,6 +28,9 @@ app.configure(function() {
     secret: 'apeSystems_$&$_Beginnings',
     cookie: {httpOnly: true, expires: 0, path: '/'}
   }));
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(flash());
 
   // cache every file going out
   app.use(function(req, res, next) {
@@ -45,7 +50,10 @@ app.configure('development', function(){
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler({showStack: true, dumpExceptions: true}));
+  app.use(express.errorHandler({
+    showStack: true, dumpExceptions: true
+  }));
+  app.locals.pretty = true;
 });
 
 // app.locals
