@@ -1,13 +1,16 @@
 extends layout
 
-block content
+append content
   include account
   include modals/alert
 
-block scripts
+append scripts
   script(src='/_js/vendor/jquery/jquery.min.js')
   script(src='/_js/vendor/jquery/jquery.form.js')
+  script(src='/_js/vendor/foundation/foundation.min.js')
   script(src='/_js/vendor/foundation/foundation.reveal.js')
   script(src='/_js/views/signup.js')
   script(src='/_js/controllers/signupController.js')
   script(src='/_js/form-validators/accountValidator.js')
+  script.
+    $(document).foundation();

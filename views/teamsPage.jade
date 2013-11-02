@@ -3,6 +3,9 @@ extends layout
 append head
   link(rel='stylesheet', href='../_css/teams.css')
 
+include includes/nav
+include includes/side-nav
+
 block content
   - if(typeof flash != 'undefined')
     include includes/mixins/flash-messages

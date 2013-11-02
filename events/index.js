@@ -1,6 +1,7 @@
 ;"use strict";
 
 module.exports.Login = require('./login');
+module.exports.Signup = require('./signup');
 module.exports.TeamsPageEvts = require('./teamsPage');
 module.exports.RostersPageEvts = require('./rostersPage');
 module.exports.TrainingPageEvts = require('./training/trainingPage');

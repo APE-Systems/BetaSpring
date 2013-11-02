@@ -1,32 +1,36 @@
-#sidr-left
-  ul#side-nav.accordion
-    li
-      a(href='#') Teams
-    li
-      a(href='#') Roster
-    li
-      a(href='#') Training
-      ul
+append head
+  link(rel='stylesheet', href='/_js/vendor/sidr/stylesheets/jquery.sidr.dark.css')
+
+block content
+    #sidr-left
+      ul#side-nav.accordion
         li
-          a(href='#') Test Admin
+          a(href='#') Teams
         li
-          a(href='#') Test
+          a(href='#') Roster
         li
-          a(href='#') Training Plan Creator
-    li
-      a(href='#') Reporting
-    li
-      a(href='#') Admin
-#sidr-right
-  ul#ape-nav.accordion
-    li
-      a(href='#') APE Global Library + 
-      ul
+          a(href='#') Training
+          ul
+            li
+              a(href='#') Test Admin
+            li
+              a(href='#') Test
+            li
+              a(href='#') Training Plan Creator
         li
-          a(href='#') Create Metric Category
+          a(href='#') Reporting
         li
-          a(href='#') Create Metric
-    li
-      a(href='#') Basketball (Men)
-    li
-      a(href='#') Baseball (Men) 
+          a(href='#') Admin
+    #sidr-right
+      ul#ape-nav.accordion
+        li
+          a(href='#') APE Global Library + 
+          ul
+            li
+              a(href='#') Create Metric Category
+            li
+              a(href='#') Create Metric
+        li
+          a(href='#') Basketball (Men)
+        li
+          a(href='#') Baseball (Men) 

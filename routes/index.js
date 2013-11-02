@@ -11,6 +11,7 @@ var passport = require('passport')
 
   , fs = require('fs')
   , loginEvts = require('../events').Login
+  , signupEvts = require('../events').Signup
   , tmEvts = require('../events').TeamsPageEvts
   , rosEvts = require('../events').RostersPageEvts
   , trnEvts = require('../events').TrainingPageEvts
@@ -27,6 +28,10 @@ module.exports = function(app) {
   app.get('/', function(req, res) {
     res.redirect('/teams'); // should redirect to login
   });
+
+  //Signup
+  app.get('/signup', signupEvts.displaySignup);
+  app.post('/signup', signupEvts.addNewAccount);
 
   //Login
   app.get('/login', loginEvts.displayLogin);
