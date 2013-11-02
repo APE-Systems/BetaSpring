@@ -18,7 +18,8 @@
     "connect-redis": "1.4.5",
     "passport": "~0.1.17",
     "connect-flash": "~0.1.1",
-    "bcrypt-nodejs": "0.0.3"
+    "bcrypt-nodejs": "0.0.3",
+    "passport-local": "~0.1.6"
   },
   "repository": {
     "type": "git",

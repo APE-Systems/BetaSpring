@@ -23,7 +23,7 @@ var AccountSchema = module.exports = new mongoose.Schema({
 });
 
 //hash password before saved
-AccountSchema.pre('save', {
+AccountSchema.pre('save', function(next) {
   var acct = this;
   //only hash the password if it has been modified (or is new)
   if (!acct.isModified('password')) return next();
@@ -40,7 +40,7 @@ AccountSchema.pre('save', {
       acct.password = hash;
       next();
     });
-  })
+  });
 });
 
 //password verification

@@ -1,5 +1,6 @@
 ;"use strict";
 var passport = require('passport')
+  , secureMe = require('../security')._passport
   , mid = require('../middleware').middle
   , gbl = require('../middleware').globals
   , controllers = require('../controllers')
@@ -18,6 +19,10 @@ var passport = require('passport')
 
 
 module.exports = function(app) {
+  //run passport's localstrategy
+  secureMe();
+
+
   //Home
   app.get('/', function(req, res) {
     res.redirect('/teams'); // should redirect to login
@@ -26,7 +31,7 @@ module.exports = function(app) {
   //Login
   app.get('/login', loginEvts.displayLogin);
   app.post('/login',
-    passport.authenticate('local'), 
+    passport.authenticate('local'),
       function(req, res) {
         //authentication was successful
         res.redirect('/' + req.sess.school + '/teams');
