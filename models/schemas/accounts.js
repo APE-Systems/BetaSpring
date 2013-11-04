@@ -8,14 +8,38 @@ var mongoose = require('mongoose')
   , SALT_WORK_FACTOR = 10;
 
 var AccountSchema = module.exports = new mongoose.Schema({
-  username: {
+  name: {
+    type: String,
+    required: true,
+    index: true
+  },
+  email: {
+    type: String,
+    required: true,
+    index: {unique: true}
+  },
+  org: {
+    type: String,
+    required: true,
+    index: true
+  },
+  country: {
+    type: String,
+    required: true,
+    index: true
+  },
+  user: {
     type: String
   , require: true
   , index: {unique: true}
   },
-  password: {
+  pass: {
     type: String
   , require: true
+  },
+  createdOn: {
+    type: String,
+    required: true
   }
 }, {
   collection: 'accounts',
