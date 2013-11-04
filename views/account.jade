@@ -4,7 +4,7 @@
 input(type='hidden', value= user._id)#userId
 
 #account-form-container
-  form( method="post")#account-form.form-horizontal.large-6.columns
+  form(method="post", action='')#account-form.form-horizontal.large-6.columns
     h1
     p#sub1.subheading Please tell us a little about yourself.
     hr
@@ -17,6 +17,10 @@ input(type='hidden', value= user._id)#userId
         label.control-label(for='email-tf') Email
         .controls
           input#email-tf.small-4.columns(type='text', name='email', value= user.email)
+      #org-cg.control-group
+        label.control-label(for='org-tf') Organization
+        .controls
+          input#org-tf.small-4.columns(type='text', name='org', value= user.org)
       #clist-cg.control-group
         label.control-label(for='country-list') Location
         .controls
