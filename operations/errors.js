@@ -32,12 +32,26 @@ function cliErrors(err) {
         rescode: 422,
         name: "invalidIDinput"
     },
-    "Required": {
+    "required": {
         id: errorId(),
         code: "val05v1",
         msg: "Missing Required Field",
         rescode: 400,
-        name: "Required"
+        name: "required"
+    },
+    "usernameTaken": {
+      id: errorId(),
+      code: "val06v1",
+      msg: "Username taken",
+      rescode: 422,
+      name: "usernameTaken"
+    },
+    "emailTaken": {
+      id: errorId(),
+      code: "val07v1",
+      msg: "Email Taken",
+      rescode: 422,
+      name: "emailTaken"
     }
   };
 
