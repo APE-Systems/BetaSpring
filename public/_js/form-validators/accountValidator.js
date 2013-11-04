@@ -1,8 +1,8 @@
 function AccountValidator() {
 
 // build array maps of the form inputs & control groups //
-  this.formFields = [$('#name-tf'), $('#email-tf'), $('#user-tf'), $('#pass-tf')];
-  this.controlGroups = [$('#name-cg'), $('#email-cg'), $('#user-cg'), $('#pass-cg')];
+  this.formFields = [$('#name-tf'), $('#email-tf'), $('#org-tf'), $('#user-tf'), $('#pass-tf')];
+  this.controlGroups = [$('#name-cg'), $('#email-cg'), $('#org-cg'), $('#user-cg'), $('#pass-cg')];
   
 // bind the form-error modal window to this controller to display any errors //
   this.alert = $('.modal-form-errors');
@@ -35,7 +35,7 @@ function AccountValidator() {
     var ul = $('.modal-form-errors .modal-body ul');
       ul.empty();
     for (var i=0; i < a.length; i++) ul.append('<li>'+a[i]+'</li>');
-    this.alert.modal('show');
+    // this.alert.modal('show');
   }
 
 }
